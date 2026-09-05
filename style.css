@@ -390,6 +390,9 @@ main[data-reading] #project > * {
 }
 
 .block-grid figcaption { margin-top: 0.6em; }
+.fig-title, .fig-note { display: block; }
+/* materials read as the note on the label, not a second title */
+.fig-note { opacity: 0.6; }
 
 /* a logo is shown whole, never cropped, on whatever ground it needs */
 .block-grid[data-fit="contain"] img {
@@ -402,9 +405,67 @@ main[data-reading] #project > * {
 .release li { display: inline; }
 .release li + li::before { content: " / "; }
 
-.track { margin-top: 1.2em; }
-.track-title { margin-bottom: 0.4em; }
-.block-audio audio { width: 100%; max-width: 520px; }
+/* The player is the site's mark at a smaller gauge. The 85:6 ratio the plus
+   was drawn at is held exactly, so it reads as the same two strokes rather
+   than a different control that happens to be near them. */
+.track {
+  --mark-size: 40px;
+  --mark-weight: 3px;
+  margin-top: 1.2em;
+  max-width: 520px;
+  display: grid;
+  grid-template-columns: var(--mark-size) 1fr auto;
+  grid-template-areas: "title title title" "play line time";
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 0.4em;
+}
+
+.track audio { display: none; }
+.track-title { grid-area: title; }
+
+.track-play {
+  grid-area: play;
+  mix-blend-mode: normal;          /* it sits on the project's own dark ground */
+  color: inherit;
+  flex: none;
+}
+.track-play .bar { background: currentColor; }
+
+/* plus while stopped, minus while running — the drawer's move, reused */
+.track-play[data-playing="true"] { rotate: 180deg; }
+.track-play[data-playing="true"] .bar-v { rotate: 0deg; }
+
+/* the minus, stretched: played at full weight, the rest of the track faint */
+.track-line {
+  grid-area: line;
+  position: relative;
+  height: var(--mark-size);
+  cursor: pointer;
+  touch-action: none;
+}
+.track-line::before,
+.track-fill {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: var(--mark-weight);
+  margin-top: calc(var(--mark-weight) / -2);
+  background: currentColor;
+}
+.track-line::before { width: 100%; opacity: 0.25; }
+.track-fill { width: 0; }
+.track-line:focus-visible { outline: var(--mark-weight) solid currentColor; outline-offset: 6px; }
+
+.track-time {
+  grid-area: time;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 749px) {
+  .track { --mark-size: 32px; --mark-weight: 2px; column-gap: 12px; }
+}
 
 .block-links ul { list-style: none; }
 .block-links li + li { margin-top: 0.5em; }

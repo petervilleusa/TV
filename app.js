@@ -485,6 +485,110 @@ function el(tag, cls, text) {
   return n;
 }
 
+/* ---- the player --------------------------------------------------------
+   Built from the same two strokes as every other control. The plus starts
+   the track and folds into a minus while it runs, exactly as the drawer's
+   mark does; the progress line is that minus stretched across the column.
+   No browser chrome, so the page keeps one vocabulary. */
+
+const clock = s => {
+  if (!isFinite(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  return m + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+};
+
+/* Only one track at a time — starting a second stops the first rather than
+   layering them. */
+const players = [];
+
+function buildTrack(t) {
+  const row = el('div', 'track');
+  row.appendChild(el('p', 'track-title', t.title));
+
+  const audio = el('audio');
+  audio.src = t.src;
+  audio.preload = 'metadata';       // enough for the duration, not the file
+
+  const play = el('button', 'mark track-play');
+  play.dataset.kind = 'play';
+  play.append(el('span', 'bar bar-h'), el('span', 'bar bar-v'));
+
+  const line = el('div', 'track-line');
+  const fill = el('i', 'track-fill');
+  line.appendChild(fill);
+  line.setAttribute('role', 'slider');
+  line.setAttribute('aria-label', t.title + ' position');
+  line.tabIndex = 0;
+
+  const time = el('span', 'track-time', '0:00');
+
+  const paint = () => {
+    const d = audio.duration;
+    const at = d ? audio.currentTime / d : 0;
+    fill.style.width = (at * 100) + '%';
+    // the length only appears once the file has told us what it is
+    time.textContent = clock(audio.currentTime) + (isFinite(d) ? ' / ' + clock(d) : '');
+    line.setAttribute('aria-valuetext', time.textContent);
+  };
+
+  const label = () => {
+    const on = !audio.paused;
+    play.dataset.playing = String(on);
+    play.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + t.title);
+  };
+  label();
+
+  play.addEventListener('click', () => {
+    if (audio.paused) {
+      players.forEach(p => { if (p !== audio) p.pause(); });
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  });
+
+  audio.addEventListener('play', label);
+  audio.addEventListener('pause', label);
+  audio.addEventListener('ended', () => { audio.currentTime = 0; label(); paint(); });
+  audio.addEventListener('timeupdate', paint);
+  audio.addEventListener('loadedmetadata', paint);
+  audio.addEventListener('durationchange', paint);
+
+  /* Scrub by pressing anywhere on the line and dragging along it. */
+  const seekTo = e => {
+    const b = line.getBoundingClientRect();
+    if (!b.width || !isFinite(audio.duration)) return;
+    const at = Math.min(1, Math.max(0, (e.clientX - b.left) / b.width));
+    audio.currentTime = at * audio.duration;
+    paint();
+  };
+  line.addEventListener('pointerdown', e => {
+    line.setPointerCapture(e.pointerId);
+    line.dataset.scrub = 'true';
+    seekTo(e);
+  });
+  line.addEventListener('pointermove', e => { if (line.dataset.scrub) seekTo(e); });
+  const drop = e => {
+    if (!line.dataset.scrub) return;
+    delete line.dataset.scrub;
+    line.releasePointerCapture(e.pointerId);
+  };
+  line.addEventListener('pointerup', drop);
+  line.addEventListener('pointercancel', drop);
+
+  line.addEventListener('keydown', e => {
+    const step = { ArrowLeft: -5, ArrowRight: 5, ArrowDown: -5, ArrowUp: 5 }[e.key];
+    if (step == null || !isFinite(audio.duration)) return;
+    e.preventDefault();
+    audio.currentTime = Math.min(audio.duration, Math.max(0, audio.currentTime + step));
+    paint();
+  });
+
+  players.push(audio);
+  row.append(play, line, time, audio);
+  return row;
+}
+
 function renderBlock(b) {
   if (b.type === 'text') {
     const wrap = el('section', 'block-text');
@@ -509,6 +613,10 @@ function renderBlock(b) {
     const g = ++group;
     (b.items || []).forEach(item => {
       const fig = el('figure', b.type === 'releases' ? 'release' : null);
+      /* materials sit under the title. The archive repeats the title in the
+         description where a work has no materials of its own, so a line that
+         only says the title again is dropped rather than printed twice. */
+      const note = item.desc && item.desc !== item.title ? item.desc : '';
 
       // two images cut between each other, the same trick the channels use
       if (Array.isArray(item.flip)) {
@@ -545,12 +653,18 @@ function renderBlock(b) {
           src: item.src || item.art,
           alt: item.alt || item.title || '',
           heading: item.title || b.heading || '',
+          body: note ? [note] : null,
         });
         img.style.cursor = 'zoom-in';
         img.addEventListener('click', () => openLightbox(at));
       }
       fig.appendChild(img);
-      if (item.title) fig.appendChild(el('figcaption', null, item.title));
+      if (item.title || note) {
+        const cap = el('figcaption');
+        if (item.title) cap.appendChild(el('span', 'fig-title', item.title));
+        if (note) cap.appendChild(el('span', 'fig-note', note));
+        fig.appendChild(cap);
+      }
       if (item.links) {
         const ul = el('ul');
         item.links.forEach(l => {
@@ -626,14 +740,7 @@ function renderBlock(b) {
     const wrap = el('section', 'block-audio');
     if (b.heading) wrap.appendChild(el('h2', null, b.heading));
     (b.body || []).forEach(t => wrap.appendChild(el('p', null, t)));
-    (b.tracks || []).forEach(t => {
-      const row = el('div', 'track');
-      row.appendChild(el('p', 'track-title', t.title));
-      const a = el('audio');
-      a.src = t.src; a.controls = true; a.preload = 'none';
-      row.appendChild(a);
-      wrap.appendChild(row);
-    });
+    (b.tracks || []).forEach(t => wrap.appendChild(buildTrack(t)));
     return wrap;
   }
 
