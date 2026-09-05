@@ -865,12 +865,32 @@ main[data-reading] #project > * {
 
 .flicker-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
-/* slides hold, then cross into one another */
+/* slides hold, then cross into one another. A slideshow is a flicker for
+   layout only — the cut animation below must never reach it, so the pair is
+   selected as :not(.slides) rather than left to source order. */
 .slides img { opacity: 0; transition: opacity 900ms var(--ease); }
 .slides img[data-on] { opacity: 1; }
-.slides img:last-child { animation: none; }
 
-.flicker img:last-child {
+/* Ken Burns, on the screens that ask for it. The move starts when the slide
+   becomes the live one, because that is when the selector begins to match, so
+   it stays in step with the timer without being driven by it. Neighbouring
+   slides push the opposite way and off a different corner, which stops four
+   works in a row reading as one drift. */
+/* Scaling away from a corner is what makes it drift rather than just swell,
+   so each slide takes a different one and alternates in and out. */
+.slides[data-pan] img[data-on] {
+  animation: kb-in var(--pan-time, 7s) linear both;
+}
+.slides[data-pan] img { transform-origin: 0% 0%; }
+.slides[data-pan] img:nth-child(2n) { transform-origin: 100% 0%; }
+.slides[data-pan] img:nth-child(4n + 3) { transform-origin: 0% 100%; }
+.slides[data-pan] img:nth-child(4n) { transform-origin: 100% 100%; }
+.slides[data-pan] img:nth-child(2n)[data-on] { animation-name: kb-out; }
+
+@keyframes kb-in  { from { transform: scale(1);     } to { transform: scale(1.13); } }
+@keyframes kb-out { from { transform: scale(1.13);  } to { transform: scale(1);    } }
+
+.flicker:not(.slides) img:last-child {
   animation: flick 2.4s steps(1, end) infinite;
 }
 
@@ -888,20 +908,8 @@ main[data-reading] #project > * {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* in a grid the pair needs its own box; on a screen it fills the aperture */
-.flicker-still {
-  position: relative;
-  aspect-ratio: 1;
-}
-
-.flicker-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-
-/* slides hold, then cross into one another */
-.slides img { opacity: 0; transition: opacity 900ms var(--ease); }
-.slides img[data-on] { opacity: 1; }
-.slides img:last-child { animation: none; }
-
-.flicker img:last-child { animation: none; opacity: 1; }
+  .flicker img:last-child { animation: none; opacity: 1; }
+  .slides[data-pan] img[data-on] { animation: none; }
 }
 
 /*-------- PLACEHOLDER --------*/

@@ -2,10 +2,6 @@
 tools/venv/
 
 # local preview and screenshot harnesses
-_mobile.html
-_probe.html
-_shot.html
-_new.html
-_dbg.html
+_*.html
 
 .DS_Store

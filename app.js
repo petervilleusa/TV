@@ -206,25 +206,6 @@ const objects = [
           ]},
         ]},
 
-        { type: 'feature',
-          heading: '"Every Body" zine',
-          kicker: 'Book / magazine, with the digital album',
-          items: [
-            { src: 'media/zine/04.webp', alt: 'Every Body zine, open spread' },
-            { src: 'media/zine/01.webp', alt: 'Every Body zine, cover' },
-            { src: 'media/zine/02.webp', alt: 'Every Body zine, inside pages' },
-            { src: 'media/zine/03.webp', alt: 'Every Body zine, stack' },
-            { src: 'media/zine/05.webp', alt: 'Every Body zine, spread and stack' },
-            { src: 'media/zine/06.webp', alt: 'Every Body zine, inside pages' },
-          ],
-          body: [
-            'A limited edition zine with the lyrics to every song on our debut album Every Body, and photographs of the band along the way.',
-            'Each one is made by hand, so no two are the same. If you have a colour preference, say so in the order notes.',
-            'Comes with the album itself: unlimited streaming through Bandcamp, plus a download in MP3, FLAC and more.',
-          ],
-          links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }],
-        },
-
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
           ratio: '1082 / 1400', lightbox: true, items: [
           { src: 'media/setlists/00.webp', title: 'Bandshell',   alt: 'Set list, Bandshell' },
@@ -357,13 +338,63 @@ const objects = [
       'media/art/current/02.webp',
       'media/art/current/06.webp',
       'media/art/current/08.webp',
-    ], hold: 3800 } },
+    ], hold: 6000, pan: true } },
 
-  { id: 'tv5',  channel: 5, project: null,  z: 3,
+  { id: 'tv5',  channel: 5, project: 'Print',  z: 3,
     box:    { x: 46.6, y: 52.97, w: 10.4, rotate: 0.9 },
     ar: 5688 / 5044,
     screen: { x: 8.6,  y: 10.6, w: 82.9, h: 70.6 },
-    frame: 'media/tv-05.webp', media: STATIC },
+    frame: 'media/tv-05.webp',
+    content: {
+      title: 'Print',
+      blocks: [
+        { type: 'text', heading: 'Paper',
+          body: [
+            'Zines, folded and stapled in small numbered runs. Printing is the one place the work stops being an edition of one.',
+          ]},
+
+        { type: 'feature',
+          heading: '"Becoming" zine',
+          kicker: 'Single fold, edition of 20',
+          items: [
+            { src: 'media/print/becoming/00.webp', alt: 'Becoming zine, stack of covers' },
+            { src: 'media/print/becoming/01.webp', alt: 'Becoming zine, back cover text' },
+            { src: 'media/print/becoming/02.webp', alt: 'Becoming zine, open spread' },
+          ],
+          body: [
+            'A single fold zine combining vector shapes, text, and process photographs of paintings mid production.',
+            'Edition of 20.',
+          ],
+          links: [{ label: 'Ask about one',
+                    href: 'mailto:peterwarren13@gmail.com?subject=Becoming%20zine%20purchase%20inquiry' }],
+        },
+
+        { type: 'feature',
+          heading: '"Every Body" zine',
+          kicker: 'Book / magazine, with the digital album',
+          items: [
+            { src: 'media/zine/04.webp', alt: 'Every Body zine, open spread' },
+            { src: 'media/zine/01.webp', alt: 'Every Body zine, cover' },
+            { src: 'media/zine/02.webp', alt: 'Every Body zine, inside pages' },
+            { src: 'media/zine/03.webp', alt: 'Every Body zine, stack' },
+            { src: 'media/zine/05.webp', alt: 'Every Body zine, spread and stack' },
+            { src: 'media/zine/06.webp', alt: 'Every Body zine, inside pages' },
+          ],
+          body: [
+            'A limited edition zine with the lyrics to every song on the Pleeay debut album Every Body, and photographs of the band along the way.',
+            'Each one is made by hand, so no two are the same. If you have a colour preference, say so in the order notes.',
+            'Comes with the album itself: unlimited streaming through Bandcamp, plus a download in MP3, FLAC and more.',
+          ],
+          links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }],
+        },
+      ],
+    },
+    media: { slides: [
+      'media/print/becoming/00.webp',
+      'media/zine/01.webp',
+      'media/print/becoming/02.webp',
+      'media/zine/04.webp',
+    ], hold: 3200 } },
 
   { id: 'tv6',  channel: 6, project: null,  z: 2,
     box:    { x: 63.4, y: 52.48, w: 10.0, rotate: -1.2 },
@@ -476,6 +507,14 @@ function makeMark(kind) {
   b.append(el('span', 'bar bar-h'), el('span', 'bar bar-v'));
   requestAnimationFrame(() => { b.dataset.on = 'true'; });   // spins in
   return b;
+}
+
+/* mailto and tel hand off to another app, so a new tab would be left blank
+   behind them. Only real pages open away from the site. */
+function setLinkTarget(a, href) {
+  if (/^(mailto:|tel:)/i.test(href)) return;
+  a.target = '_blank';
+  a.rel = 'noopener';
 }
 
 function el(tag, cls, text) {
@@ -669,7 +708,7 @@ function renderBlock(b) {
         const ul = el('ul');
         item.links.forEach(l => {
           const li = el('li'), a = el('a', null, l.label);
-          a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+          a.href = l.href; setLinkTarget(a, l.href);
           li.appendChild(a); ul.appendChild(li);
         });
         fig.appendChild(ul);
@@ -726,7 +765,7 @@ function renderBlock(b) {
       const ul = el('ul', 'inline-links');
       b.links.forEach(l => {
         const li = el('li'), a = el('a', null, l.label);
-        a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+        a.href = l.href; setLinkTarget(a, l.href);
         li.appendChild(a); ul.appendChild(li);
       });
       copy.appendChild(ul);
@@ -750,7 +789,7 @@ function renderBlock(b) {
     const ul = el('ul');
     (b.items || []).forEach(l => {
       const li = el('li'), a = el('a', null, l.label);
-      a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+      a.href = l.href; setLinkTarget(a, l.href);
       li.appendChild(a); ul.appendChild(li);
     });
     wrap.appendChild(ul);
@@ -822,7 +861,7 @@ function openLightbox(at = 0) {
     (item.body || []).forEach(t => cap.appendChild(el('p', null, t)));
     (item.links || []).forEach(l => {
       const a = el('a', null, l.label);
-      a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+      a.href = l.href; setLinkTarget(a, l.href);
       const wrap = el('p'); wrap.appendChild(a); cap.appendChild(wrap);
     });
     if (set.length > 1) {
@@ -900,6 +939,12 @@ function buildMedia(tv) {
   if (tv.media && tv.media.slides && !STILL) {
     const wrap = document.createElement('div');
     wrap.className = 'flicker slides';
+    /* the move has to outlast the hold, or it finishes and sits still while
+       the slide is still up */
+    if (tv.media.pan) {
+      wrap.dataset.pan = 'true';
+      wrap.style.setProperty('--pan-time', ((tv.media.hold || 3800) + 1400) + 'ms');
+    }
     tv.media.slides.forEach((src, i) => {
       const im = document.createElement('img');
       im.src = src; im.alt = '';
