@@ -389,6 +389,19 @@ main[data-reading] #project > * {
   object-fit: cover;
 }
 
+/* A slot with no artwork yet. Reads as a space held open on purpose rather
+   than a photograph that failed to arrive. */
+.slot {
+  width: 100%;
+  aspect-ratio: var(--ratio, 1);
+  background: #211F28;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: grid;
+  place-items: center;
+  font-size: var(--type-small);
+  opacity: 0.45;
+}
+
 .block-grid figcaption { margin-top: 0.6em; }
 .fig-title, .fig-note { display: block; }
 /* materials read as the note on the label, not a second title */

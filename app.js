@@ -216,23 +216,23 @@ const objects = [
         ]},
 
         { type: 'grid', columns: 3, ratio: '4 / 5', items: [
-          { src: '', alt: 'Band photograph' },
-          { src: '', alt: 'Band photograph' },
-          { src: '', alt: 'Band photograph' },
+          { src: '', alt: 'Band photograph', slot: 'band photograph' },
+          { src: '', alt: 'Band photograph', slot: 'band photograph' },
+          { src: '', alt: 'Band photograph', slot: 'band photograph' },
         ]},
 
         { type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
-          { art: '', title: 'Wealth + Hellness Vol. 1', links: [
+          { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 1', links: [
             { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
           ]},
-          { art: '', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
+          { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
             { label: 'Coming soon', href: '#' },
           ]},
-          { art: '', title: 'NO', links: [
+          { art: '', slot: 'cover', title: 'NO', links: [
             { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
             { label: 'YouTube', href: 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg' },
           ]},
-          { art: '', title: 'Live recordings', links: [
+          { art: '', slot: 'cover', title: 'Live recordings', links: [
             { label: 'Listen', href: '#' },
           ]},
         ]},
@@ -697,13 +697,37 @@ function renderBlock(b) {
         return;
       }
 
-      const img = el('img');
-      /* Artwork that has not been supplied yet is left with NO src at all. An
-         empty one resolves to the page itself, which both fires a pointless
-         request and paints a broken-image icon over the caption. */
+      /* A slot whose artwork has not been supplied yet is NOT an image. An
+         empty src resolves to the page itself — a wasted request and a broken
+         icon — and a silent empty box just reads as a picture that failed to
+         load. It says what it is waiting for instead. */
       const src = item.src || item.art || '';
-      if (src) { img.src = src; img.alt = item.alt || item.title || ''; }
-      else { img.alt = ''; img.dataset.empty = 'true'; }
+      if (!src) {
+        const slot = el('figure', b.type === 'releases' ? 'release' : null);
+        const box = el('div', 'slot', item.slot || 'image to come');
+        if (item.tone) box.style.background = item.tone;
+        slot.appendChild(box);
+        if (item.title) {
+          const cap = el('figcaption');
+          cap.appendChild(el('span', 'fig-title', item.title));
+          slot.appendChild(cap);
+        }
+        if (item.links) {
+          const ul = el('ul');
+          item.links.forEach(l => {
+            const li = el('li'), a = el('a', null, l.label);
+            a.href = l.href; setLinkTarget(a, l.href);
+            li.appendChild(a); ul.appendChild(li);
+          });
+          slot.appendChild(ul);
+        }
+        wrap.appendChild(slot);
+        return;
+      }
+
+      const img = el('img');
+      img.src = src;
+      img.alt = item.alt || item.title || '';
       img.loading = 'lazy';
       if (item.tone) img.style.background = item.tone;   // art not made yet
       if (item.tile) img.style.background = item.tile;   // the ground it needs
