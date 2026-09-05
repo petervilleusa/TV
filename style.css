@@ -402,6 +402,10 @@ main[data-reading] #project > * {
 .release li { display: inline; }
 .release li + li::before { content: " / "; }
 
+.track { margin-top: 1.2em; }
+.track-title { margin-bottom: 0.4em; }
+.block-audio audio { width: 100%; max-width: 520px; }
+
 .block-links ul { list-style: none; }
 .block-links li + li { margin-top: 0.5em; }
 
@@ -800,6 +804,11 @@ main[data-reading] #project > * {
 
 .flicker-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
+/* slides hold, then cross into one another */
+.slides img { opacity: 0; transition: opacity 900ms var(--ease); }
+.slides img[data-on] { opacity: 1; }
+.slides img:last-child { animation: none; }
+
 .flicker img:last-child {
   animation: flick 2.4s steps(1, end) infinite;
 }
@@ -825,6 +834,11 @@ main[data-reading] #project > * {
 }
 
 .flicker-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+/* slides hold, then cross into one another */
+.slides img { opacity: 0; transition: opacity 900ms var(--ease); }
+.slides img[data-on] { opacity: 1; }
+.slides img:last-child { animation: none; }
 
 .flicker img:last-child { animation: none; opacity: 1; }
 }

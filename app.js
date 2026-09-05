@@ -268,11 +268,96 @@ const objects = [
     screen: { x: 11.5, y: 10.9, w: 77.9, h: 62.7 },
     frame: 'media/tv-03.webp', media: BARS },
 
-  { id: 'tv4',  channel: 4, project: null,  z: 5,
+  { id: 'tv4',  channel: 4, project: 'Fine art',  z: 5,
     box:    { x: 28.2, y: 58.32, w: 18.4, rotate: -0.4 },
     ar: 3317 / 3183,
     screen: { x: 9.6,  y: 12.0, w: 81.9, h: 65.3 },
-    frame: 'media/tv-04.webp', media: STATIC },
+    content: {
+      title: 'Fine art',
+      blocks: [
+        { type: 'text', heading: 'Painting and sculpture', body: [
+          'Paintings and wall sculpture. Concrete, canvas, foam, enamel and wood, mostly built rather than painted, and often shaped so the edge of the work is part of the drawing.',
+        ]},
+
+        { type: 'grid', heading: 'Current work', columns: 3, ratio: '1', fit: 'contain', lightbox: true, items: [
+          { src: 'media/art/current/00.webp', title: "Installation View", alt: "Installation View" },
+          { src: 'media/art/current/01.webp', title: "Installation with Pony Vice and Canvas wrapped Wood", alt: "Installation with Pony Vice and Canvas wrapped Wood" },
+          { src: 'media/art/current/02.webp', title: "Tetrad (concrete)", desc: "Enamel and Concrete, 24\u201dx24\u201d", alt: "Tetrad (concrete)" },
+          { src: 'media/art/current/03.webp', title: "Modular Twins", desc: "Casein and House Paint on Inset Wood and Canvas, 28\u201dx40\u201d ea", alt: "Modular Twins" },
+          { src: 'media/art/current/04.webp', title: "Tetrad (wrapped)", desc: "Acrylic on Canvas, 36\u201dx36\u201d", alt: "Tetrad (wrapped)" },
+          { src: 'media/art/current/05.webp', title: "Tetrad (Sun)", desc: "Acrylic Spray Paint on Canvas and Wall, 10\u201dx10\u201d", alt: "Tetrad (Sun)" },
+          { src: 'media/art/current/06.webp', title: "Broken Flag", desc: "Acrylic and Wax on Concrete, 16\u201d x 12\u201d", alt: "Broken Flag" },
+          { src: 'media/art/current/07.webp', title: "Tetrad (Russian Dolls)", desc: "Acrylic on Wood, 12\u201dx16\u201d, 9\u201dx12\u201d, 6\u201dx10\u201d, 4\u201dx3.5\u201d", alt: "Tetrad (Russian Dolls)" },
+          { src: 'media/art/current/08.webp', title: "Tetrad (Russian Doll) part 3", desc: "Acrylic on Wood, 12\u201d x 9\u201d", alt: "Tetrad (Russian Doll) part 3" },
+          { src: 'media/art/current/09.webp', title: "Tablet (for David Ireland)", desc: "Acrylic on Copper, 14\u201d x 19\u201d", alt: "Tablet (for David Ireland)" },
+          { src: 'media/art/current/10.webp', title: "Foam (Tied)", desc: "Acrylic on Foam, 4\u201dx4\u201d", alt: "Foam (Tied)" },
+        ]},
+
+        { type: 'grid', heading: 'Tablets, 2018', columns: 3, ratio: '1', fit: 'contain', lightbox: true, items: [
+          { src: 'media/art/tablets/00.webp', title: "Tablet (Swimming Pink)", desc: "Acrylic and Ink on Canvas and Vinyl, 12\u201d x 16\u201d", alt: "Tablet (Swimming Pink)" },
+          { src: 'media/art/tablets/01.webp', title: "Tablet (Any Alter-like Structure Made for Keeping Sacred Fire)", desc: "Acrylic on Canvas and Vinyl, 18\u201d x 24\u201d", alt: "Tablet (Any Alter-like Structure Made for Keeping Sacred Fire)" },
+          { src: 'media/art/tablets/02.webp', title: "Tablet (ITTI)", desc: "Oil and Acrylic on Canvas and Wood, 16\"x12\"", alt: "Tablet (ITTI)" },
+          { src: 'media/art/tablets/03.webp', title: "Tablet (Passing Through)", desc: "Mixed media on canvas and wood, 32\" x 46\"", alt: "Tablet (Passing Through)" },
+          { src: 'media/art/tablets/04.webp', title: "Modular Painting 3", desc: "Acrylic on Wood, 2.5\u201d x 6\u201d ea.", alt: "Modular Painting 3" },
+          { src: 'media/art/tablets/05.webp', title: "Tablet (What Draws a Plant Root Toward Water)", desc: "Mixed media on canvas and vinyl, 18\" x 24\"", alt: "Tablet (What Draws a Plant Root Toward Water)" },
+          { src: 'media/art/tablets/06.webp', title: "Tablet (Let's Go Swimming)", desc: "Mixed Media on Canvas and Wood, 18\u201dx24\u201d", alt: "Tablet (Let's Go Swimming)" },
+          { src: 'media/art/tablets/07.webp', title: "Tablet (Slings and Arrows of Outrageous Portion)", desc: "Acrylic on Canvas and Vinyl, 18\u201d x 24\u201d", alt: "Tablet (Slings and Arrows of Outrageous Portion)" },
+          { src: 'media/art/tablets/08.webp', title: "Tablet (Greenhouse)", desc: "24\" x 30\" Acrylic and gesso on Canvas", alt: "Tablet (Greenhouse)" },
+          { src: 'media/art/tablets/09.webp', title: "Tablet (Room for Two)", desc: "Gesso and Ink on Canvas, 18\"x24\"", alt: "Tablet (Room for Two)" },
+          { src: 'media/art/tablets/10.webp', title: "Tablet (You and Me Both)", desc: "Acrylic and gesso on Canvas, 24\u201d x 30\u201d", alt: "Tablet (You and Me Both)" },
+        ]},
+
+        { type: 'grid', heading: 'Interiors, 2017', columns: 5, ratio: '1', fit: 'contain', lightbox: true, items: [
+          { src: 'media/art/interiors/00.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/01.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/02.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/03.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/04.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/05.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/06.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/07.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/08.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/09.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/10.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/11.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/12.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/13.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/14.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/15.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/16.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/17.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/18.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/19.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/20.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/21.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/22.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/23.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/24.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/25.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/26.webp', alt: "Interiors, 2017" },
+          { src: 'media/art/interiors/27.webp', alt: "Interiors, 2017" },
+        ]},
+
+        { type: 'grid', heading: 'Jumper, 2015', columns: 3, ratio: '1', fit: 'contain', lightbox: true, items: [
+          { src: 'media/art/jumper/00.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/01.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/02.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/03.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/04.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/05.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/06.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/07.webp', alt: "Jumper, 2015" },
+          { src: 'media/art/jumper/08.webp', alt: "Jumper, 2015" },
+        ]},
+      ],
+    },
+    frame: 'media/tv-04.webp',
+    media: { slides: [
+      'media/art/current/05.webp',
+      'media/art/current/02.webp',
+      'media/art/current/06.webp',
+      'media/art/current/08.webp',
+    ], hold: 3800 } },
 
   { id: 'tv5',  channel: 5, project: null,  z: 3,
     box:    { x: 46.6, y: 52.97, w: 10.4, rotate: 0.9 },
@@ -287,11 +372,25 @@ const objects = [
     frame: 'media/tv-06.webp', media: STATIC },
 
   /* the same little YORX as channel 10; Peter uses three of them */
-  { id: 'yorxB',  channel: null, project: null,  z: 4,
+  { id: 'yorxB',  channel: 8,  project: 'Pyramid Scheme',  z: 4,
     box:    { x: 62.2, y: 61.77, w: 5.2, rotate: 1.1 },
     ar: 2141 / 2321,
     screen: { x: 14.3, y: 15.0, w: 71.3, h: 49.5 },
-    frame: 'media/tv-10.webp', media: STATIC },
+    frame: 'media/tv-10.webp', content: {
+      title: 'Pyramid scheme',
+      blocks: [
+        { type: 'text', heading: 'A one off', body: [
+          'A single track, and the spiral that went with it.',
+        ]},
+        { type: 'audio', tracks: [
+          { title: 'Pyramid scheme', src: 'media/audio/pyramid-scheme.mp3' },
+        ]},
+        { type: 'grid', columns: 1, ratio: '1200 / 476', fit: 'contain', lightbox: true, items: [
+          { src: 'media/pyramids.webp', alt: 'Pyramids' },
+        ]},
+      ],
+    },
+    media: 'media/spiral.mp4' },
 
   { id: 'tv8',  channel: 7, project: null,  z: 6,
     box:    { x: 62.8, y: 68.25, w: 10.7, rotate: 0.6 },
@@ -523,6 +622,21 @@ function renderBlock(b) {
     return wrap;
   }
 
+  if (b.type === 'audio') {
+    const wrap = el('section', 'block-audio');
+    if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+    (b.body || []).forEach(t => wrap.appendChild(el('p', null, t)));
+    (b.tracks || []).forEach(t => {
+      const row = el('div', 'track');
+      row.appendChild(el('p', 'track-title', t.title));
+      const a = el('audio');
+      a.src = t.src; a.controls = true; a.preload = 'none';
+      row.appendChild(a);
+      wrap.appendChild(row);
+    });
+    return wrap;
+  }
+
   if (b.type === 'links') {
     const wrap = el('section', 'block-links');
     if (b.heading) wrap.appendChild(el('h2', null, b.heading));
@@ -660,7 +774,35 @@ const navList = document.getElementById('nav-list');
    or profile, and layout work rarely needs them running. */
 const STILL = new URLSearchParams(location.search).has('still');
 
+/* Slides advance on one shared timer rather than one each. */
+const slideshows = [];
+setInterval(() => {
+  const now = Date.now();
+  slideshows.forEach(s => {
+    if (now - s.at < s.hold) return;
+    s.at = now;
+    const imgs = s.wrap.children;
+    imgs[s.i].removeAttribute('data-on');
+    s.i = (s.i + 1) % imgs.length;
+    imgs[s.i].dataset.on = 'true';
+  });
+}, 400);
+
 function buildMedia(tv) {
+  /* A handful of works, held and crossfaded, rather than a video. */
+  if (tv.media && tv.media.slides && !STILL) {
+    const wrap = document.createElement('div');
+    wrap.className = 'flicker slides';
+    tv.media.slides.forEach((src, i) => {
+      const im = document.createElement('img');
+      im.src = src; im.alt = '';
+      if (i === 0) im.dataset.on = 'true';
+      wrap.appendChild(im);
+    });
+    slideshows.push({ wrap, i: 0, at: Date.now(), hold: tv.media.hold || 3800 });
+    return wrap;
+  }
+
   /* A pair of stills cuts back and forth instead of playing. Two stacked
      images with a stepped opacity animation, so the change is a hard cut like
      a channel flipping rather than a crossfade — and no timer to keep. */

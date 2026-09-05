@@ -1,0 +1,364 @@
+{
+  "current": [
+    {
+      "src": "media/art/current/00.webp",
+      "title": "Installation View",
+      "desc": "Installation View",
+      "ratio": "1400 / 827"
+    },
+    {
+      "src": "media/art/current/01.webp",
+      "title": "Installation with Pony Vice and Canvas wrapped Wood",
+      "desc": "Installation with Pony Vice and Canvas wrapped Wood",
+      "ratio": "1190 / 1400"
+    },
+    {
+      "src": "media/art/current/02.webp",
+      "title": "Tetrad (concrete)",
+      "desc": "Enamel and Concrete, 24\u201dx24\u201d",
+      "ratio": "1318 / 1400"
+    },
+    {
+      "src": "media/art/current/03.webp",
+      "title": "Modular Twins",
+      "desc": "Casein and House Paint on Inset Wood and Canvas, 28\u201dx40\u201d ea",
+      "ratio": "1169 / 1400"
+    },
+    {
+      "src": "media/art/current/04.webp",
+      "title": "Tetrad (wrapped)",
+      "desc": "Acrylic on Canvas, 36\u201dx36\u201d",
+      "ratio": "995 / 1400"
+    },
+    {
+      "src": "media/art/current/05.webp",
+      "title": "Tetrad (Sun)",
+      "desc": "Acrylic Spray Paint on Canvas and Wall, 10\u201dx10\u201d",
+      "ratio": "1148 / 1400"
+    },
+    {
+      "src": "media/art/current/06.webp",
+      "title": "Broken Flag",
+      "desc": "Acrylic and Wax on Concrete, 16\u201d x 12\u201d",
+      "ratio": "1226 / 1400"
+    },
+    {
+      "src": "media/art/current/07.webp",
+      "title": "Tetrad (Russian Dolls)",
+      "desc": "Acrylic on Wood, 12\u201dx16\u201d, 9\u201dx12\u201d, 6\u201dx10\u201d, 4\u201dx3.5\u201d",
+      "ratio": "1009 / 1400"
+    },
+    {
+      "src": "media/art/current/08.webp",
+      "title": "Tetrad (Russian Doll) part 3",
+      "desc": "Acrylic on Wood, 12\u201d x 9\u201d",
+      "ratio": "1111 / 1400"
+    },
+    {
+      "src": "media/art/current/09.webp",
+      "title": "Tablet (for David Ireland)",
+      "desc": "Acrylic on Copper, 14\u201d x 19\u201d",
+      "ratio": "1198 / 1400"
+    },
+    {
+      "src": "media/art/current/10.webp",
+      "title": "Foam (Tied)",
+      "desc": "Acrylic on Foam, 4\u201dx4\u201d",
+      "ratio": "1202 / 1400"
+    }
+  ],
+  "tablets": [
+    {
+      "src": "media/art/tablets/00.webp",
+      "title": "Tablet (Swimming Pink)",
+      "desc": "Acrylic and Ink on Canvas and Vinyl, 12\u201d x 16\u201d",
+      "ratio": "1081 / 1400"
+    },
+    {
+      "src": "media/art/tablets/01.webp",
+      "title": "Tablet (Any Alter-like Structure Made for Keeping Sacred Fire)",
+      "desc": "Acrylic on Canvas and Vinyl, 18\u201d x 24\u201d",
+      "ratio": "1136 / 1400"
+    },
+    {
+      "src": "media/art/tablets/02.webp",
+      "title": "Tablet (ITTI)",
+      "desc": "Oil and Acrylic on Canvas and Wood, 16\"x12\"",
+      "ratio": "1400 / 1150"
+    },
+    {
+      "src": "media/art/tablets/03.webp",
+      "title": "Tablet (Passing Through)",
+      "desc": "Mixed media on canvas and wood, 32\" x 46\"",
+      "ratio": "1002 / 1400"
+    },
+    {
+      "src": "media/art/tablets/04.webp",
+      "title": "Modular Painting 3",
+      "desc": "Acrylic on Wood, 2.5\u201d x 6\u201d ea.",
+      "ratio": "1400 / 1216"
+    },
+    {
+      "src": "media/art/tablets/05.webp",
+      "title": "Tablet (What Draws a Plant Root Toward Water)",
+      "desc": "Mixed media on canvas and vinyl, 18\" x 24\"",
+      "ratio": "1151 / 1400"
+    },
+    {
+      "src": "media/art/tablets/06.webp",
+      "title": "Tablet (Let's Go Swimming)",
+      "desc": "Mixed Media on Canvas and Wood, 18\u201dx24\u201d",
+      "ratio": "1063 / 1400"
+    },
+    {
+      "src": "media/art/tablets/07.webp",
+      "title": "Tablet (Slings and Arrows of Outrageous Portion)",
+      "desc": "Acrylic on Canvas and Vinyl, 18\u201d x 24\u201d",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/tablets/08.webp",
+      "title": "Tablet (Greenhouse)",
+      "desc": "24\" x 30\" Acrylic and gesso on Canvas",
+      "ratio": "1184 / 1400"
+    },
+    {
+      "src": "media/art/tablets/09.webp",
+      "title": "Tablet (Room for Two)",
+      "desc": "Gesso and Ink on Canvas, 18\"x24\"",
+      "ratio": "1113 / 1400"
+    },
+    {
+      "src": "media/art/tablets/10.webp",
+      "title": "Tablet (You and Me Both)",
+      "desc": "Acrylic and gesso on Canvas, 24\u201d x 30\u201d",
+      "ratio": "1180 / 1400"
+    }
+  ],
+  "interiors": [
+    {
+      "src": "media/art/interiors/00.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/01.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/02.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/03.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/04.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/05.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/06.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/07.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/08.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/09.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/10.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/11.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/12.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/13.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/14.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/15.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/16.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/17.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/18.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1049 / 1400"
+    },
+    {
+      "src": "media/art/interiors/19.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/20.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/21.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/22.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/23.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/24.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/25.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/26.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/interiors/27.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    }
+  ],
+  "jumper": [
+    {
+      "src": "media/art/jumper/00.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1043 / 1400"
+    },
+    {
+      "src": "media/art/jumper/01.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1060 / 1400"
+    },
+    {
+      "src": "media/art/jumper/02.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1116 / 1400"
+    },
+    {
+      "src": "media/art/jumper/03.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1077 / 1400"
+    },
+    {
+      "src": "media/art/jumper/04.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1157 / 1400"
+    },
+    {
+      "src": "media/art/jumper/05.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1098 / 1400"
+    },
+    {
+      "src": "media/art/jumper/06.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1112 / 1400"
+    },
+    {
+      "src": "media/art/jumper/07.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1050 / 1400"
+    },
+    {
+      "src": "media/art/jumper/08.webp",
+      "title": "",
+      "desc": "",
+      "ratio": "1120 / 1400"
+    }
+  ]
+}

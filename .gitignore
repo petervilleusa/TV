@@ -5,5 +5,7 @@ tools/venv/
 _mobile.html
 _probe.html
 _shot.html
+_new.html
+_dbg.html
 
 .DS_Store
