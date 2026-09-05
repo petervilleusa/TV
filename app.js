@@ -15,29 +15,41 @@ const SCENE_AR = 1614 / 1385;   // matches media/room-sky.webp
    floor line both care about the ROOM's share of it. */
 const ROOM_FRACTION = 975 / 1385;
 
+/* The wall/floor junction, as a percentage down the scene. The sets stand on
+   this line, so it is what the phone framing anchors their base to. */
+const SCENE_FLOOR = 78.9;
+
 /* Mobile shows the SAME sculpture as desktop, not a second arrangement of it.
    The scene is scaled so its full HEIGHT fits the screen — the composition is
    never cropped top or bottom — which leaves it wider than the phone, and the
    pager pans across that width. CONTENT_LEFT and CONTENT_RIGHT bound the part
    worth panning to, and the slide count falls out of them. */
-const PILE_LEFT = 27;
-const PILE_RIGHT = 73;
+const CONTENT_LEFT = 27;
+const CONTENT_RIGHT = 93;   // past the amplifier's right edge
 
-/* On its own slide the amplifier is shown larger than it sits in the desktop
-   scene, and centred. Width is derived from this height, x is computed. */
-const AMP_MOBILE = { h: 62 * ROOM_FRACTION, bottom: 72 * ROOM_FRACTION + (1 - ROOM_FRACTION) * 100 };
+/* Mobile scale is set by HEIGHT: the whole scene, ceiling included, is fitted
+   to the screen. That is what keeps wall above the sculpture and floor below
+   it, so it reads as an object in a room rather than a crop pressed against the
+   top edge. The width then falls out of the aspect, and however many screens
+   that spans is how many slides there are.
 
-/* The two photographs put the wall/floor junction in different places: 70% down
-   the desktop scene, 85% down the portrait one used on phones. Since the
-   portrait room is pinned to the viewport and the sculpture is not, the
-   sculpture has to drop by the difference or the sets hang in the air. */
-const SCENE_FLOOR = 78.9;
-const MOBILE_ROOM_FLOOR = 85;
-/* Derived rather than tuned: drop the scene until the ROOM's floor line lands
-   on the portrait photograph's floor line. The scene is taller than the screen
-   now, so this has to account for the ceiling hanging above it. */
-const MOBILE_DROP =
-  (MOBILE_ROOM_FLOOR / 100 - 1) + (1 - SCENE_FLOOR / 100) / ROOM_FRACTION;
+   MOBILE_FILL shrinks the scene below full height. Since it is anchored to the
+   floor, a smaller scene sits the sculpture lower and opens more wall above it
+   — the same effect as a taller ceiling, without a second background whose
+   different aspect would force every object's y to be remapped. */
+/* Two anchors frame the phone view: the top of the sculpture sits this far
+   below the mark, and the floor it stands on sits this far down the screen.
+   Together they fix both the scale AND the vertical position, which one anchor
+   alone cannot — the old single anchor left whatever floor happened to remain. */
+const MOBILE_TOP_GAP = 70;
+const MOBILE_FLOOR_AT = 84;   // % down the screen
+
+/* Where the slack goes when the composition does not exactly fill its slides.
+   0 puts it all at the far end, 0.5 splits it evenly. Kept low so the first
+   screen opens on the sculpture rather than on empty room. */
+const MOBILE_LEAD = 0.18;
+
+
 
 /* Cover the stage with the scene: the gallery always bleeds to the edges,
    and the artwork inside keeps its proportions. */
@@ -65,52 +77,50 @@ function fitScene() {
   /* Fit the scene's height to the screen. The televisions then pan across the
      first slides while the room photograph stays put behind them, and the
      amplifier gets the last slide to itself. */
-  const height = stage.getBoundingClientRect().height;
-  const sceneH = height / ROOM_FRACTION;   // so the ROOM fills the screen
-  const sceneW = sceneH * SCENE_AR;
+  /* Size the scene so the tallest set reaches up to just under the mark. The
+     scene is anchored to the floor, so its height is what controls where the
+     top of the sculpture lands; solving for it directly beats guessing a
+     zoom factor, and it re-solves itself if the mark or the pile changes. */
+  const viewportH = stage.getBoundingClientRect().height;
+  const cs = getComputedStyle(document.documentElement);
+  const px = n => parseFloat(cs.getPropertyValue(n)) || 0;
+
+  const topPct = Math.min(...objects.map(o => o.box.y));   // the tallest set
+  const topY = px('--pad') + px('--mark-size') + MOBILE_TOP_GAP;
+  const floorY = (MOBILE_FLOOR_AT / 100) * viewportH;
+
+  // two knowns, two unknowns: the scene's height and where its top sits
+  const height = (100 * (floorY - topY)) / (SCENE_FLOOR - topPct);
+  const sceneTop = topY - (topPct / 100) * height;
+  const sceneW = height * SCENE_AR;
   scene.style.width = sceneW + 'px';
-  scene.style.height = sceneH + 'px';
-  scene.style.bottom = -(height * MOBILE_DROP) + 'px';
+  scene.style.height = height + 'px';
+  scene.style.bottom = -(sceneTop + height - viewportH) + 'px';
 
-  const pileW = ((PILE_RIGHT - PILE_LEFT) / 100) * sceneW;
-  const pileSlides = Math.max(1, Math.ceil(pileW / width));
+  const contentW = ((CONTENT_RIGHT - CONTENT_LEFT) / 100) * sceneW;
+  const slides = Math.max(1, Math.ceil(contentW / width));
+  const left =
+    (slides * width - contentW) * MOBILE_LEAD - (CONTENT_LEFT / 100) * sceneW;
+  scene.style.left = left + 'px';
 
-  // centre the pile across the slides it occupies, so the leftover shows as
-  // wall on both sides instead of a void at the end
-  const offset = (pileSlides * width - pileW) / 2 - (PILE_LEFT / 100) * sceneW;
-  scene.style.left = offset + 'px';
-  setPages(pileSlides + 1);
-  centreAmp(sceneW, width, pileSlides, offset);
+  /* Stop the pan exactly where the composition ends. Sizing the scroll range by
+     whole screens overshoots — the last one runs past the artwork into blank
+     page. One spacer reaching the content's right edge lets it end on the work. */
+  setScrollExtent(left + (CONTENT_RIGHT / 100) * sceneW);
 }
 
-/* The amplifier is placed by measurement rather than by a hand-written mobile
-   box: it is sized off the screen and centred on the slide after the pile,
-   whatever the pile turned out to need. */
-function centreAmp(sceneW, slideW, pileSlides, offset) {
-  const el = wall.querySelector('.tv[data-screen="amp"]');
-  const amp = objects.find(o => o.id === 'amp');
-  if (!el || !amp) return;
-  const w = AMP_MOBILE.h * amp.ar / SCENE_AR;
-  const centrePage = (pileSlides + 0.5) * slideW;
-  const x = ((centrePage - (w / 100) * sceneW / 2) - offset) / sceneW * 100;
-  el.style.setProperty('--x', x + '%');
-  el.style.setProperty('--y', (AMP_MOBILE.bottom - AMP_MOBILE.h) + '%');
-  el.style.setProperty('--w', w + '%');
-  el.style.setProperty('--h', AMP_MOBILE.h + '%');
-}
 
-/* Width spacers. They carry no pixels; they exist so the scroll container
-   knows how far the sculpture extends. */
-function setPages(n) {
+/* A single width spacer. It carries no pixels; it exists so the scroll
+   container knows exactly how far the sculpture extends, and no further. */
+function setScrollExtent(px) {
   const host = scene.parentElement;
   host.querySelectorAll('.page').forEach(el => el.remove());
-  if (n < 2) return;
-  for (let i = 0; i < n; i++) {
-    const el = document.createElement('i');
-    el.className = 'page';
-    el.style.left = `calc(${i} * 100%)`;
-    host.appendChild(el);
-  }
+  if (px <= host.clientWidth) return;
+  const el = document.createElement('i');
+  el.className = 'page';
+  el.style.left = '0px';
+  el.style.width = px + 'px';
+  host.appendChild(el);
 }
 
 
@@ -330,9 +340,6 @@ function isPhone() {
 /* Each object carries a desktop box and a mobile one. Height is always derived
    from the artwork's own aspect, so nothing distorts in either layout. */
 function place(el, tv) {
-  // on a phone the amplifier is positioned by fitScene(), which centres it on
-  // its own slide; placing it from the desktop box here would undo that
-  if (isPhone() && tv.id === 'amp') return;
   const box = tv.box;
   el.style.setProperty('--x', box.x + '%');
   el.style.setProperty('--y', box.y + '%');

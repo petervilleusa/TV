@@ -389,15 +389,6 @@ main[data-nav="true"] nav { translate: 0 0; }
     translate: none;
   }
 
-  /* The room is its own portrait photograph, pinned to the viewport, so the
-     televisions pan across it while the gallery itself holds still. */
-  #room {
-    position: fixed;
-    inset: 0;
-    background: url("media/room-mobile.webp") center bottom / cover no-repeat;
-    z-index: 0;
-  }
-
   /* the portrait photograph is full bleed, so there is no wall to continue */
 
   /* Width spacers only. No pixels of their own; they exist so the scroll
@@ -406,15 +397,17 @@ main[data-nav="true"] nav { translate: 0 0; }
     display: block;
     position: absolute;
     top: 0;
-    width: 100%;
     height: 1px;
     pointer-events: none;
   }
 
-  /* The portrait photograph covers the whole screen, so the ceiling and its
-     static are never visible here. Hidden rather than merely covered, so the
-     phone is not decoding a video nobody can see. */
-  #sky { display: none; }
+
+  /* A background cut for this layout: same canvas and floor line as the desktop
+     one, so it swaps in without moving anything, but with the tall wall the
+     phone framing needs. No ceiling cut-out, so no sky here. */
+  #room {
+    background-image: url("media/room-mobile.webp");
+  }
 
   /* fixed so the drawer covers the screen whatever the pager is doing */
   nav { position: fixed; width: 100%; }
