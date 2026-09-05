@@ -901,6 +901,14 @@ main[data-reading] #project > * {
 .slides[data-pan] img:nth-child(4n) { transform-origin: 100% 100%; }
 .slides[data-pan] img:nth-child(2n)[data-on] { animation-name: kb-out; }
 
+/* One image alone is never replaced, so a single pass would finish and then
+   sit still for as long as the set is on screen. It breathes in and back out
+   instead, eased at both ends so the turn is not a jolt. */
+.slides[data-pan] img:only-child[data-on] {
+  transform-origin: 35% 30%;
+  animation: kb-in var(--pan-time, 7s) var(--ease) infinite alternate;
+}
+
 @keyframes kb-in  { from { transform: scale(1);     } to { transform: scale(1.13); } }
 @keyframes kb-out { from { transform: scale(1.13);  } to { transform: scale(1);    } }
 
@@ -923,7 +931,9 @@ main[data-reading] #project > * {
 
 @media (prefers-reduced-motion: reduce) {
   .flicker img:last-child { animation: none; opacity: 1; }
-  .slides[data-pan] img[data-on] { animation: none; }
+  /* the single-image rule outweighs the one above it, so it has to be named */
+  .slides[data-pan] img[data-on],
+  .slides[data-pan] img:only-child[data-on] { animation: none; }
 }
 
 /*-------- PLACEHOLDER --------*/

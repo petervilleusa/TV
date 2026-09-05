@@ -266,7 +266,7 @@ const objects = [
         ]},
       ],
     },
-    frame: 'media/tv-01.webp', backdrop: 'media/backdrop-pleeay.webp',
+    frame: 'media/tv-01.webp', backdrop: 'media/backdrop/pleeay.webp',
     media: 'media/tv-01-screen.mp4' },
 
   { id: 'tv2',  channel: null, project: null,  z: 8,
@@ -365,18 +365,15 @@ const objects = [
       ],
     },
     frame: 'media/tv-04.webp',
-    media: { slides: [
-      'media/art/current/05.webp',
-      'media/art/current/02.webp',
-      'media/art/current/06.webp',
-      'media/art/current/08.webp',
-    ], hold: 6000, pan: true } },
+    backdrop: 'media/backdrop/fine-art.webp',
+    media: { slides: ['media/art/screen.webp'], hold: 11000, pan: true } },
 
   { id: 'tv5',  slug: 'print', channel: 5, project: 'Print',  z: 3,
     box:    { x: 46.6, y: 52.97, w: 10.4, rotate: 0.9 },
     ar: 5688 / 5044,
     screen: { x: 8.6,  y: 10.6, w: 82.9, h: 70.6 },
     frame: 'media/tv-05.webp',
+    backdrop: 'media/backdrop/print.webp',
     content: {
       title: 'Print',
       blocks: [
@@ -407,12 +404,7 @@ const objects = [
         EVERY_BODY_ZINE,
       ],
     },
-    media: { slides: [
-      'media/print/becoming/00.webp',
-      'media/zine/01.webp',
-      'media/print/becoming/02.webp',
-      'media/zine/04.webp',
-    ], hold: 3200 } },
+    media: { slides: ['media/print/screen.webp'], hold: 11000, pan: true } },
 
   { id: 'tv6',  channel: 6, project: null,  z: 2,
     box:    { x: 63.4, y: 52.48, w: 10.0, rotate: -1.2 },
@@ -439,6 +431,7 @@ const objects = [
         ]},
       ],
     },
+    backdrop: 'media/backdrop/pyramid-scheme.webp',
     media: 'media/spiral.mp4' },
 
   { id: 'tv8',  channel: 7, project: null,  z: 6,
@@ -477,7 +470,8 @@ const objects = [
         ]},
       ],
     },
-    frame: 'media/tv-10.webp', media: ['media/bird-dark.webp', 'media/bird-light.webp'] },
+    frame: 'media/tv-10.webp', backdrop: 'media/backdrop/logos.webp',
+    media: ['media/bird-dark.webp', 'media/bird-light.webp'] },
 
   { id: 'tv11', channel: null, project: null,  z: 1,
     box:    { x: 40.3, y: 31.36, w: 10.7, rotate: -0.6 },
@@ -997,7 +991,12 @@ function buildMedia(tv) {
       if (i === 0) im.dataset.on = 'true';
       wrap.appendChild(im);
     });
-    slideshows.push({ wrap, i: 0, at: Date.now(), hold: tv.media.hold || 3800 });
+    /* A single slide has nothing to cross into, so it stays off the timer —
+       otherwise the tick would strip and restore data-on and restart its
+       drift from the top every few seconds. */
+    if (tv.media.slides.length > 1) {
+      slideshows.push({ wrap, i: 0, at: Date.now(), hold: tv.media.hold || 3800 });
+    }
     return wrap;
   }
 
