@@ -41,7 +41,7 @@ const CONTENT_RIGHT = 93;   // past the amplifier's right edge
    below the mark, and the floor it stands on sits this far down the screen.
    Together they fix both the scale AND the vertical position, which one anchor
    alone cannot — the old single anchor left whatever floor happened to remain. */
-const MOBILE_TOP_GAP = 70;
+const MOBILE_TOP_GAP = 20;
 const MOBILE_FLOOR_AT = 84;   // % down the screen
 
 /* Where the slack goes when the composition does not exactly fill its slides.
