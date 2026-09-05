@@ -170,6 +170,28 @@ const BARS = 'media/crt-bars.webp';     // test pattern, on a couple of sets
    sets on the ground, smaller portables riding on top. `z` is the stacking
    order, so upper sets overlap the ones they rest on. Sizes follow the actual
    models, so the Coby and RCA portables read small next to the Apex console. */
+/* The Every Body zine is a Pleeay record AND a piece of print, so it appears on
+   both channels. Declared once and referenced twice, because two copies of the
+   same block drift the moment either is edited. */
+const EVERY_BODY_ZINE = {
+  type: 'feature',
+  heading: '"Every Body" zine',
+  kicker: 'Book / magazine, with the digital album',
+  items: [
+    { src: 'media/zine/04.webp', alt: 'Every Body zine, open spread' },
+    { src: 'media/zine/01.webp', alt: 'Every Body zine, cover' },
+    { src: 'media/zine/02.webp', alt: 'Every Body zine, inside pages' },
+    { src: 'media/zine/03.webp', alt: 'Every Body zine, stack' },
+    { src: 'media/zine/05.webp', alt: 'Every Body zine, spread and stack' },
+    { src: 'media/zine/06.webp', alt: 'Every Body zine, inside pages' },
+  ],
+  body: [
+    'A limited edition zine with the lyrics to every song on the Pleeay debut album Every Body, and photographs of the band along the way.',
+    'Each one is made by hand, so no two are the same.',
+  ],
+  /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
+};
+
 const objects = [
   /* Arrangement follows Peter's composition mockup (Reference/desktop-composition.png):
      a wide, low pile rather than a tight pyramid — the big console and the Apex
@@ -178,7 +200,7 @@ const objects = [
      the RCA pushed forward onto the floor in front. Scaled to about 87% of the
      mockup so the whole pile sits inside the scene rather than running off the
      top on a short window. */
-  { id: 'tv1',  channel: 1, project: 'Pleeay',  z: 3,
+  { id: 'tv1',  slug: 'pleeay', channel: 1, project: 'Pleeay',  z: 3,
     box:    { x: 29.6, y: 43.75, w: 17.6, rotate: -0.8 },
     ar: 2975 / 2137,
     screen: { x: 7.5,  y: 8.3,  w: 68.2, h: 76.6 },
@@ -234,6 +256,8 @@ const objects = [
             title: 'Boop', alt: 'Pleeay sticker' },
         ]},
 
+        EVERY_BODY_ZINE,
+
         { type: 'links', heading: 'Elsewhere', items: [
           { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
           { label: 'Instagram', href: 'https://www.instagram.com/pleeaymusic/' },
@@ -257,7 +281,7 @@ const objects = [
     screen: { x: 11.5, y: 10.9, w: 77.9, h: 62.7 },
     frame: 'media/tv-03.webp', media: BARS },
 
-  { id: 'tv4',  channel: 4, project: 'Fine art',  z: 5,
+  { id: 'tv4',  slug: 'fine-art', channel: 4, project: 'Fine art',  z: 5,
     box:    { x: 28.2, y: 58.32, w: 18.4, rotate: -0.4 },
     ar: 3317 / 3183,
     screen: { x: 9.6,  y: 12.0, w: 81.9, h: 65.3 },
@@ -348,7 +372,7 @@ const objects = [
       'media/art/current/08.webp',
     ], hold: 6000, pan: true } },
 
-  { id: 'tv5',  channel: 5, project: 'Print',  z: 3,
+  { id: 'tv5',  slug: 'print', channel: 5, project: 'Print',  z: 3,
     box:    { x: 46.6, y: 52.97, w: 10.4, rotate: 0.9 },
     ar: 5688 / 5044,
     screen: { x: 8.6,  y: 10.6, w: 82.9, h: 70.6 },
@@ -380,23 +404,7 @@ const objects = [
                href: 'mailto:peterwarren13@gmail.com?subject=Becoming%20zine%20purchase%20inquiry' }], */
         },
 
-        { type: 'feature',
-          heading: '"Every Body" zine',
-          kicker: 'Book / magazine, with the digital album',
-          items: [
-            { src: 'media/zine/04.webp', alt: 'Every Body zine, open spread' },
-            { src: 'media/zine/01.webp', alt: 'Every Body zine, cover' },
-            { src: 'media/zine/02.webp', alt: 'Every Body zine, inside pages' },
-            { src: 'media/zine/03.webp', alt: 'Every Body zine, stack' },
-            { src: 'media/zine/05.webp', alt: 'Every Body zine, spread and stack' },
-            { src: 'media/zine/06.webp', alt: 'Every Body zine, inside pages' },
-          ],
-          body: [
-            'A limited edition zine with the lyrics to every song on the Pleeay debut album Every Body, and photographs of the band along the way.',
-            'Each one is made by hand, so no two are the same.',
-          ],
-          /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
-        },
+        EVERY_BODY_ZINE,
       ],
     },
     media: { slides: [
@@ -413,7 +421,7 @@ const objects = [
     frame: 'media/tv-06.webp', media: STATIC },
 
   /* the same little YORX as channel 10; Peter uses three of them */
-  { id: 'yorxB',  channel: 8,  project: 'Pyramid Scheme',  z: 4,
+  { id: 'yorxB',  slug: 'pyramid-scheme', channel: 8,  project: 'Pyramid Scheme',  z: 4,
     box:    { x: 62.2, y: 61.77, w: 5.2, rotate: 1.1 },
     ar: 2141 / 2321,
     screen: { x: 14.3, y: 15.0, w: 71.3, h: 49.5 },
@@ -445,7 +453,7 @@ const objects = [
     screen: { x: 14.3, y: 15.0, w: 71.3, h: 49.5 },
     frame: 'media/tv-10.webp', media: STATIC },
 
-  { id: 'tv10', channel: 2, project: 'Logos',  z: 2,
+  { id: 'tv10', slug: 'logos', channel: 2, project: 'Logos',  z: 2,
     box:    { x: 47.6, y: 44.25, w: 7.2, rotate: 1.8 },
     ar: 2141 / 2321,
     screen: { x: 14.3, y: 15.0, w: 71.3, h: 49.5 },
@@ -690,8 +698,12 @@ function renderBlock(b) {
       }
 
       const img = el('img');
-      img.src = item.src || item.art || '';
-      img.alt = item.alt || item.title || '';
+      /* Artwork that has not been supplied yet is left with NO src at all. An
+         empty one resolves to the page itself, which both fires a pointless
+         request and paints a broken-image icon over the caption. */
+      const src = item.src || item.art || '';
+      if (src) { img.src = src; img.alt = item.alt || item.title || ''; }
+      else { img.alt = ''; img.dataset.empty = 'true'; }
       img.loading = 'lazy';
       if (item.tone) img.style.background = item.tone;   // art not made yet
       if (item.tile) img.style.background = item.tile;   // the ground it needs
@@ -919,7 +931,7 @@ const navList = document.getElementById('nav-list');
   .forEach(o => {
   const li = document.createElement('li');
   const a = document.createElement('a');
-  a.href = '#';
+  a.href = o.slug ? `/${o.slug}/` : '#';
   a.dataset.screen = o.id;
   a.textContent = labelOf(o);
   li.appendChild(a);
@@ -1140,25 +1152,89 @@ function collapse() {
   document.querySelectorAll('#nav-list a').forEach(a => { a.dataset.active = 'false'; });
 }
 
+/* ---- addresses ---------------------------------------------------------
+   Every project has a real URL. A channel with a `slug` lives at /<slug>/,
+   which is a directory holding its own small index.html — written by
+   tools/build-pages.py — so a deep link is served by the host without any
+   rewrite rule, and arrives with its own title and canonical already in the
+   markup. Opening and closing a channel then only has to keep the address bar
+   honest; the page never reloads. */
+
+const pathOf = o => (o && o.slug) ? `/${o.slug}/` : '/';
+
+function slugFromPath() {
+  const seg = location.pathname.replace(/^\/+|\/+$/g, '');
+  return seg || null;
+}
+
+/* Title and canonical are part of the address, so they move with it rather
+   than being left describing whichever page was loaded first. */
+function setHead(o) {
+  document.title = o && o.project
+    ? `${o.project} — PETERVILLE USA`
+    : 'PETERVILLE USA';
+  let link = document.querySelector('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'canonical';
+    document.head.appendChild(link);
+  }
+  link.href = location.origin + pathOf(o);
+}
+
+/* `push` is false when the URL already says what we are about to do — on
+   first load, and when the back button is what asked for the change. */
+function go(id, push = true) {
+  const o = objects.find(x => x.id === id);
+  if (!o) return;
+  if (push && location.pathname !== pathOf(o)) {
+    history.pushState({ id }, '', pathOf(o));
+  }
+  setHead(o);
+  expand(id);
+}
+
+function goHome(push = true) {
+  if (push && location.pathname !== '/') history.pushState({ id: null }, '', '/');
+  setHead(null);
+  collapse();
+}
+
+window.addEventListener('popstate', () => {
+  const slug = slugFromPath();
+  const o = slug && objects.find(x => x.slug === slug);
+  if (o) { setHead(o); expand(o.id); } else { setHead(null); collapse(); }
+});
+
 setNav(false);
 
 toggle.addEventListener('click', () => setNav(panel.dataset.open !== 'true'));
-close.addEventListener('click', collapse);
+close.addEventListener('click', () => goHome());
 
 wall.addEventListener('click', e => {
   const el = e.target.closest('.tv');
   if (!el || el.dataset.state) return;
   const o = objects.find(x => x.id === el.dataset.screen);
-  if (o && o.channel != null) expand(el.dataset.screen);
+  if (o && o.channel != null) go(o.id);
 });
 
 document.querySelectorAll('#nav-list a').forEach(a => {
   a.addEventListener('click', e => {
+    /* Only take over a plain left click. Cmd-click, middle click and "open in
+       new tab" have to keep working, which is the point of a real href. */
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     e.preventDefault();
-    expand(a.dataset.screen);
+    go(a.dataset.screen);
     if (isPhone()) setNav(false);
   });
 });
+
+/* Open whatever the address asks for, without pushing a second entry for it. */
+(() => {
+  const slug = slugFromPath();
+  const o = slug && objects.find(x => x.slug === slug);
+  if (o) go(o.id, false); else setHead(null);
+})();
 
 document.addEventListener('keydown', e => {
   const lb = document.getElementById('lightbox');
@@ -1169,5 +1245,5 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   const box = document.getElementById('lightbox');
   if (box) { box.remove(); return; }
-  stage.dataset.expanded ? collapse() : setNav(false);
+  stage.dataset.expanded ? goHome() : setNav(false);
 });

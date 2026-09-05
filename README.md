@@ -81,10 +81,32 @@ that minus stretched across the column, faint ahead of the playhead. It sizes
 down to 40px but holds the same 85:6 ratio so it reads as one mark. There is no
 browser chrome anywhere on the site.
 
+## URLs
+
+Every project has a real address. An object with a `slug` lives at `/<slug>/`,
+and `tools/build-pages.py` writes a directory there holding its own
+`index.html` — a copy of the root one with the title, description and canonical
+swapped and a `<base href="/">` added so every relative path still resolves.
+
+That means deep links are served by any static host with NO rewrite rule to
+configure, and a crawler or a link preview gets a real title without running
+any JavaScript. Opening and closing a channel afterwards only pushes history;
+the page never reloads. Back, forward, cmd-click and open-in-new-tab all work.
+
+Re-run the generator after adding, renaming or removing a channel:
+
+    python3 tools/build-pages.py
+
+It reads the slugs straight out of `app.js`, so `objects[]` stays the single
+place a channel is defined, and it rewrites `sitemap.xml` and `robots.txt` too.
+It never deletes anything: a renamed slug leaves its old directory behind and
+the script tells you to remove it by hand.
+
 ## Deploying
 
-Push to `main` on `petervilleusa/TV`, then trigger the deploy in Render by
-hand. Render has no webhook on this repo, so a push alone does not ship.
+Run `python3 tools/build-pages.py` if channels changed, then push to `main` on
+`petervilleusa/TV` and trigger the deploy in Render by hand. Render has no
+webhook on this repo, so a push alone does not ship.
 
 Verify a deploy by grepping the served file for something you changed. Do not
 compare file sizes — a one-character edit is usually byte-identical.
