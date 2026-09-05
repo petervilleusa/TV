@@ -8,7 +8,7 @@ const scene  = document.getElementById('scene');
 
 /* The scene's aspect ratio. Every television is placed in this coordinate
    space, so the wall crops rather than stretches on odd viewports. */
-const SCENE_AR = 1614 / 1385;   // matches media/room-sky.webp
+const SCENE_AR = 1614 / 1385;   // matches media/room.webp
 
 /* The background gained a ceiling on top of the room. Everything placed in the
    scene is positioned against the whole image, but the phone layout and the
@@ -70,7 +70,7 @@ function fitScene() {
     scene.style.height = (width / SCENE_AR) + 'px';
     scene.style.left = '0px';
     scene.style.bottom = '0px';
-    setPages(1);
+    setScrollExtent(0);
     return;
   }
 
@@ -223,7 +223,7 @@ const objects = [
 
   { /* no aperture: its media hides behind the cabinet until the takeover */
     id: 'amp',  channel: null, project: null, z: 10,
-    box:    { x: 71.5, y: 53.96, w: 17.4, rotate: 0 },
+    box:    { x: 73.0, y: 51.4, w: 19.14, rotate: 0 },
     ar: 838 / 1400,
     screen: { x: 20,   y: 28,   w: 60,   h: 34 },
     frame: 'media/amp-01.webp', media: null }
@@ -232,6 +232,7 @@ const objects = [
 /* A set is a channel. Give it a `project` and the name appears beside the
    number; leave it null and the channel stands alone. */
 function labelOf(o) {
+  if (o.channel == null) return '';           // scenery has no channel to name
   return o.project ? `Channel ${o.channel} : ${o.project}` : `Channel ${o.channel}`;
 }
 

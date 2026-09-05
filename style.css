@@ -2,6 +2,9 @@
 :root {
   --bg: #2C2832;
   --panel: #FFFFFF;
+  /* sampled from the top edge of media/room.webp, which is flat across its full
+     width — so the photograph dissolves into the page with no seam to hide */
+  --room-top: #E2E2E2;
   --ink: #000000;
   --drawer: 25%;
   --pad: 32px;
@@ -131,10 +134,23 @@ main[data-nav="true"] nav { translate: 0 0; }
 /* Cuts in like a signal arriving: a couple of seconds of unstable picture
    every ten, then gone. Opacity jumps in steps rather than fading, which is
    what makes it read as a screen rather than a dissolve. */
+/* Inverts against whatever is behind it, exactly like the mark. The artwork is
+   black, and difference against black leaves the backdrop untouched — so the
+   letterforms are used as a MASK over white instead of drawn directly.
+   z-index puts it above the drawer and above an open project. */
 #logo {
   position: fixed;
-  z-index: 2;
-  background: url("media/logo-v.webp") center / contain no-repeat;
+  z-index: 30;
+  background: #FFF;
+  mask-image: url("media/logo-v.webp");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url("media/logo-v.webp");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mix-blend-mode: difference;
   pointer-events: none;
   opacity: 0;
   left: -1.2%;
@@ -176,7 +192,7 @@ main[data-nav="true"] nav { translate: 0 0; }
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: var(--panel);
+  background: var(--room-top);
 }
 
 .layer { position: absolute; inset: 0; }
@@ -228,7 +244,7 @@ main[data-nav="true"] nav { translate: 0 0; }
 
 /* Layer 1 — gallery background, the white room */
 #room {
-  background: url("media/room-sky.webp") center / cover no-repeat;
+  background: url("media/room.webp") center / cover no-repeat;
 }
 
 /* Layer 2 — wires and detritus */
@@ -378,6 +394,7 @@ main[data-nav="true"] nav { translate: 0 0; }
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
+    background: var(--room-top);
   }
 
   /* fitScene() sets width, height and the left offset; the scene keeps its
@@ -402,12 +419,6 @@ main[data-nav="true"] nav { translate: 0 0; }
   }
 
 
-  /* A background cut for this layout: same canvas and floor line as the desktop
-     one, so it swaps in without moving anything, but with the tall wall the
-     phone framing needs. No ceiling cut-out, so no sky here. */
-  #room {
-    background-image: url("media/room-mobile.webp");
-  }
 
   /* fixed so the drawer covers the screen whatever the pager is doing */
   nav { position: fixed; width: 100%; }
@@ -424,7 +435,8 @@ main[data-nav="true"] nav { translate: 0 0; }
      the right margin and never more, and running off the top edge so the
      letterforms clip against it. */
   #logo {
-    background-image: url("media/logo-h.webp");
+    mask-image: url("media/logo-h.webp");
+    -webkit-mask-image: url("media/logo-h.webp");
     left: calc(var(--pad) + var(--mark-size) + 20px);
     right: 8px;
     top: -8px;
