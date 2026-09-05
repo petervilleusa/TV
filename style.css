@@ -9,8 +9,20 @@
   --drawer: 25%;
   --pad: 32px;
   --nav-top: 176px;
-  --nav-size: 16px;
-  --nav-rhythm: calc(var(--nav-size) * 2.75);
+
+  /* ONE type size for the whole site. Hierarchy comes from case, not scale:
+     headings are upper case, everything else sentence case. The only exception
+     is incidental text — credits and copyright — which is smaller. */
+  --type: 16px;
+  --type-small: 12px;
+  --nav-rhythm: calc(var(--type) * 2.75);
+
+  /* projects open dark */
+  --media-band: 45dvh;   /* the screen's share of a phone; matches MOBILE_MEDIA */
+  /* Not quite opaque: the screen you clicked stays faintly present behind the
+     writing rather than being shut off. */
+  --project-bg: rgba(20, 19, 26, 0.96);
+  --project-ink: #F2F2F0;
   --ease: cubic-bezier(.6,.05,.2,1);
   --speed: 620ms;
   --fade: 320ms;
@@ -24,9 +36,20 @@ html, body { height: 100%; }
 body {
   background: var(--bg);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
+  font-size: var(--type);
+  line-height: 1.5;
   color: var(--ink);
 }
+
+/* Headings carry the hierarchy by case and weight, never by size. */
+h1, h2, h3 {
+  font-size: inherit;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+a { text-decoration: underline; text-underline-offset: 0.28em; }
 
 a { color: var(--ink); }
 
@@ -38,6 +61,24 @@ main {
   height: 100%;
   overflow: hidden;
 }
+
+/*-------- PROJECT BACKDROP --------*/
+/* Occupies exactly the drawer's slot and sits behind it, so it is hidden until
+   the drawer slides away. Only present while a project is open. */
+#backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--drawer);
+  z-index: 2;
+  background: var(--room-top) center / cover no-repeat;
+  opacity: 0;
+  transition: opacity var(--fade) var(--ease);
+  pointer-events: none;
+}
+
+main[data-open] #backdrop { opacity: 1; }
 
 /*-------- DRAWER --------*/
 nav {
@@ -60,25 +101,28 @@ main[data-nav="true"] nav { translate: 0 0; }
 
 #nav-list {
   list-style: none;
-  font-size: var(--nav-size);
   line-height: 1.2;
 }
 #nav-list li { margin-bottom: calc(var(--nav-rhythm) - 1.2em); }
+#nav-list a { text-decoration: none; }
 
 #nav-list a { text-decoration: none; }
 #nav-list a[data-active="true"] { font-weight: bold; }
 
 /*-------- CREDITS --------*/
-#credits { margin-top: auto; }
+#credits { margin-top: auto; font-size: var(--type-small); line-height: 1.35; }
 #credits ul { list-style: none; }
+#copyright { margin-top: 1.6em; }
 
 /*-------- TOGGLES --------*/
 /* Difference blending inverts against whatever sits behind, so these stay
    legible over the white panel and over any moving image alike. */
+/* Above an open project (z 12) so the controls are never buried by content,
+   below the signature (z 30). */
 #toggle, #close {
   position: fixed;
   top: 16px;
-  z-index: 10;
+  z-index: 20;
   font: inherit;
   font-size: 24px;
   line-height: 1;
@@ -90,7 +134,28 @@ main[data-nav="true"] nav { translate: 0 0; }
   mix-blend-mode: difference;
 }
 
-#close  { top: var(--pad); right: var(--pad); }
+/* The same mark as the opener, turned a quarter circle into an X. It spins as
+   the project opens, so closing reads as the same gesture reversed rather than
+   as a different control. */
+#close {
+  top: var(--pad);
+  right: var(--pad);
+  width: var(--mark-size);
+  height: var(--mark-size);
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  rotate: 0deg;
+  transition:
+    rotate var(--mark-speed) var(--mark-ease),
+    opacity var(--fade) var(--ease);
+}
+
+main[data-open] #close {
+  opacity: 1;
+  pointer-events: auto;
+  rotate: 45deg;
+}
 
 /*-------- PLUS / MINUS MARK --------*/
 /* Measured off the Figma frames: 85/6 on desktop, 49/4 on mobile, inset 32. */
@@ -124,6 +189,57 @@ main[data-nav="true"] nav { translate: 0 0; }
 }
 
 .bar-v { rotate: 90deg; }
+
+/* ---- the mark, reused ----------------------------------------------------
+   Every control on the site is the same two strokes at the same weight. The
+   plus turns into a minus, or a quarter turn into an X. Arrows are the same
+   stroke mitred into a chevron rather than a typeface's angle bracket. */
+.mark {
+  position: relative;
+  width: var(--mark-size);
+  height: var(--mark-size);
+  background: none;
+  border: 0;
+  padding: 0;
+  display: block;
+  cursor: pointer;
+  color: #FFF;
+  mix-blend-mode: difference;
+  rotate: 0deg;
+  transition: rotate var(--mark-speed) var(--mark-ease);
+}
+
+.mark[data-kind="x"][data-on] { rotate: 45deg; }
+
+.mark-chev {
+  position: relative;
+  width: var(--mark-size);
+  height: var(--mark-size);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #FFF;
+  mix-blend-mode: difference;
+}
+
+.mark-chev::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46%;
+  height: 46%;
+  border-left: var(--mark-weight) solid currentColor;
+  border-top: var(--mark-weight) solid currentColor;
+  translate: -50% -50%;
+  rotate: -45deg;
+}
+
+.mark-chev[data-dir="next"]::before {
+  translate: -50% -50%;
+  rotate: 135deg;
+}
 
 /* The mark turns a half circle while its upright arm folds down onto the
    crossbar, so a plus resolves into a minus in one movement. */
@@ -184,6 +300,213 @@ main[data-nav="true"] nav { translate: 0 0; }
 }
 
 .page { display: none; }
+
+/*-------- PROJECT --------*/
+/* Sits over the media the television grew into, filling the same area: the
+   whole window on a phone, the space beside the drawer on desktop. */
+#project {
+  position: fixed;
+  inset: 0 0 0 var(--drawer);
+  z-index: 12;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--project-bg);
+  color: var(--project-ink);
+  padding: calc(var(--pad) * 2.6) var(--pad) calc(var(--pad) * 3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 520ms var(--ease);
+}
+
+/* Hidden while the screen plays; revealed once the preview is over. */
+main[data-reading] #project { opacity: 1; pointer-events: auto; }
+
+/* Blocks rise into place one after another, so the page assembles upward
+   rather than appearing all at once. */
+#project > * {
+  opacity: 0;
+  translate: 0 2.2rem;
+  transition:
+    opacity 700ms var(--ease),
+    translate 700ms var(--ease);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+main[data-reading] #project > * {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #project > * { transition: none; translate: none; }
+}
+
+#project a { color: inherit; }
+
+#project > * + * { margin-top: calc(var(--type) * 3); }
+
+/* Everything on the page is monochrome, with the contrast lifted a touch to
+   hold up without colour. Colour is what you get for looking closer: on hover,
+   and always in the lightbox. Sixteen palettes competing on one page reads as
+   an archive; one reads as a design. */
+#project img {
+  filter: grayscale(1) contrast(1.08);
+  transition: filter 360ms var(--ease);
+}
+
+#project figure:hover img,
+#project .carousel-main:hover,
+#project .thumb:hover img { filter: none; }
+
+#project h1 { margin-bottom: calc(var(--type) * 1.5); }
+
+.block-text p + p { margin-top: 1em; }
+.block-text { max-width: 62ch; }
+
+.block-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: var(--pad);
+}
+
+.block-grid figure { margin: 0; }
+
+.block-grid img {
+  width: 100%;
+  display: block;
+  background: #211F28;
+  aspect-ratio: var(--ratio, 1);
+  object-fit: cover;
+}
+
+.block-grid figcaption { margin-top: 0.6em; }
+
+/* a logo is shown whole, never cropped, on whatever ground it needs */
+.block-grid[data-fit="contain"] img {
+  object-fit: contain;
+  padding: 8%;
+}
+
+/* a release is its art, a title, and where to hear it */
+.release ul { list-style: none; margin-top: 0.4em; }
+.release li { display: inline; }
+.release li + li::before { content: " / "; }
+
+.block-links ul { list-style: none; }
+.block-links li + li { margin-top: 0.5em; }
+
+/*---- feature: carousel one half, writing the other ----*/
+.block-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--pad) * 1.4);
+  align-items: start;
+}
+
+.carousel-main {
+  width: 100%;
+  display: block;
+  background: #211F28;
+  cursor: zoom-in;
+}
+
+.carousel-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.thumb {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 220ms var(--ease);
+}
+
+.thumb[data-on="true"], .thumb:hover { opacity: 1; }
+.thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+
+.kicker { opacity: 0.6; }
+.inline-links { list-style: none; margin-top: 1.2em; }
+.inline-links li { display: inline; }
+.inline-links li + li::before { content: " / "; }
+
+/* enlarge one image without leaving the project */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  /* fully opaque: at 94% the page beneath showed through and copy sat on copy */
+  background: #0A090E;
+  display: grid;
+  place-items: center;
+  /* clear of the chevrons at the sides and the close mark at the top */
+  padding: calc(var(--pad) * 2 + var(--mark-size)) calc(var(--pad) * 2 + var(--mark-size));
+  cursor: zoom-out;
+}
+
+.lightbox-frame {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: calc(var(--pad) * 1.4);
+  align-items: center;
+  /* the parent centres its child, so without a width the frame shrinks to its
+     content — and a flicker pair has no intrinsic width to shrink to */
+  width: 100%;
+  max-width: 1400px;
+  cursor: default;
+}
+
+.lightbox-media { min-width: 0; }
+.lightbox-thumbs { margin-top: 12px; }
+.lightbox-media img { width: 100%; max-height: 78vh; object-fit: contain; display: block; }
+/* the pair is absolutely positioned inside, so it needs a width to size from */
+.lightbox-media .flicker-still {
+  width: min(100%, 78vh);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+.lightbox-media .flicker-still img { position: absolute; inset: 0; height: 100%; }
+.lightbox-copy { color: var(--project-ink); }
+.lightbox-copy > * + * { margin-top: 1em; }
+.lightbox-count { opacity: 0.45; }
+
+.lightbox-step {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  opacity: 0.7;
+  transition: opacity 200ms var(--ease);
+}
+
+.lightbox-step:hover { opacity: 1; }
+.lightbox-step.prev { left: var(--pad); }
+.lightbox-step.next { right: var(--pad); }
+
+#lightbox .mark[data-kind="x"] {
+  position: absolute;
+  top: var(--pad);
+  right: var(--pad);
+}
+
+@media (max-width: 749px) {
+  .block-feature { grid-template-columns: 1fr; }
+  .lightbox-frame { grid-template-columns: 1fr; }
+  .lightbox-frame img { max-height: 52vh; }
+}
+
+@media (max-width: 749px) {
+  /* the screen keeps the top band; the writing starts below it */
+  #project {
+    inset: var(--media-band) 0 0 0;
+    padding: calc(var(--pad) * 1.2) var(--pad) calc(var(--pad) * 3);
+  }
+  .block-grid { --cols: 2 !important; }
+}
 
 /*-------- STAGE --------*/
 /* The room and the sculpture never move. The drawer simply slides over them,
@@ -347,11 +670,12 @@ main[data-nav="true"] nav { translate: 0 0; }
 /* not yet coupled to a project, so it should not invite a click */
 .tv[data-scenery] { cursor: default; }
 
+/* the target is measured by lockToStage() and written as these variables */
 .tv[data-state="expanded"] {
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  left: var(--el, 0%);
+  top: var(--et, 0%);
+  width: var(--ew, 100%);
+  height: var(--eh, 100%);
   transform: none;
   z-index: 20;
   cursor: default;
@@ -423,13 +747,8 @@ main[data-nav="true"] nav { translate: 0 0; }
   /* fixed so the drawer covers the screen whatever the pager is doing */
   nav { position: fixed; width: 100%; }
 
-  /* the takeover fills the window, measured by lockToViewport() */
-  .tv[data-state="expanded"] {
-    left: var(--el);
-    top: var(--et);
-    width: var(--ew);
-    height: var(--eh);
-  }
+  #backdrop { display: none; }   /* the drawer covers the screen on a phone */
+
 
   /* Laid across the top, filling whatever room is left between the mark and
      the right margin and never more, and running off the top edge so the
@@ -463,6 +782,14 @@ main[data-nav="true"] nav { translate: 0 0; }
   object-fit: cover;
 }
 
+/* in a grid the pair needs its own box; on a screen it fills the aperture */
+.flicker-still {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.flicker-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
 .flicker img:last-child {
   animation: flick 2.4s steps(1, end) infinite;
 }
@@ -481,7 +808,15 @@ main[data-nav="true"] nav { translate: 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flicker img:last-child { animation: none; opacity: 1; }
+  /* in a grid the pair needs its own box; on a screen it fills the aperture */
+.flicker-still {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.flicker-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+.flicker img:last-child { animation: none; opacity: 1; }
 }
 
 /*-------- PLACEHOLDER --------*/

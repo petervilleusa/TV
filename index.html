@@ -9,6 +9,11 @@
 <body>
 
 <main>
+  <!-- Sits in the drawer's slot, behind it. With a project open, closing the
+       drawer slides the channel list away and reveals this instead of bare
+       page — a texture belonging to that project. -->
+  <i id="backdrop" aria-hidden="true"></i>
+
   <nav id="panel" data-open="false">
     <ul id="nav-list"></ul>
 
@@ -18,6 +23,7 @@
         <li>Sonic Youth</li>
         <li>Nam June Paik</li>
       </ul>
+      <p id="copyright">&copy; Peter Warren</p>
     </footer>
   </nav>
 
@@ -37,6 +43,10 @@
     </div>
   </div>
 
+  <!-- An open project's content. Built from that object's `content` blocks;
+       fills the same area the media grows into. -->
+  <article id="project" hidden></article>
+
   <i id="logo" aria-hidden="true"></i>
 
   <!-- both live outside nav so mix-blend-mode can read the whole page as backdrop -->
@@ -44,7 +54,10 @@
     <span class="bar bar-h"></span>
     <span class="bar bar-v"></span>
   </button>
-  <button id="close" hidden>&times;</button>
+  <button id="close" aria-label="Close">
+    <span class="bar bar-h"></span>
+    <span class="bar bar-v"></span>
+  </button>
 </main>
 
 <script src="app.js"></script>

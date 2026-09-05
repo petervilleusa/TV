@@ -5,6 +5,12 @@ const close  = document.getElementById('close');
 const stage  = document.getElementById('stage');
 const wall   = document.getElementById('wall');
 const scene  = document.getElementById('scene');
+const backdrop = document.getElementById('backdrop');
+const project  = document.getElementById('project');
+
+// the year keeps itself current
+document.getElementById('copyright').textContent =
+  `\u00A9 Peter Warren ${new Date().getFullYear()}`;
 
 /* The scene's aspect ratio. Every television is placed in this coordinate
    space, so the wall crops rather than stretches on odd viewports. */
@@ -140,6 +146,14 @@ function setScrollExtent(px) {
 const CONDUIT_X = 49.6;
 
 const STATIC = 'media/tv-static.mp4';   // placeholder until real media lands
+
+/* How long the screen you clicked plays before the writing takes over. Long
+   enough to register what you picked, short enough not to be a wait. */
+const PREVIEW_MS = 2400;
+
+/* On a phone the screen fills the height and the writing sits over its lower
+   part; --media-band in the CSS decides where the writing starts. */
+let previewTimer = null;
 const BARS = 'media/crt-bars.webp';     // test pattern, on a couple of sets
 
 /* Nine televisions and an amplifier, piled the way Paik piled them: the big
@@ -158,7 +172,86 @@ const objects = [
     box:    { x: 29.6, y: 43.75, w: 17.6, rotate: -0.8 },
     ar: 2975 / 2137,
     screen: { x: 7.5,  y: 8.3,  w: 68.2, h: 76.6 },
-    frame: 'media/tv-01.webp', media: 'media/tv-01-screen.mp4' },
+    content: {
+      title: 'Pleeay',
+      blocks: [
+        { type: 'text', heading: 'The band', body: [
+          'Pleeay is a San Francisco new wave band fronted by a nonbinary ballet-fairy vocalist. Drums, bass, synths, dance and poetry, used to resist conformity, choose consciousness over convenience, and live loudly with compassion.',
+          'Castle sings, writes and dances. Huli plays drums and synths and writes the music. I play bass.',
+        ]},
+
+        { type: 'grid', columns: 3, ratio: '4 / 5', items: [
+          { src: '', alt: 'Band photograph' },
+          { src: '', alt: 'Band photograph' },
+          { src: '', alt: 'Band photograph' },
+        ]},
+
+        { type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
+          { art: '', title: 'Wealth + Hellness Vol. 1', links: [
+            { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
+            { label: 'Bandcamp', href: 'https://pleeay.bandcamp.com/merch' },
+          ]},
+          { art: '', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
+            { label: 'Coming soon', href: '#' },
+          ]},
+          { art: '', title: 'NO', links: [
+            { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
+            { label: 'YouTube', href: 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg' },
+          ]},
+          { art: '', title: 'Live recordings', links: [
+            { label: 'Listen', href: '#' },
+          ]},
+        ]},
+
+        { type: 'feature',
+          heading: '"Every Body" zine',
+          kicker: 'Book / magazine, with the digital album',
+          items: [
+            { src: 'media/zine/04.webp', alt: 'Every Body zine, open spread' },
+            { src: 'media/zine/01.webp', alt: 'Every Body zine, cover' },
+            { src: 'media/zine/02.webp', alt: 'Every Body zine, inside pages' },
+            { src: 'media/zine/03.webp', alt: 'Every Body zine, stack' },
+            { src: 'media/zine/05.webp', alt: 'Every Body zine, spread and stack' },
+            { src: 'media/zine/06.webp', alt: 'Every Body zine, inside pages' },
+          ],
+          body: [
+            'A limited edition zine with the lyrics to every song on our debut album Every Body, and photographs of the band along the way.',
+            'Each one is made by hand, so no two are the same. If you have a colour preference, say so in the order notes.',
+            'Comes with the album itself: unlimited streaming through Bandcamp, plus a download in MP3, FLAC and more.',
+          ],
+          links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }],
+        },
+
+        { type: 'grid', heading: 'Set lists and merch table', columns: 5,
+          ratio: '1082 / 1400', lightbox: true, items: [
+          { src: 'media/setlists/00.webp', title: 'Bandshell',   alt: 'Set list, Bandshell' },
+          { src: 'media/setlists/01.webp', title: 'KO',          alt: 'Set list, KO' },
+          { src: 'media/setlists/02.webp', title: 'KO, second',  alt: 'Set list, KO' },
+          { src: 'media/setlists/03.webp', title: 'Price list',  alt: 'Merch table price list' },
+          { src: 'media/setlists/04.webp', title: 'Email list',  alt: 'Merch table email sign up' },
+        ]},
+
+        { type: 'grid', heading: 'Logos', columns: 3, ratio: '1', fit: 'contain',
+          lightbox: true, items: [
+          { src: 'media/logos/neon.webp',   title: 'Neon',   alt: 'Pleeay neon logo' },
+          { src: 'media/logos/slayer.webp', title: 'Slayer', alt: 'Pleeay slayer logo' },
+          { src: 'media/logos/people.webp', title: 'People', alt: 'Pleeay people logo',
+            tile: '#E2E2E2' },
+          { flip: ['media/stickers/dark.webp', 'media/stickers/light.webp'],
+            title: 'Boop', alt: 'Pleeay sticker' },
+        ]},
+
+        { type: 'links', heading: 'Elsewhere', items: [
+          { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
+          { label: 'Instagram', href: 'https://www.instagram.com/pleeaymusic/' },
+          { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
+          { label: 'Bandcamp', href: 'https://pleeay.bandcamp.com/merch' },
+          { label: 'YouTube', href: 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg' },
+        ]},
+      ],
+    },
+    frame: 'media/tv-01.webp', backdrop: 'media/backdrop-pleeay.webp',
+    media: 'media/tv-01-screen.mp4' },
 
   { id: 'tv2',  channel: null, project: null,  z: 8,
     box:    { x: 42.0, y: 73.32, w: 8.5, rotate: 1.4 },
@@ -213,6 +306,26 @@ const objects = [
     box:    { x: 47.6, y: 44.25, w: 7.2, rotate: 1.8 },
     ar: 2141 / 2321,
     screen: { x: 14.3, y: 15.0, w: 71.3, h: 49.5 },
+    content: {
+      title: 'Logos',
+      blocks: [
+        { type: 'text', heading: 'Marks', body: [
+          'Logos, stickers and marks made for bands and their merch. Most begin as something drawn by hand and end up somewhere it can be printed, stitched, worn or lit.',
+        ]},
+
+        { type: 'grid', heading: 'Marks', columns: 3, ratio: '1', fit: 'contain',
+          lightbox: true, items: [
+          { src: 'media/logos/neon.webp',   title: 'Pleeay neon',   alt: 'Pleeay neon logo' },
+          { src: 'media/logos/slayer.webp', title: 'Pleeay slayer', alt: 'Pleeay slayer logo' },
+          { src: 'media/logos/people.webp', title: 'Pleeay people', alt: 'Pleeay people logo',
+            tile: '#E2E2E2' },
+          { flip: ['media/stickers/dark.webp', 'media/stickers/light.webp'],
+            title: 'Pleeay boop', alt: 'Pleeay sticker' },
+          { flip: ['media/bird-dark.webp', 'media/bird-light.webp'],
+            title: 'JT Bird logo', alt: 'JT Bird logo' },
+        ]},
+      ],
+    },
     frame: 'media/tv-10.webp', media: ['media/bird-dark.webp', 'media/bird-light.webp'] },
 
   { id: 'tv11', channel: null, project: null,  z: 1,
@@ -231,6 +344,283 @@ const objects = [
 
 /* A set is a channel. Give it a `project` and the name appears beside the
    number; leave it null and the channel stands alone. */
+/* ---------------------------------------------------------------------------
+   PROJECT CONTENT
+   A project is a list of blocks, not markup. Four types cover everything so
+   far; add a case here to add a kind of block.
+     text     heading + paragraphs
+     grid     images in N columns, optionally opening a lightbox
+     releases a record: art, title, and where to hear it
+     links    a plain list of places to go
+   --------------------------------------------------------------------------- */
+/* Every enlargeable image in the open project, in document order. Opening any
+   one of them steps through all of them, so the lightbox belongs to the project
+   rather than to the block it was opened from. */
+let gallery = [];
+let group = 0;          // one per block, so arrows stay within a single piece
+
+/* The site's mark, built rather than typed. `x` is two strokes that turn a
+   quarter circle into a cross; `prev`/`next` are the same stroke mitred. */
+function makeMark(kind) {
+  if (kind === 'prev' || kind === 'next') {
+    const b = el('button', 'mark-chev');
+    b.dataset.dir = kind;
+    b.setAttribute('aria-label', kind === 'prev' ? 'Previous' : 'Next');
+    return b;
+  }
+  const b = el('button', 'mark');
+  b.dataset.kind = 'x';
+  b.setAttribute('aria-label', 'Close');
+  b.append(el('span', 'bar bar-h'), el('span', 'bar bar-v'));
+  requestAnimationFrame(() => { b.dataset.on = 'true'; });   // spins in
+  return b;
+}
+
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+
+function renderBlock(b) {
+  if (b.type === 'text') {
+    const wrap = el('section', 'block-text');
+    if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+    (b.body || []).forEach(t => wrap.appendChild(el('p', null, t)));
+    return wrap;
+  }
+
+  if (b.type === 'grid' || b.type === 'releases') {
+    const wrap = el('section', 'block-grid');
+    if (b.columns) wrap.style.setProperty('--cols', b.columns);
+    if (b.ratio) wrap.style.setProperty('--ratio', b.ratio);
+    if (b.fit === 'contain') wrap.dataset.fit = 'contain';
+    const g = ++group;
+    (b.items || []).forEach(item => {
+      const fig = el('figure', b.type === 'releases' ? 'release' : null);
+
+      // two images cut between each other, the same trick the channels use
+      if (Array.isArray(item.flip)) {
+        const flick = el('div', 'flicker flicker-still');
+        item.flip.forEach(src => {
+          const fi = el('img');
+          fi.src = src; fi.alt = item.alt || item.title || ''; fi.loading = 'lazy';
+          flick.appendChild(fi);
+        });
+        if (item.tile) flick.style.background = item.tile;
+        if (b.lightbox) {
+          const at = gallery.length;
+          gallery.push({ group: g, flip: item.flip, src: item.flip[0], alt: item.alt || '',
+                         heading: item.title || b.heading || '' });
+          flick.style.cursor = 'zoom-in';
+          flick.addEventListener('click', () => openLightbox(at));
+        }
+        fig.appendChild(flick);
+        if (item.title) fig.appendChild(el('figcaption', null, item.title));
+        wrap.appendChild(fig);
+        return;
+      }
+
+      const img = el('img');
+      img.src = item.src || item.art || '';
+      img.alt = item.alt || item.title || '';
+      img.loading = 'lazy';
+      if (item.tone) img.style.background = item.tone;   // art not made yet
+      if (item.tile) img.style.background = item.tile;   // the ground it needs
+      if (b.lightbox) {
+        const at = gallery.length;
+        gallery.push({
+          group: g,
+          src: item.src || item.art,
+          alt: item.alt || item.title || '',
+          heading: item.title || b.heading || '',
+        });
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', () => openLightbox(at));
+      }
+      fig.appendChild(img);
+      if (item.title) fig.appendChild(el('figcaption', null, item.title));
+      if (item.links) {
+        const ul = el('ul');
+        item.links.forEach(l => {
+          const li = el('li'), a = el('a', null, l.label);
+          a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+          li.appendChild(a); ul.appendChild(li);
+        });
+        fig.appendChild(ul);
+      }
+      wrap.appendChild(fig);
+    });
+    return wrap;
+  }
+
+  /* A carousel on one half, the writing on the other. The same set of images
+     opens in the lightbox, which carries the description with it. */
+  if (b.type === 'feature') {
+    const wrap = el('section', 'block-feature');
+    const media = el('div', 'carousel');
+    const stageImg = el('img', 'carousel-main');
+    stageImg.src = b.items[0].src;
+    stageImg.alt = b.items[0].alt || b.heading || '';
+    stageImg.addEventListener('click', () => openLightbox(base + current));
+
+    let current = 0;
+    const base = gallery.length;
+    const g = ++group;
+    b.items.forEach(item => gallery.push({
+      group: g,
+      src: item.src,
+      alt: item.alt || '',
+      heading: b.heading || '',
+      body: b.body || [],
+      links: b.links || [],
+    }));
+
+    const thumbs = el('div', 'carousel-thumbs');
+    b.items.forEach((item, i) => {
+      const t = el('button', 'thumb');
+      const ti = el('img');
+      ti.src = item.src; ti.alt = item.alt || ''; ti.loading = 'lazy';
+      t.appendChild(ti);
+      t.addEventListener('click', () => {
+        current = i;
+        stageImg.src = item.src;
+        [...thumbs.children].forEach((c, j) => c.dataset.on = String(j === i));
+      });
+      t.dataset.on = String(i === 0);
+      thumbs.appendChild(t);
+    });
+
+    media.append(stageImg, thumbs);
+
+    const copy = el('div', 'block-text');
+    if (b.heading) copy.appendChild(el('h2', null, b.heading));
+    if (b.kicker) copy.appendChild(el('p', 'kicker', b.kicker));
+    (b.body || []).forEach(t => copy.appendChild(el('p', null, t)));
+    if (b.links) {
+      const ul = el('ul', 'inline-links');
+      b.links.forEach(l => {
+        const li = el('li'), a = el('a', null, l.label);
+        a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+        li.appendChild(a); ul.appendChild(li);
+      });
+      copy.appendChild(ul);
+    }
+
+    wrap.append(media, copy);
+    return wrap;
+  }
+
+  if (b.type === 'links') {
+    const wrap = el('section', 'block-links');
+    if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+    const ul = el('ul');
+    (b.items || []).forEach(l => {
+      const li = el('li'), a = el('a', null, l.label);
+      a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+      li.appendChild(a); ul.appendChild(li);
+    });
+    wrap.appendChild(ul);
+    return wrap;
+  }
+
+  return null;
+}
+
+function renderProject(o) {
+  project.replaceChildren();
+  gallery = [];
+  group = 0;
+  if (!o || !o.content) { project.hidden = true; return; }
+  project.hidden = false;
+  project.scrollTop = 0;
+  project.appendChild(el('h1', null, o.content.title || labelOf(o)));
+  (o.content.blocks || []).forEach(b => {
+    const node = renderBlock(b);
+    if (node) project.appendChild(node);
+  });
+  // each block rises a beat after the one above it
+  [...project.children].forEach((n, i) => n.style.setProperty('--i', i));
+}
+
+/* The lightbox belongs to the piece you opened, not the whole page: the arrows
+   and the strip beneath stay within that one set of images. */
+function openLightbox(at = 0) {
+  if (!gallery.length) return;
+  const set = gallery.filter(x => x.group === gallery[at].group);
+  let i = Math.max(0, set.indexOf(gallery[at]));
+
+  const box = el('div'); box.id = 'lightbox';
+  const frame = el('figure', 'lightbox-frame');
+  const media = el('div', 'lightbox-media');
+  const cap = el('figcaption', 'lightbox-copy');
+  const count = el('p', 'lightbox-count');
+  const strip = el('div', 'carousel-thumbs lightbox-thumbs');
+
+  set.forEach((item, n) => {
+    const t = el('button', 'thumb');
+    const ti = el('img');
+    ti.src = item.flip ? item.flip[0] : item.src;
+    ti.alt = item.alt || '';
+    t.appendChild(ti);
+    t.addEventListener('click', e => { e.stopPropagation(); show(n); });
+    strip.appendChild(t);
+  });
+
+  const show = n => {
+    i = (n + set.length) % set.length;
+    const item = set[i];
+
+    media.replaceChildren();
+    if (item.flip) {
+      const flick = el('div', 'flicker flicker-still');
+      item.flip.forEach(src => {
+        const fi = el('img'); fi.src = src; fi.alt = item.alt || '';
+        flick.appendChild(fi);
+      });
+      media.appendChild(flick);
+    } else {
+      const im = el('img'); im.src = item.src; im.alt = item.alt || '';
+      media.appendChild(im);
+    }
+
+    cap.replaceChildren();
+    if (item.heading) cap.appendChild(el('h2', null, item.heading));
+    (item.body || []).forEach(t => cap.appendChild(el('p', null, t)));
+    (item.links || []).forEach(l => {
+      const a = el('a', null, l.label);
+      a.href = l.href; a.target = '_blank'; a.rel = 'noopener';
+      const wrap = el('p'); wrap.appendChild(a); cap.appendChild(wrap);
+    });
+    if (set.length > 1) {
+      count.textContent = `${i + 1} / ${set.length}`;
+      cap.appendChild(count);
+    }
+    [...strip.children].forEach((c, j) => c.dataset.on = String(j === i));
+  };
+  show(i);
+
+  const prev = makeMark('prev'); prev.classList.add('lightbox-step', 'prev');
+  const next = makeMark('next'); next.classList.add('lightbox-step', 'next');
+  prev.addEventListener('click', e => { e.stopPropagation(); show(i - 1); });
+  next.addEventListener('click', e => { e.stopPropagation(); show(i + 1); });
+
+  const shut = makeMark('x');
+  shut.addEventListener('click', e => { e.stopPropagation(); box.remove(); });
+
+  if (set.length > 1) media.appendChild(strip);
+  frame.append(media, cap);
+  box.append(frame, shut);
+  if (set.length > 1) box.append(prev, next);
+
+  box.addEventListener('click', e => { if (e.target === box) box.remove(); });
+  box.dataset.step = set.length > 1 ? 'true' : 'false';
+  box._step = n => { show(n); box._i = i; };
+  box._i = i;
+  document.body.appendChild(box);
+}
+
 function labelOf(o) {
   if (o.channel == null) return '';           // scenery has no channel to name
   return o.project ? `Channel ${o.channel} : ${o.project}` : `Channel ${o.channel}`;
@@ -379,9 +769,21 @@ function setNav(open) {
 
 function expand(id) {
   stage.dataset.expanded = id;
-  close.hidden = false;
+  shell.dataset.open = 'true';
+
+  // each project can hide its own texture behind the drawer
+  const o = objects.find(x => x.id === id);
+  backdrop.style.backgroundImage = o && o.backdrop ? `url("${o.backdrop}")` : '';
+  renderProject(o);
+
+  /* Let the screen play first, then hand over to the writing. */
+  clearTimeout(previewTimer);
+  delete shell.dataset.reading;
+  if (o && o.content) {
+    previewTimer = setTimeout(() => { shell.dataset.reading = 'true'; }, PREVIEW_MS);
+  }
   if (!isPhone()) setNav(true);
-  else lockToViewport(id);
+  lockToStage(id);
   wall.querySelectorAll('.tv').forEach(el => {
     el.dataset.state = el.dataset.screen === id ? 'expanded' : '';
   });
@@ -390,24 +792,35 @@ function expand(id) {
   });
 }
 
-/* On a phone the wall is three viewports tall, so "fill the screen" cannot mean
-   "fill the wall". Measure the visible window in wall coordinates instead, which
-   keeps the growth animating rather than snapping to a fixed overlay. */
-function lockToViewport(id) {
+/* An opened project fills the stage exactly — which is the whole window on a
+   phone, and the space beside the drawer on desktop. The wall it lives in is a
+   different size and shape, so the target is measured and expressed in wall
+   units; that keeps the growth animating instead of snapping to an overlay.
+   Measured against the intended rect rather than the current one, because the
+   stage is mid-transition when this runs. */
+function lockToStage(id) {
   const el = wall.querySelector(`.tv[data-screen="${id}"]`);
   if (!el) return;
   const w = wall.getBoundingClientRect();
-  el.style.setProperty('--el', '0%');
-  el.style.setProperty('--et', (100 * -w.top / w.height) + '%');
-  el.style.setProperty('--ew', '100%');
-  el.style.setProperty('--eh', (100 * window.innerHeight / w.height) + '%');
-  document.body.dataset.locked = 'true';
+  if (!w.width || !w.height) return;
+  const m = shell.getBoundingClientRect();
+  const drawer = isPhone() ? 0 : panel.getBoundingClientRect().width;
+
+  el.style.setProperty('--el', (100 * (m.left + drawer - w.left) / w.width) + '%');
+  el.style.setProperty('--et', (100 * (m.top - w.top) / w.height) + '%');
+  el.style.setProperty('--ew', (100 * (m.width - drawer) / w.width) + '%');
+  el.style.setProperty('--eh', (100 * m.height / w.height) + '%');
+  if (isPhone()) document.body.dataset.locked = 'true';
 }
 
 function collapse() {
+  clearTimeout(previewTimer);
+  delete shell.dataset.reading;
   delete document.body.dataset.locked;
+  project.hidden = true;
+  project.replaceChildren();
   stage.dataset.expanded = '';
-  close.hidden = true;
+  delete shell.dataset.open;
   wall.querySelectorAll('.tv').forEach(el => { el.dataset.state = ''; });
   document.querySelectorAll('#nav-list a').forEach(a => { a.dataset.active = 'false'; });
 }
@@ -433,6 +846,13 @@ document.querySelectorAll('#nav-list a').forEach(a => {
 });
 
 document.addEventListener('keydown', e => {
+  const lb = document.getElementById('lightbox');
+  if (lb && lb.dataset.step === 'true' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+    lb._step(lb._i + (e.key === 'ArrowLeft' ? -1 : 1));
+    return;
+  }
   if (e.key !== 'Escape') return;
+  const box = document.getElementById('lightbox');
+  if (box) { box.remove(); return; }
   stage.dataset.expanded ? collapse() : setNav(false);
 });
