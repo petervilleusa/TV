@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TV Wall</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main>
+  <nav id="panel" data-open="false">
+    <ul id="nav-list"></ul>
+
+    <footer id="credits">
+      <p>Thank you</p>
+      <ul>
+        <li>Sonic Youth</li>
+        <li>Nam June Paik</li>
+      </ul>
+    </footer>
+  </nav>
+
+  <!-- One scene, one coordinate space. Back to front: the room, cable behind
+       the sets, the televisions, then cable draping in front of them. -->
+  <div id="stage" data-expanded="">
+    <!-- Sky behind everything. Only seen through the ceiling cut out of the
+         background photograph, and above the scene on very tall windows —
+         something you have to go looking for. -->
+    <video id="sky" autoplay muted loop playsinline src="media/sky.mp4"></video>
+
+    <div id="scene">
+      <div class="layer" id="room"></div>
+      <div class="layer" id="wires-back"></div>
+      <div class="layer" id="wall"></div>
+      <div class="layer" id="wires-front"></div>
+    </div>
+  </div>
+
+  <i id="logo" aria-hidden="true"></i>
+
+  <!-- both live outside nav so mix-blend-mode can read the whole page as backdrop -->
+  <button id="toggle" aria-expanded="false" aria-controls="nav-list" aria-label="Menu">
+    <span class="bar bar-h"></span>
+    <span class="bar bar-v"></span>
+  </button>
+  <button id="close" hidden>&times;</button>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

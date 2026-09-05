@@ -1,0 +1,3 @@
+#!/bin/sh
+# Wrapper so the importer always runs with its own Pillow.
+exec "$(dirname "$0")/venv/bin/python" "$(dirname "$0")/import-tv.py" "$@"

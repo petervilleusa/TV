@@ -1,0 +1,7 @@
+# python venv for the import tooling
+tools/venv/
+
+# local preview harness
+_mobile.html
+
+.DS_Store

@@ -1,0 +1,490 @@
+/*-------- TOKENS --------*/
+:root {
+  --bg: #2C2832;
+  --panel: #FFFFFF;
+  --ink: #000000;
+  --drawer: 25%;
+  --pad: 32px;
+  --nav-top: 176px;
+  --nav-size: 16px;
+  --nav-rhythm: calc(var(--nav-size) * 2.75);
+  --ease: cubic-bezier(.6,.05,.2,1);
+  --speed: 620ms;
+  --fade: 320ms;
+}
+
+/*-------- RESET --------*/
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  color: var(--ink);
+}
+
+a { color: var(--ink); }
+
+/*-------- LAYOUT --------*/
+/* The scene runs full bleed. The drawer lives off-canvas to the left and, when
+   it opens, pushes the sculpture across rather than covering it. */
+main {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+/*-------- DRAWER --------*/
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--drawer);
+  background: var(--panel);
+  padding: var(--pad);
+  padding-top: var(--nav-top);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  translate: -100% 0;
+  transition: translate var(--drawer-speed) var(--drawer-ease);
+}
+
+main[data-nav="true"] nav { translate: 0 0; }
+
+#nav-list {
+  list-style: none;
+  font-size: var(--nav-size);
+  line-height: 1.2;
+}
+#nav-list li { margin-bottom: calc(var(--nav-rhythm) - 1.2em); }
+
+#nav-list a { text-decoration: none; }
+#nav-list a[data-active="true"] { font-weight: bold; }
+
+/*-------- CREDITS --------*/
+#credits { margin-top: auto; }
+#credits ul { list-style: none; }
+
+/*-------- TOGGLES --------*/
+/* Difference blending inverts against whatever sits behind, so these stay
+   legible over the white panel and over any moving image alike. */
+#toggle, #close {
+  position: fixed;
+  top: 16px;
+  z-index: 10;
+  font: inherit;
+  font-size: 24px;
+  line-height: 1;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #FFF;
+  mix-blend-mode: difference;
+}
+
+#close  { top: var(--pad); right: var(--pad); }
+
+/*-------- PLUS / MINUS MARK --------*/
+/* Measured off the Figma frames: 85/6 on desktop, 49/4 on mobile, inset 32. */
+:root {
+  --mark-size: 85px;
+  --mark-weight: 6px;
+  --mark-ease: cubic-bezier(.65, -0.15, .3, 1.2);
+  --mark-speed: 520ms;
+  --drawer-speed: 560ms;
+  --drawer-ease: cubic-bezier(.5, 0, .18, 1);
+}
+
+#toggle {
+  top: var(--pad);
+  left: var(--pad);
+  width: var(--mark-size);
+  height: var(--mark-size);
+  display: block;
+  transition: rotate var(--mark-speed) var(--mark-ease);
+}
+
+.bar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: var(--mark-weight);
+  margin-top: calc(var(--mark-weight) / -2);
+  background: #FFF;
+  transition: rotate var(--mark-speed) var(--mark-ease);
+}
+
+.bar-v { rotate: 90deg; }
+
+/* The mark turns a half circle while its upright arm folds down onto the
+   crossbar, so a plus resolves into a minus in one movement. */
+#toggle[aria-expanded="true"] { rotate: 180deg; }
+#toggle[aria-expanded="true"] .bar-v { rotate: 0deg; }
+
+/*-------- LOGO --------*/
+/* Cuts in like a signal arriving: a couple of seconds of unstable picture
+   every ten, then gone. Opacity jumps in steps rather than fading, which is
+   what makes it read as a screen rather than a dissolve. */
+#logo {
+  position: fixed;
+  z-index: 2;
+  background: url("media/logo-v.webp") center / contain no-repeat;
+  pointer-events: none;
+  opacity: 0;
+  left: -1.2%;
+  top: 11%;
+  height: 44%;
+  aspect-ratio: 596 / 2600;
+  animation: logo-flicker 10s steps(1, end) infinite;
+}
+
+@keyframes logo-flicker {
+  0%    { opacity: 0; }
+  0.6%  { opacity: .85; }
+  1.3%  { opacity: .05; }
+  2%    { opacity: 1; }
+  2.7%  { opacity: .25; }
+  3.4%  { opacity: .95; }
+  4%    { opacity: 1; }
+  12%   { opacity: .4; }
+  12.7% { opacity: 1; }
+  14.5% { opacity: .1; }
+  15.4% { opacity: .8; }
+  16.5% { opacity: 0; }
+  17.6% { opacity: .45; }
+  18.6% { opacity: 0; }
+  100%  { opacity: 0; }
+}
+
+/* A hard flicker is a photosensitivity risk, so hold it steady instead. */
+@media (prefers-reduced-motion: reduce) {
+  #logo { animation: none; opacity: .9; }
+}
+
+.page { display: none; }
+
+/*-------- STAGE --------*/
+/* The room and the sculpture never move. The drawer simply slides over them,
+   and no screen is ever placed where it would be covered. */
+#stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.layer { position: absolute; inset: 0; }
+
+/* The whole installation is one fixed-aspect artwork. fitScene() in app.js
+   sizes it to cover the stage, so the gallery always bleeds to the edges and
+   nothing inside it distorts. Everything else is positioned as a percentage
+   of this box, which is what lets the sets sit on the photographed floor. */
+/* The sky is built and wired but deliberately hidden: it pulled attention away
+   from the work, and the ceiling reads better as clean white. Delete this one
+   line to bring it back — nothing else needs changing. */
+#sky { display: none; }
+
+#sky {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Anchored to the bottom, full width. fitScene() sets the height. */
+#scene {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  translate: none;
+}
+
+/*-------- CABLE --------*/
+/* Empty layers, in front of and behind the sets, waiting on real artwork.
+   tools/make-wires.py still generates the drawn SVG version if wanted. */
+.wire {
+  position: absolute;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+#wires-back, #wires-front { pointer-events: none; }
+
+#stage:not([data-expanded=""]) #wires-back,
+#stage:not([data-expanded=""]) #wires-front {
+  opacity: 0;
+  transition: opacity var(--fade) var(--ease);
+}
+
+/* Layer 1 — gallery background, the white room */
+#room {
+  background: url("media/room-sky.webp") center / cover no-repeat;
+}
+
+/* Layer 2 — wires and detritus */
+#wires { background: none; }
+
+/* The room recedes once a project takes over the screen */
+#stage:not([data-expanded=""]) #room {
+  opacity: 0;
+  transition: opacity var(--fade) var(--ease);
+}
+
+/*-------- TELEVISIONS --------*/
+.tv {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  transform: rotate(var(--r));
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  transition:
+    left var(--speed) var(--ease),
+    top var(--speed) var(--ease),
+    width var(--speed) var(--ease),
+    height var(--speed) var(--ease),
+    transform var(--speed) var(--ease);
+}
+
+/* Layer 3 — the media, sitting in the screen aperture */
+.tv-media {
+  position: absolute;
+  left: var(--sx);
+  top: var(--sy);
+  width: var(--sw);
+  height: var(--sh);
+  overflow: hidden;
+  background: #111;
+  transition:
+    left var(--speed) var(--ease),
+    top var(--speed) var(--ease),
+    width var(--speed) var(--ease),
+    height var(--speed) var(--ease);
+}
+
+.tv-media img,
+.tv-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Layer 4 — cathode ray texture, rides along with the media */
+.tv-crt {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,.22) 0 1px,
+      transparent 1px 3px
+    ),
+    radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.45) 100%);
+}
+
+/* Layer 5 — the television itself, screen removed, transparent WebP */
+.tv-frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--frame);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transition: opacity var(--fade) var(--ease);
+  /* drop-shadow follows the cutout's alpha, so the shadow is the set's real
+     silhouette rather than its bounding box */
+  filter: drop-shadow(0 1.2% 14px rgba(0, 0, 0, .42));
+}
+
+/* Stand-in for the real cutout artwork. Sits behind the media rather than
+   on top of it, since a placeholder has no transparent aperture to see through.
+   Delete once .tv-frame has a real --frame WebP. */
+.tv-body {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #9A948C;
+  border-radius: 3% / 4%;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.3),
+    0 2px 14px rgba(0,0,0,.25);
+  transition: opacity var(--fade) var(--ease);
+}
+
+.tv[data-frame="image"] .tv-body { display: none; }
+
+.tv[data-state="expanded"] .tv-body { opacity: 0; }
+
+/*-------- SCREEN TAKEOVER --------*/
+/* The media escapes the aperture and fills the stage; the set fades away. */
+/* not yet coupled to a project, so it should not invite a click */
+.tv[data-scenery] { cursor: default; }
+
+.tv[data-state="expanded"] {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  z-index: 20;
+  cursor: default;
+}
+
+.tv[data-state="expanded"] .tv-media {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tv[data-state="expanded"] .tv-frame { opacity: 0; }
+
+#stage:not([data-expanded=""]) .tv:not([data-state="expanded"]) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fade) var(--ease);
+}
+
+/*-------- MOBILE --------*/
+@media (max-width: 749px) {
+  :root {
+    --mark-size: 49px;
+    --mark-weight: 4px;
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+  body[data-locked] { overflow: hidden; }
+
+  main { position: static; height: 100%; overflow: visible; }
+
+  /* The same sculpture as desktop, enlarged until one screen frames a slice of
+     it, panned across freely. Deliberately NOT snapped: the sculpture reads as
+     one continuous object, so stopping between two sets has to be allowed
+     rather than sprung away from. */
+  #stage {
+    position: relative;
+    height: 100dvh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+  }
+
+  /* fitScene() sets width, height and the left offset; the scene keeps its
+     desktop proportions and stays anchored to the floor. */
+  #scene {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    translate: none;
+  }
+
+  /* The room is its own portrait photograph, pinned to the viewport, so the
+     televisions pan across it while the gallery itself holds still. */
+  #room {
+    position: fixed;
+    inset: 0;
+    background: url("media/room-mobile.webp") center bottom / cover no-repeat;
+    z-index: 0;
+  }
+
+  /* the portrait photograph is full bleed, so there is no wall to continue */
+
+  /* Width spacers only. No pixels of their own; they exist so the scroll
+     container knows how far the sculpture extends. */
+  .page {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 1px;
+    pointer-events: none;
+  }
+
+  /* The portrait photograph covers the whole screen, so the ceiling and its
+     static are never visible here. Hidden rather than merely covered, so the
+     phone is not decoding a video nobody can see. */
+  #sky { display: none; }
+
+  /* fixed so the drawer covers the screen whatever the pager is doing */
+  nav { position: fixed; width: 100%; }
+
+  /* the takeover fills the window, measured by lockToViewport() */
+  .tv[data-state="expanded"] {
+    left: var(--el);
+    top: var(--et);
+    width: var(--ew);
+    height: var(--eh);
+  }
+
+  /* Laid across the top, filling whatever room is left between the mark and
+     the right margin and never more, and running off the top edge so the
+     letterforms clip against it. */
+  #logo {
+    background-image: url("media/logo-h.webp");
+    left: calc(var(--pad) + var(--mark-size) + 20px);
+    right: 8px;
+    top: -8px;
+    width: auto;
+    height: auto;
+    aspect-ratio: 2600 / 596;
+  }
+}
+
+/*-------- FLICKERING STILLS --------*/
+/* Two images stacked; the top one is cut in and out on a stepped animation so
+   the change reads as a channel flipping rather than a dissolve. Slightly
+   uneven timings stop it feeling metronomic. */
+.flicker {
+  position: absolute;
+  inset: 0;
+}
+
+.flicker img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flicker img:last-child {
+  animation: flick 2.4s steps(1, end) infinite;
+}
+
+@keyframes flick {
+  0%    { opacity: 0; }
+  46%   { opacity: 0; }
+  48%   { opacity: 1; }
+  52%   { opacity: 0; }
+  54%   { opacity: 1; }
+  94%   { opacity: 1; }
+  96%   { opacity: 0; }
+  97.5% { opacity: 1; }
+  99%   { opacity: 0; }
+  100%  { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flicker img:last-child { animation: none; opacity: 1; }
+}
+
+/*-------- PLACEHOLDER --------*/
+.placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: rgba(255,255,255,.5);
+  font-size: 11px;
+}
