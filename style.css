@@ -361,6 +361,16 @@ main[data-reading] #project > * {
 #project h1 { margin-bottom: calc(var(--type) * 1.5); }
 
 .block-text p + p { margin-top: 1em; }
+
+/* name against role, in two columns the monospace already lines up */
+.pairs {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 2ch;
+  margin-top: 1.6em;
+}
+
+.pairs dd { margin: 0; }
 .block-text { max-width: 62ch; }
 
 .block-grid {

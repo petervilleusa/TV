@@ -177,7 +177,10 @@ const objects = [
       blocks: [
         { type: 'text', heading: 'The band', body: [
           'Pleeay is a San Francisco new wave band fronted by a nonbinary ballet-fairy vocalist. Drums, bass, synths, dance and poetry, used to resist conformity, choose consciousness over convenience, and live loudly with compassion.',
-          'Castle sings, writes and dances. Huli plays drums and synths and writes the music. I play bass.',
+        ], list: [
+          { name: 'Castle', role: 'vox and dance' },
+          { name: 'Huli',   role: 'drums and synth' },
+          { name: 'Peter',  role: 'bass and design' },
         ]},
 
         { type: 'grid', columns: 3, ratio: '4 / 5', items: [
@@ -388,6 +391,14 @@ function renderBlock(b) {
     const wrap = el('section', 'block-text');
     if (b.heading) wrap.appendChild(el('h2', null, b.heading));
     (b.body || []).forEach(t => wrap.appendChild(el('p', null, t)));
+    if (b.list) {
+      const dl = el('dl', 'pairs');
+      b.list.forEach(row => {
+        dl.appendChild(el('dt', null, row.name));
+        dl.appendChild(el('dd', null, row.role));
+      });
+      wrap.appendChild(dl);
+    }
     return wrap;
   }
 
