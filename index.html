@@ -33,7 +33,9 @@
     <!-- Sky behind everything. Only seen through the ceiling cut out of the
          background photograph, and above the scene on very tall windows —
          something you have to go looking for. -->
-    <video id="sky" autoplay muted loop playsinline src="media/sky.mp4"></video>
+    <!-- The file is named in data-src, not src, so a hidden video costs no
+         download. app.js wires it up only if the CSS ever unhides it. -->
+    <video id="sky" muted loop playsinline preload="none" data-src="media/sky.mp4"></video>
 
     <div id="scene">
       <div class="layer" id="room"></div>

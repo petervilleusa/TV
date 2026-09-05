@@ -6,6 +6,16 @@ const stage  = document.getElementById('stage');
 const wall   = document.getElementById('wall');
 const scene  = document.getElementById('scene');
 const backdrop = document.getElementById('backdrop');
+
+/* The sky is hidden by one CSS line. Rather than ship half a megabyte to
+   every visitor for something nobody sees, the file is only attached if that
+   line is gone — so bringing it back really is a one line change. */
+const sky = document.getElementById('sky');
+if (sky && getComputedStyle(sky).display !== 'none') {
+  sky.src = sky.dataset.src;
+  sky.autoplay = true;
+  sky.play().catch(() => {});
+}
 const project  = document.getElementById('project');
 
 // the year keeps itself current
@@ -192,7 +202,6 @@ const objects = [
         { type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
           { art: '', title: 'Wealth + Hellness Vol. 1', links: [
             { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
-            { label: 'Bandcamp', href: 'https://pleeay.bandcamp.com/merch' },
           ]},
           { art: '', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
             { label: 'Coming soon', href: '#' },
@@ -229,7 +238,6 @@ const objects = [
           { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
           { label: 'Instagram', href: 'https://www.instagram.com/pleeaymusic/' },
           { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
-          { label: 'Bandcamp', href: 'https://pleeay.bandcamp.com/merch' },
           { label: 'YouTube', href: 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg' },
         ]},
       ],
@@ -365,8 +373,11 @@ const objects = [
             'A single fold zine combining vector shapes, text, and process photographs of paintings mid production.',
             'Edition of 20.',
           ],
-          links: [{ label: 'Ask about one',
-                    href: 'mailto:peterwarren13@gmail.com?subject=Becoming%20zine%20purchase%20inquiry' }],
+          /* No buying anywhere on the site for now — it is a place to look at
+             the work, not a shop. The mailto is kept here, commented, because
+             it is the one that will come back first.
+             links: [{ label: 'Ask about one',
+               href: 'mailto:peterwarren13@gmail.com?subject=Becoming%20zine%20purchase%20inquiry' }], */
         },
 
         { type: 'feature',
@@ -382,10 +393,9 @@ const objects = [
           ],
           body: [
             'A limited edition zine with the lyrics to every song on the Pleeay debut album Every Body, and photographs of the band along the way.',
-            'Each one is made by hand, so no two are the same. If you have a colour preference, say so in the order notes.',
-            'Comes with the album itself: unlimited streaming through Bandcamp, plus a download in MP3, FLAC and more.',
+            'Each one is made by hand, so no two are the same.',
           ],
-          links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }],
+          /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
         },
       ],
     },

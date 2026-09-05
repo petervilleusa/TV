@@ -601,7 +601,8 @@ main[data-reading] #project > * {
    of this box, which is what lets the sets sit on the photographed floor. */
 /* The sky is built and wired but deliberately hidden: it pulled attention away
    from the work, and the ceiling reads better as clean white. Delete this one
-   line to bring it back — nothing else needs changing. */
+   line to bring it back — nothing else needs changing, app.js notices it is
+   visible and loads the file then. Hidden, it costs no download. */
 #sky { display: none; }
 
 #sky {
