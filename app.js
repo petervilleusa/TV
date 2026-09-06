@@ -540,12 +540,12 @@ const objects = [
      on the wall plays something made somewhere else; this one plays the room
      it is standing in. */
   { id: 'laptop', slug: 'development', channel: 10, project: 'Development', z: 11,
-    /* Its base is a single point at 69% across the artwork, and that point has
-       to land on the amplifier's top plate — 8.9% down the amp, where the
-       cabinet reaches full width. Sat to the right of the tuner box. */
-    box:    { x: 78.9, y: 44.2, w: 14.0, rotate: -9 },
-    ar: 2934 / 2128,
-    screen: { x: 31.7, y: 6.1, w: 63.7, h: 61.8 },
+    /* Seated by measuring both artworks. The amplifier's cabinet only reaches
+       full width 8.9% down its own frame — that line is its top plate, and the
+       laptop's front-left corner has to land on it. */
+    box:    { x: 77.2, y: 43.9, w: 14.0, rotate: -9 },
+    ar: 2836 / 1885,
+    screen: { x: 35.0, y: 7.3, w: 60.7, h: 61.9 },
     crt: false,   // an LCD has no scan lines and no tube to darken at the corners
     content: {
       title: 'Development',
