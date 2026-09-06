@@ -543,7 +543,7 @@ const objects = [
     /* Its base is a single point at 69% across the artwork, and that point has
        to land on the amplifier's top plate — 8.9% down the amp, where the
        cabinet reaches full width. Sat to the right of the tuner box. */
-    box:    { x: 80.2, y: 45.4, w: 11.2, rotate: -4 },
+    box:    { x: 78.9, y: 44.2, w: 14.0, rotate: -9 },
     ar: 2934 / 2128,
     screen: { x: 31.7, y: 6.1, w: 63.7, h: 61.8 },
     crt: false,   // an LCD has no scan lines and no tube to darken at the corners
