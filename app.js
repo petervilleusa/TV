@@ -234,7 +234,7 @@ const objects = [
     /* Up from 17.6, where a band of wall showed under it, but short of the
        19.6 that closed the gap completely — Peter's call, halfway between.
        Grown from the centre so it spreads either side rather than only right. */
-    box:    { x: 28.7, y: 43.75, w: 18.6, rotate: -0.8 },
+    box:    { x: 28.3, y: 43.75, w: 18.6, rotate: -0.8 },
     ar: 2975 / 2137,
     screen: { x: 7.5,  y: 8.3,  w: 68.2, h: 76.6 },
     content: {
@@ -550,6 +550,7 @@ const objects = [
     ar: 2836 / 1885,
     screen: { x: 35.0, y: 7.3, w: 60.7, h: 61.9 },
     crt: false,   // an LCD has no scan lines and no tube to darken at the corners
+    cursor: true,
     content: {
       title: 'Development',
       blocks: [
@@ -1145,6 +1146,15 @@ objects.forEach(tv => {
     const crt = document.createElement('div');
     crt.className = 'tv-crt';
     media.appendChild(crt);
+  }
+
+  /* A pointer wandering the screen. Only the laptop has one — a television
+     has nothing to point at. Sized against the screen it sits on, so it stays
+     the size a pointer would really be on a 13 inch machine. */
+  if (tv.cursor && !STILL) {
+    const cur = document.createElement('i');
+    cur.className = 'cursor';
+    media.appendChild(cur);
   }
 
   const frame = document.createElement('div');
