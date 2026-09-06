@@ -27,16 +27,21 @@ BLURB = {
     'fine-art':       'Painting and sculpture. Concrete, canvas, foam, enamel and wood.',
     'print':          'Zines, folded and stapled in small numbered runs.',
     'pyramid-scheme': 'A single track, and the spiral that went with it.',
+    'music':          'Records, a one off, and everything else that plays.',
 }
 HOME_BLURB = ('Peter Warren. Painting, sculpture, print, logos and records, '
               'shown on a wall of televisions.')
 
 
 def channels(src):
-    """(slug, project) for every object in app.js that has both."""
+    """(slug, project) for every object in app.js that has both.
+
+    Anchored on `slug`, not on the opening brace: an object may carry a
+    comment between the two, and the amplifier does.
+    """
     out = []
-    for m in re.finditer(r"\{\s*id:\s*'[^']+',\s*slug:\s*'([^']+)',"
-                         r"\s*channel:\s*\d+,\s*project:\s*'([^']*)'", src):
+    for m in re.finditer(r"slug:\s*'([^']+)',\s*channel:\s*\d+,"
+                         r"\s*project:\s*'([^']*)'", src):
         out.append(m.groups())
     return out
 

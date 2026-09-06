@@ -192,6 +192,36 @@ const EVERY_BODY_ZINE = {
   /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
 };
 
+/* Same again for the records. They belong to Pleeay, and they are also the
+   reason the amplifier is a channel at all, so Music gathers them rather than
+   taking them away. */
+const SPOTIFY = 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n';
+const YOUTUBE = 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg';
+
+const PLEEAY_RELEASES = {
+  type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
+    { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 1', links: [
+      { label: 'Spotify', href: SPOTIFY },
+    ]},
+    { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
+      { label: 'Coming soon', href: '#' },
+    ]},
+    { art: '', slot: 'cover', title: 'NO', links: [
+      { label: 'Spotify', href: SPOTIFY },
+      { label: 'YouTube', href: YOUTUBE },
+    ]},
+    { art: '', slot: 'cover', title: 'Live recordings', links: [
+      { label: 'Listen', href: '#' },
+    ]},
+  ],
+};
+
+const PYRAMID_TRACK = {
+  type: 'audio', tracks: [
+    { title: 'Pyramid scheme', src: 'media/audio/pyramid-scheme.mp3' },
+  ],
+};
+
 const objects = [
   /* Arrangement follows Peter's composition mockup (Reference/desktop-composition.png):
      a wide, low pile rather than a tight pyramid — the big console and the Apex
@@ -229,21 +259,7 @@ const objects = [
             alt: 'Castle singing' },
         ]},
 
-        { type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
-          { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 1', links: [
-            { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
-          ]},
-          { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
-            { label: 'Coming soon', href: '#' },
-          ]},
-          { art: '', slot: 'cover', title: 'NO', links: [
-            { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
-            { label: 'YouTube', href: 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg' },
-          ]},
-          { art: '', slot: 'cover', title: 'Live recordings', links: [
-            { label: 'Listen', href: '#' },
-          ]},
-        ]},
+        PLEEAY_RELEASES,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
           ratio: '1082 / 1400', lightbox: true, items: [
@@ -262,6 +278,11 @@ const objects = [
             tile: '#E2E2E2' },
           { flip: ['media/stickers/dark.webp', 'media/stickers/light.webp'],
             title: 'Boop', alt: 'Pleeay sticker' },
+          /* the two are exact inverses of one another, so the cut reads as the
+             button flipping rather than as two designs. No tile: each carries
+             its own disc, and a square behind them would kill that. */
+          { flip: ['media/buttons/line.webp', 'media/buttons/disc.webp'],
+            title: 'Buttons', alt: 'Pleeay button' },
         ]},
 
         EVERY_BODY_ZINE,
@@ -431,9 +452,7 @@ const objects = [
         { type: 'text', heading: 'A one off', body: [
           'A single track, and the spiral that went with it.',
         ]},
-        { type: 'audio', tracks: [
-          { title: 'Pyramid scheme', src: 'media/audio/pyramid-scheme.mp3' },
-        ]},
+        PYRAMID_TRACK,
         { type: 'grid', columns: 1, ratio: '1200 / 476', fit: 'contain', lightbox: true, items: [
           { src: 'media/pyramids.webp', alt: 'Pyramids' },
         ]},
@@ -487,12 +506,35 @@ const objects = [
     screen: { x: 6.9,  y: 45.8, w: 61.7, h: 43.7 },
     frame: 'media/tv-11.webp', media: BARS },
 
+  /* The amplifier is the one object here that was built to make sound, so it
+     is where the sound lives. Everything playable on the wall is gathered
+     behind it — the records stay on Pleeay and the track stays on Pyramid
+     Scheme, and this is the third place they can be reached from. */
   { /* no aperture: its media hides behind the cabinet until the takeover */
-    id: 'amp',  channel: null, project: null, z: 10,
+    id: 'amp',  slug: 'music', channel: 9, project: 'Music', z: 10,
     box:    { x: 73.0, y: 51.4, w: 19.14, rotate: 0 },
     ar: 838 / 1400,
     screen: { x: 20,   y: 28,   w: 60,   h: 34 },
-    frame: 'media/amp-01.webp', media: null }
+    content: {
+      title: 'Music',
+      blocks: [
+        { type: 'text', heading: 'Everything that plays', body: [
+          'Records, a one off, and whatever else has been recorded. Bass and design in Pleeay, and the odd track made alone.',
+        ]},
+
+        PLEEAY_RELEASES,
+        PYRAMID_TRACK,
+        EVERY_BODY_ZINE,
+
+        { type: 'links', heading: 'Listen', items: [
+          { label: 'Spotify', href: SPOTIFY },
+          { label: 'YouTube', href: YOUTUBE },
+          { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
+        ]},
+      ],
+    },
+    frame: 'media/amp-01.webp', backdrop: 'media/backdrop/music.webp',
+    media: null }
 ];
 
 /* A set is a channel. Give it a `project` and the name appears beside the
@@ -666,6 +708,7 @@ function renderBlock(b) {
 
   if (b.type === 'grid' || b.type === 'releases') {
     const wrap = el('section', 'block-grid');
+    if (b.heading) wrap.appendChild(el('h2', null, b.heading));
     if (b.columns) wrap.style.setProperty('--cols', b.columns);
     if (b.ratio) wrap.style.setProperty('--ratio', b.ratio);
     if (b.fit === 'contain') wrap.dataset.fit = 'contain';

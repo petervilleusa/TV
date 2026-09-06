@@ -379,6 +379,9 @@ main[data-reading] #project > * {
   gap: var(--pad);
 }
 
+/* the heading names the whole row, so it spans it rather than taking a cell */
+.block-grid h2 { grid-column: 1 / -1; }
+
 .block-grid figure { margin: 0; }
 
 .block-grid img {
