@@ -18,6 +18,18 @@ if (sky && getComputedStyle(sky).display !== 'none') {
 }
 const project  = document.getElementById('project');
 
+/* Where the pan stood when a project opened. Hiding the stage's overflow stops
+   a finger, but momentum already in flight when the tap landed is not a finger,
+   so anything that still moves it is put straight back. Declared up here with
+   the rest of the state: lockToStage() can run during page load on a deep
+   link, and a `let` further down the file would not exist yet. */
+let frozenAt = 0;
+stage.addEventListener('scroll', () => {
+  if (stage.dataset.frozen && stage.scrollLeft !== frozenAt) {
+    stage.scrollLeft = frozenAt;
+  }
+});
+
 // the year keeps itself current
 document.getElementById('copyright').textContent =
   `\u00A9 Peter Warren ${new Date().getFullYear()}`;
@@ -736,6 +748,9 @@ function renderBlock(b) {
     const wrap = el('section', 'block-grid');
     if (b.heading) wrap.appendChild(el('h2', null, b.heading));
     if (b.columns) wrap.style.setProperty('--cols', b.columns);
+    /* A phone collapses every grid to two columns, but a block that asked for
+       one wants the whole width — it is a single picture, not a row. */
+    if (b.columns === 1) wrap.dataset.single = 'true';
     if (b.ratio) wrap.style.setProperty('--ratio', b.ratio);
     if (b.fit === 'contain') wrap.dataset.fit = 'contain';
     const g = ++group;
@@ -1250,13 +1265,24 @@ function lockToStage(id) {
   el.style.setProperty('--et', (100 * (m.top - w.top) / w.height) + '%');
   el.style.setProperty('--ew', (100 * (m.width - drawer) / w.width) + '%');
   el.style.setProperty('--eh', (100 * m.height / w.height) + '%');
-  if (isPhone()) document.body.dataset.locked = 'true';
+  /* The stage is a horizontal scroller, and it stays one while a project is
+     open — so a sideways flick used to drag the opened screen off the edge of
+     the phone and leave the room showing beside it. Freeze it where it stands
+     and hold that position, because momentum from the flick that opened the
+     project can still be running. */
+  if (isPhone()) {
+    document.body.dataset.locked = 'true';
+    frozenAt = stage.scrollLeft;
+    stage.dataset.frozen = 'true';
+    stage.scrollLeft = frozenAt;
+  }
 }
 
 function collapse() {
   clearTimeout(previewTimer);
   delete shell.dataset.reading;
   delete document.body.dataset.locked;
+  delete stage.dataset.frozen;
   project.hidden = true;
   project.replaceChildren();
   stage.dataset.expanded = '';
