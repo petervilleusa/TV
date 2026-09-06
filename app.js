@@ -234,7 +234,7 @@ const objects = [
     /* Up from 17.6, where a band of wall showed under it, but short of the
        19.6 that closed the gap completely — Peter's call, halfway between.
        Grown from the centre so it spreads either side rather than only right. */
-    box:    { x: 29.1, y: 43.75, w: 18.6, rotate: -0.8 },
+    box:    { x: 28.7, y: 43.75, w: 18.6, rotate: -0.8 },
     ar: 2975 / 2137,
     screen: { x: 7.5,  y: 8.3,  w: 68.2, h: 76.6 },
     content: {
