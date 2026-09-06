@@ -336,7 +336,7 @@ const objects = [
           'Paintings and wall sculpture. Concrete, canvas, foam, enamel and wood, mostly built rather than painted, and often shaped so the edge of the work is part of the drawing.',
         ]},
 
-        { type: 'grid', heading: 'Current work', columns: 3, ratio: '1', fit: 'contain', lightbox: true, items: [
+        { type: 'grid', heading: 'Current work', columns: 3, lightbox: true, items: [
           { src: 'media/art/current/00.webp', title: "Installation View", alt: "Installation View" },
           { src: 'media/art/current/01.webp', title: "Installation with Pony Vice and Canvas wrapped Wood", alt: "Installation with Pony Vice and Canvas wrapped Wood" },
           { src: 'media/art/current/02.webp', title: "Tetrad (concrete)", desc: "Enamel and Concrete, 24\u201dx24\u201d", alt: "Tetrad (concrete)" },
@@ -350,7 +350,7 @@ const objects = [
           { src: 'media/art/current/10.webp', title: "Foam (Tied)", desc: "Acrylic on Foam, 4\u201dx4\u201d", alt: "Foam (Tied)" },
         ]},
 
-        { type: 'grid', heading: 'Tablets, 2018', columns: 3, ratio: '1', fit: 'contain', lightbox: true, items: [
+        { type: 'grid', heading: 'Tablets, 2018', columns: 3, lightbox: true, items: [
           { src: 'media/art/tablets/00.webp', title: "Tablet (Swimming Pink)", desc: "Acrylic and Ink on Canvas and Vinyl, 12\u201d x 16\u201d", alt: "Tablet (Swimming Pink)" },
           { src: 'media/art/tablets/01.webp', title: "Tablet (Any Alter-like Structure Made for Keeping Sacred Fire)", desc: "Acrylic on Canvas and Vinyl, 18\u201d x 24\u201d", alt: "Tablet (Any Alter-like Structure Made for Keeping Sacred Fire)" },
           { src: 'media/art/tablets/02.webp', title: "Tablet (ITTI)", desc: "Oil and Acrylic on Canvas and Wood, 16\"x12\"", alt: "Tablet (ITTI)" },
@@ -364,7 +364,7 @@ const objects = [
           { src: 'media/art/tablets/10.webp', title: "Tablet (You and Me Both)", desc: "Acrylic and gesso on Canvas, 24\u201d x 30\u201d", alt: "Tablet (You and Me Both)" },
         ]},
 
-        { type: 'grid', heading: 'Interiors, 2017', columns: 5, ratio: '1', fit: 'contain', lightbox: true, items: [
+        { type: 'grid', heading: 'Interiors, 2017', columns: 4, lightbox: true, items: [
           { src: 'media/art/interiors/00.webp', alt: "Interiors, 2017" },
           { src: 'media/art/interiors/01.webp', alt: "Interiors, 2017" },
           { src: 'media/art/interiors/02.webp', alt: "Interiors, 2017" },
@@ -395,7 +395,7 @@ const objects = [
           { src: 'media/art/interiors/27.webp', alt: "Interiors, 2017" },
         ]},
 
-        { type: 'grid', heading: 'Jumper, 2015', columns: 3, ratio: '1', fit: 'contain', lightbox: true, items: [
+        { type: 'grid', heading: 'Jumper, 2015', columns: 3, lightbox: true, items: [
           { src: 'media/art/jumper/00.webp', alt: "Jumper, 2015" },
           { src: 'media/art/jumper/01.webp', alt: "Jumper, 2015" },
           { src: 'media/art/jumper/02.webp', alt: "Jumper, 2015" },
@@ -499,7 +499,8 @@ const objects = [
           'Logos, stickers and marks made for bands and their merch. Most begin as something drawn by hand and end up somewhere it can be printed, stitched, worn or lit.',
         ]},
 
-        { type: 'grid', heading: 'Marks', columns: 3, ratio: '1', fit: 'contain',
+        /* no heading: the text block above it is already called Marks */
+        { type: 'grid', columns: 3, ratio: '1', fit: 'contain',
           lightbox: true, items: [
           { src: 'media/logos/neon.webp',   title: 'Pleeay neon',   alt: 'Pleeay neon logo' },
           { src: 'media/logos/slayer.webp', title: 'Pleeay slayer', alt: 'Pleeay slayer logo' },
@@ -745,13 +746,18 @@ function renderBlock(b) {
   }
 
   if (b.type === 'grid' || b.type === 'releases') {
-    const wrap = el('section', 'block-grid');
-    if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+    const block = el('section', 'block-grid');
+    if (b.heading) block.appendChild(el('h2', null, b.heading));
+    /* The pictures live in their own box inside the block. They flow down
+       columns of their own height, which a heading must not join — so the
+       heading is a sibling of that box, not the first thing in it. */
+    const wrap = el('div', 'grid-items');
+    block.appendChild(wrap);
     if (b.columns) wrap.style.setProperty('--cols', b.columns);
     /* A phone collapses every grid to two columns, but a block that asked for
        one wants the whole width — it is a single picture, not a row. */
     if (b.columns === 1) wrap.dataset.single = 'true';
-    if (b.ratio) wrap.style.setProperty('--ratio', b.ratio);
+    if (b.ratio) { wrap.style.setProperty('--ratio', b.ratio); wrap.dataset.ratio = 'true'; }
     if (b.fit === 'contain') wrap.dataset.fit = 'contain';
     const g = ++group;
     (b.items || []).forEach(item => {
@@ -847,7 +853,7 @@ function renderBlock(b) {
       }
       wrap.appendChild(fig);
     });
-    return wrap;
+    return block;
   }
 
   /* A carousel on one half, the writing on the other. The same set of images

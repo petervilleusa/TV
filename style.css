@@ -8,6 +8,7 @@
   --ink: #000000;
   --drawer: 25%;
   --pad: 32px;
+  --grid-gap: 10px;      /* the gutter between pictures; the one number to tune */
   --nav-top: 176px;
 
   /* ONE type size for the whole site. Hierarchy comes from case, not scale:
@@ -379,24 +380,40 @@ main[data-reading] #project > * {
 .pairs dd { margin: 0; }
 .block-text { max-width: 62ch; }
 
+/* The pictures run to both edges of the page. Only the writing is indented,
+   which is what separates the two: words sit in a measure, work does not. */
 .block-grid {
-  display: grid;
-  grid-template-columns: repeat(var(--cols, 3), 1fr);
-  gap: var(--pad);
+  margin-inline: calc(var(--pad) * -1);
+}
+.block-grid h2 {
+  padding-inline: var(--pad);
+  margin-bottom: calc(var(--type) * 1.2);
 }
 
-/* the heading names the whole row, so it spans it rather than taking a cell */
-.block-grid h2 { grid-column: 1 / -1; }
+/* Columns, not a grid: every photograph keeps its own proportions and the next
+   one starts where it ends, so nothing is cropped to make a tidy row. The
+   gutter is deliberately much tighter than the page's padding — at this
+   spacing the pictures read as one field rather than as separate cards. */
+.grid-items {
+  columns: var(--cols, 3);
+  column-gap: var(--grid-gap);
+}
 
-.block-grid figure { margin: 0; }
+.grid-items > figure {
+  margin: 0 0 var(--grid-gap);
+  break-inside: avoid;
+}
 
 .block-grid img {
   width: 100%;
+  height: auto;
   display: block;
   background: #211F28;
-  aspect-ratio: var(--ratio, 1);
-  object-fit: cover;
 }
+
+/* An empty slot has no picture to take its height from, so it keeps the
+   block's declared ratio. */
+.grid-items[data-ratio] .slot { aspect-ratio: var(--ratio, 1); }
 
 /* A slot with no artwork yet. Reads as a space held open on purpose rather
    than a photograph that failed to arrive. */
@@ -411,13 +428,24 @@ main[data-reading] #project > * {
   opacity: 0.45;
 }
 
-.block-grid figcaption { margin-top: 0.6em; }
+.block-grid figcaption { margin-top: 0.6em; padding-inline: 2px; }
 .fig-title, .fig-note { display: block; }
 /* materials read as the note on the label, not a second title */
 .fig-note { opacity: 0.6; }
 
-/* a logo is shown whole, never cropped, on whatever ground it needs */
-.block-grid[data-fit="contain"] img {
+/* `fit: contain` used to mean "do not crop this". Nothing is cropped any more,
+   so it now marks what it was only ever used for: DRAWINGS. A mark wants an
+   even field to be read against, so these keep the old tidy grid of equal
+   cells while photographs flow at their own heights. */
+.grid-items[data-fit="contain"] {
+  columns: auto;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: var(--grid-gap);
+}
+.grid-items[data-fit="contain"] > figure { margin-bottom: 0; }
+.grid-items[data-fit="contain"] img {
+  aspect-ratio: var(--ratio, 1);
   object-fit: contain;
   padding: 8%;
 }
@@ -605,7 +633,7 @@ main[data-reading] #project > * {
     inset: 0;
     padding: calc(var(--pad) + var(--mark-size) + 24px) var(--pad) calc(var(--pad) * 3);
   }
-  .block-grid:not([data-single]) { --cols: 2 !important; }
+  .grid-items:not([data-single]) { --cols: 2 !important; }
 }
 
 /*-------- STAGE --------*/
