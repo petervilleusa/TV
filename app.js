@@ -215,10 +215,18 @@ const objects = [
           { name: 'Peter',  role: 'bass and design' },
         ]},
 
-        { type: 'grid', columns: 3, ratio: '4 / 5', items: [
-          { src: '', alt: 'Band photograph', slot: 'band photograph' },
-          { src: '', alt: 'Band photograph', slot: 'band photograph' },
-          { src: '', alt: 'Band photograph', slot: 'band photograph' },
+        /* The group portrait is landscape and the two live shots are 4:5, so
+           they cannot share a grid — one ratio would crop the other badly.
+           The wide one opens the page and the pair follows it. */
+        { type: 'grid', columns: 1, ratio: '3 / 2', lightbox: true, items: [
+          { src: 'media/pleeay/band.webp', alt: 'Pleeay' },
+        ]},
+
+        { type: 'grid', columns: 2, ratio: '4 / 5', lightbox: true, items: [
+          { src: 'media/pleeay/live-01.webp', title: 'Tenderloin Festival',
+            alt: 'Peter playing bass' },
+          { src: 'media/pleeay/live-02.webp', title: 'Tenderloin Festival',
+            alt: 'Castle singing' },
         ]},
 
         { type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
