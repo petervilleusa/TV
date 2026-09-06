@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Websites built and shipped.">
+  <link rel="canonical" href="https://petervilleusa.onrender.com/development/">
+  <base href="/">
+  <title>Development — PETERVILLE USA</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main>
+  <!-- Sits in the drawer's slot, behind it. With a project open, closing the
+       drawer slides the channel list away and reveals this instead of bare
+       page — a texture belonging to that project. -->
+  <i id="backdrop" aria-hidden="true"></i>
+
+  <nav id="panel" data-open="false">
+    <ul id="nav-list"></ul>
+
+    <footer id="credits">
+      <p>Thank you</p>
+      <ul>
+        <li>Sonic Youth</li>
+        <li>Nam June Paik</li>
+      </ul>
+      <p id="copyright">&copy; Peter Warren</p>
+    </footer>
+  </nav>
+
+  <!-- One scene, one coordinate space. Back to front: the room, cable behind
+       the sets, the televisions, then cable draping in front of them. -->
+  <div id="stage" data-expanded="">
+    <!-- Sky behind everything. Only seen through the ceiling cut out of the
+         background photograph, and above the scene on very tall windows —
+         something you have to go looking for. -->
+    <!-- The file is named in data-src, not src, so a hidden video costs no
+         download. app.js wires it up only if the CSS ever unhides it. -->
+    <video id="sky" muted loop playsinline preload="none" data-src="media/sky.mp4"></video>
+
+    <div id="scene">
+      <div class="layer" id="room"></div>
+      <div class="layer" id="wires-back"></div>
+      <div class="layer" id="wall"></div>
+      <div class="layer" id="wires-front"></div>
+    </div>
+  </div>
+
+  <!-- An open project's content. Built from that object's `content` blocks;
+       fills the same area the media grows into. -->
+  <article id="project" hidden></article>
+
+  <i id="logo" aria-hidden="true"></i>
+
+  <!-- both live outside nav so mix-blend-mode can read the whole page as backdrop -->
+  <button id="toggle" aria-expanded="false" aria-controls="nav-list" aria-label="Menu">
+    <span class="bar bar-h"></span>
+    <span class="bar bar-v"></span>
+  </button>
+  <button id="close" aria-label="Close">
+    <span class="bar bar-h"></span>
+    <span class="bar bar-v"></span>
+  </button>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -512,7 +512,7 @@ const objects = [
      Scheme, and this is the third place they can be reached from. */
   { /* no aperture: its media hides behind the cabinet until the takeover */
     id: 'amp',  slug: 'music', channel: 9, project: 'Music', z: 10,
-    box:    { x: 73.0, y: 51.4, w: 19.14, rotate: 0 },
+    box:    { x: 73.0, y: 52.2, w: 19.14, rotate: 0 },
     ar: 838 / 1400,
     screen: { x: 20,   y: 28,   w: 60,   h: 34 },
     content: {
@@ -534,7 +534,28 @@ const objects = [
       ],
     },
     frame: 'media/amp-01.webp', backdrop: 'media/backdrop/music.webp',
-    media: null }
+    media: null },
+
+  /* Sits on the amplifier, and shows this site on its screen. Everything else
+     on the wall plays something made somewhere else; this one plays the room
+     it is standing in. */
+  { id: 'laptop', slug: 'development', channel: 10, project: 'Development', z: 11,
+    /* Its base is a single point at 69% across the artwork, and that point has
+       to land on the amplifier's top plate — 8.9% down the amp, where the
+       cabinet reaches full width. Sat to the right of the tuner box. */
+    box:    { x: 81.0, y: 46.45, w: 10.0, rotate: 0 },
+    ar: 2934 / 2128,
+    screen: { x: 31.7, y: 6.1, w: 63.7, h: 61.8 },
+    content: {
+      title: 'Development',
+      blocks: [
+        { type: 'text', heading: 'Sites', body: [
+          'Websites built and shipped. The screen on this one is showing the page you are reading.',
+        ]},
+      ],
+    },
+    frame: 'media/laptop.webp',
+    media: 'media/laptop-screen.webp' }
 ];
 
 /* A set is a channel. Give it a `project` and the name appears beside the

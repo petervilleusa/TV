@@ -28,6 +28,7 @@ BLURB = {
     'print':          'Zines, folded and stapled in small numbered runs.',
     'pyramid-scheme': 'A single track, and the spiral that went with it.',
     'music':          'Records, a one off, and everything else that plays.',
+    'development':    'Websites built and shipped.',
 }
 HOME_BLURB = ('Peter Warren. Painting, sculpture, print, logos and records, '
               'shown on a wall of televisions.')
