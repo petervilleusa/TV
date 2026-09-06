@@ -543,9 +543,10 @@ const objects = [
     /* Its base is a single point at 69% across the artwork, and that point has
        to land on the amplifier's top plate — 8.9% down the amp, where the
        cabinet reaches full width. Sat to the right of the tuner box. */
-    box:    { x: 81.0, y: 46.45, w: 10.0, rotate: 0 },
+    box:    { x: 80.2, y: 45.4, w: 11.2, rotate: -4 },
     ar: 2934 / 2128,
     screen: { x: 31.7, y: 6.1, w: 63.7, h: 61.8 },
+    crt: false,   // an LCD has no scan lines and no tube to darken at the corners
     content: {
       title: 'Development',
       blocks: [
@@ -555,7 +556,7 @@ const objects = [
       ],
     },
     frame: 'media/laptop.webp',
-    media: 'media/laptop-screen.webp' }
+    media: { slides: ['media/laptop-screen.webp'], hold: 11000, pan: true } }
 ];
 
 /* A set is a channel. Give it a `project` and the name appears beside the
@@ -1135,9 +1136,13 @@ objects.forEach(tv => {
   media.className = 'tv-media';
   media.appendChild(buildMedia(tv));
 
-  const crt = document.createElement('div');
-  crt.className = 'tv-crt';
-  media.appendChild(crt);
+  /* Scan lines and a corner vignette are what a cathode ray tube does. An LCD
+     does neither, so the laptop opts out with `crt: false`. */
+  if (tv.crt !== false) {
+    const crt = document.createElement('div');
+    crt.className = 'tv-crt';
+    media.appendChild(crt);
+  }
 
   const frame = document.createElement('div');
   frame.className = 'tv-frame';
