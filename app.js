@@ -771,6 +771,12 @@ function renderBlock(b) {
     if (b.columns === 1) wrap.dataset.single = 'true';
     if (b.ratio) { wrap.style.setProperty('--ratio', b.ratio); wrap.dataset.ratio = 'true'; }
     if (b.fit === 'contain') wrap.dataset.fit = 'contain';
+    /* A column flow balances by height, so a set of EQUAL height items lands
+       in fewer columns than asked for — four record covers in three columns
+       became two columns of two with the third left empty, and the reading
+       order went down instead of across. Anything uniform keeps a real grid:
+       drawings, which want an even field, and covers, which are all squares. */
+    if (b.fit === 'contain' || b.type === 'releases') wrap.dataset.even = 'true';
     const g = ++group;
     (b.items || []).forEach(item => {
       const fig = el('figure', b.type === 'releases' ? 'release' : null);

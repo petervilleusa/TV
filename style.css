@@ -433,22 +433,21 @@ main[data-reading] #project > * {
 /* materials read as the note on the label, not a second title */
 .fig-note { opacity: 0.6; }
 
-/* `fit: contain` used to mean "do not crop this". Nothing is cropped any more,
-   so it now marks what it was only ever used for: DRAWINGS. A mark wants an
-   even field to be read against, so these keep the old tidy grid of equal
-   cells while photographs flow at their own heights. */
-.grid-items[data-fit="contain"] {
+/* Uniform sets keep a real grid: every cell the same, read across not down.
+   Photographs flow; drawings and record covers do not. */
+.grid-items[data-even] {
   columns: auto;
   display: grid;
   grid-template-columns: repeat(var(--cols, 3), 1fr);
   gap: var(--grid-gap);
 }
-.grid-items[data-fit="contain"] > figure { margin-bottom: 0; }
-.grid-items[data-fit="contain"] img {
-  aspect-ratio: var(--ratio, 1);
-  object-fit: contain;
-  padding: 8%;
-}
+.grid-items[data-even] > figure { margin-bottom: 0; }
+.grid-items[data-even] img { aspect-ratio: var(--ratio, 1); object-fit: contain; }
+
+/* `fit: contain` used to mean "do not crop this". Nothing is cropped any more,
+   so it now marks what it was only ever used for: a DRAWING, which wants air
+   around it rather than running to its edges. */
+.grid-items[data-fit="contain"] img { padding: 8%; }
 
 /* A label standing where a link will go. Not underlined, because it is not
    clickable yet, and dimmed so it reads as pending rather than broken. */
