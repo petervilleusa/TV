@@ -543,7 +543,7 @@ const objects = [
     /* Seated by measuring both artworks. The amplifier's cabinet only reaches
        full width 8.9% down its own frame — that line is its top plate, and the
        laptop's front-left corner has to land on it. */
-    box:    { x: 77.2, y: 43.9, w: 14.0, rotate: -9 },
+    box:    { x: 73.85, y: 44.6, w: 15.0, rotate: -1 },
     ar: 2836 / 1885,
     screen: { x: 35.0, y: 7.3, w: 60.7, h: 61.9 },
     crt: false,   // an LCD has no scan lines and no tube to darken at the corners
