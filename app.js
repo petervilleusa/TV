@@ -618,6 +618,18 @@ function setLinkTarget(a, href) {
   a.rel = 'noopener';
 }
 
+/* "Coming soon" and "Listen" have nothing to point at yet, and were written
+   as href="#". That is not a link: underlined, it invites a click, and with a
+   target it opened a second tab of this same page. A label with no destination
+   is rendered as a label. */
+function linkNode(l) {
+  if (!l.href || l.href === '#') return el('span', 'link-pending', l.label);
+  const a = el('a', null, l.label);
+  a.href = l.href;
+  setLinkTarget(a, l.href);
+  return a;
+}
+
 function el(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -807,9 +819,8 @@ function renderBlock(b) {
         if (item.links) {
           const ul = el('ul');
           item.links.forEach(l => {
-            const li = el('li'), a = el('a', null, l.label);
-            a.href = l.href; setLinkTarget(a, l.href);
-            li.appendChild(a); ul.appendChild(li);
+            const li = el('li');
+            li.appendChild(linkNode(l)); ul.appendChild(li);
           });
           slot.appendChild(ul);
         }
@@ -845,9 +856,8 @@ function renderBlock(b) {
       if (item.links) {
         const ul = el('ul');
         item.links.forEach(l => {
-          const li = el('li'), a = el('a', null, l.label);
-          a.href = l.href; setLinkTarget(a, l.href);
-          li.appendChild(a); ul.appendChild(li);
+          const li = el('li');
+          li.appendChild(linkNode(l)); ul.appendChild(li);
         });
         fig.appendChild(ul);
       }
@@ -902,9 +912,8 @@ function renderBlock(b) {
     if (b.links) {
       const ul = el('ul', 'inline-links');
       b.links.forEach(l => {
-        const li = el('li'), a = el('a', null, l.label);
-        a.href = l.href; setLinkTarget(a, l.href);
-        li.appendChild(a); ul.appendChild(li);
+        const li = el('li');
+        li.appendChild(linkNode(l)); ul.appendChild(li);
       });
       copy.appendChild(ul);
     }
@@ -998,9 +1007,7 @@ function openLightbox(at = 0) {
     if (item.heading) cap.appendChild(el('h2', null, item.heading));
     (item.body || []).forEach(t => cap.appendChild(el('p', null, t)));
     (item.links || []).forEach(l => {
-      const a = el('a', null, l.label);
-      a.href = l.href; setLinkTarget(a, l.href);
-      const wrap = el('p'); wrap.appendChild(a); cap.appendChild(wrap);
+      const wrap = el('p'); wrap.appendChild(linkNode(l)); cap.appendChild(wrap);
     });
     if (set.length > 1) {
       count.textContent = `${i + 1} / ${set.length}`;

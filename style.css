@@ -450,6 +450,10 @@ main[data-reading] #project > * {
   padding: 8%;
 }
 
+/* A label standing where a link will go. Not underlined, because it is not
+   clickable yet, and dimmed so it reads as pending rather than broken. */
+.link-pending { opacity: 0.55; }
+
 /* a release is its art, a title, and where to hear it */
 .release ul { list-style: none; margin-top: 0.4em; }
 .release li { display: inline; }

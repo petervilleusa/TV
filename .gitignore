@@ -1,7 +1,7 @@
 # python venv for the import tooling
 tools/venv/
 
-# local preview and screenshot harnesses
-_*.html
+# local preview and screenshot harnesses, and whatever they are pointed at
+_*
 
 .DS_Store
