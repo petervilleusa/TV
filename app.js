@@ -212,7 +212,9 @@ const YOUTUBE = 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg';
 
 const PLEEAY_RELEASES = {
   type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
-    { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 1', links: [
+    { art: 'media/releases/pleeay-wealth-hellness-vol-1.webp',
+      alt: 'Wealth + Hellness Vol. 1 cover: the band in black against flames',
+      title: 'Wealth + Hellness Vol. 1', links: [
       { label: 'Spotify', href: SPOTIFY },
     ]},
     { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
@@ -225,6 +227,25 @@ const PLEEAY_RELEASES = {
     { art: '', slot: 'cover', title: 'Live recordings', links: [
       { label: 'Listen', href: '#' },
     ]},
+  ],
+};
+
+/* Records that are not Pleeay records. Kept in their own constant rather than
+   added to the one above, because that one is shared with the Pleeay channel —
+   anything dropped into it turns up on Pleeay's page as a Pleeay release. The
+   band name leads and the record follows, since these are four different acts
+   and the name is the part that tells them apart. */
+const OTHER_RELEASES = {
+  type: 'releases', heading: 'Other records', columns: 3, ratio: '1', items: [
+    { art: 'media/releases/the-lost-eyes-ep.webp',
+      alt: 'The Lost Eyes EP cover: warped black lettering on lilac',
+      title: 'The Lost Eyes', desc: 'EP' },
+    { art: 'media/releases/nightswim-golden-triangle-tapes.webp',
+      alt: 'The Golden Triangle Tapes cover: cut black lettering on kraft brown',
+      title: 'Nightswim', desc: 'The Golden Triangle Tapes' },
+    { art: 'media/releases/sunbreak-2.webp',
+      alt: 'Sunbreak 2 cover: a sea stack in surf, black and white',
+      title: 'Sunbreak', desc: 'Sunbreak 2' },
   ],
 };
 
@@ -539,6 +560,7 @@ const objects = [
         ]},
 
         PLEEAY_RELEASES,
+        OTHER_RELEASES,
         PYRAMID_TRACK,
         EVERY_BODY_ZINE,
 
