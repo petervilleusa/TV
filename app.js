@@ -573,6 +573,7 @@ const objects = [
       ],
     },
     frame: 'media/laptop.webp',
+    backdrop: 'media/backdrop/development.webp',
     media: { slides: ['media/laptop-screen.webp'], hold: 11000, pan: true } }
 ];
 
