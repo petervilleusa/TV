@@ -204,49 +204,54 @@ const EVERY_BODY_ZINE = {
   /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
 };
 
-/* Same again for the records. They belong to Pleeay, and they are also the
-   reason the amplifier is a channel at all, so Music gathers them rather than
-   taking them away. */
-const SPOTIFY = 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n';
-const YOUTUBE = 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg';
+/* Same again for the records. They are the reason the amplifier is a channel
+   at all, so Music gathers every one of them and the band channels show their
+   own. Declared once here: the art and the spelling cannot then drift between
+   the two places that print them.
 
-const PLEEAY_RELEASES = {
-  type: 'releases', heading: 'Releases', columns: 3, ratio: '1', items: [
-    { art: 'media/releases/pleeay-wealth-hellness-vol-1.webp',
-      alt: 'Wealth + Hellness Vol. 1 cover: the band in black against flames',
-      title: 'Wealth + Hellness Vol. 1', links: [
-      { label: 'Spotify', href: SPOTIFY },
-    ]},
-    { art: '', slot: 'cover', title: 'Wealth + Hellness Vol. 2', tone: '#8C8C90', links: [
-      { label: 'Coming soon', href: '#' },
-    ]},
-    { art: '', slot: 'cover', title: 'NO', links: [
-      { label: 'Spotify', href: SPOTIFY },
-      { label: 'YouTube', href: YOUTUBE },
-    ]},
-    { art: '', slot: 'cover', title: 'Live recordings', links: [
-      { label: 'Listen', href: '#' },
-    ]},
-  ],
+   Only records that exist are listed. A cover that has not been made yet and a
+   record that has not come out yet are both promises, and a page full of
+   promises reads as a page with nothing on it. */
+const RECORDS = {
+  wealthHellness1: {
+    art: 'media/releases/pleeay-wealth-hellness-vol-1.webp',
+    alt: 'Wealth + Hellness Vol. 1 cover: the band in black against flames',
+    artist: 'Pleeay', record: 'Wealth + Hellness Vol. 1',
+  },
+  lostEyesEp: {
+    art: 'media/releases/the-lost-eyes-ep.webp',
+    alt: 'The Lost Eyes EP cover: warped black lettering on lilac',
+    artist: 'The Lost Eyes', record: 'EP',
+  },
+  goldenTriangleTapes: {
+    art: 'media/releases/nightswim-golden-triangle-tapes.webp',
+    alt: 'The Golden Triangle Tapes cover: cut black lettering on kraft brown',
+    artist: 'Nightswim', record: 'The Golden Triangle Tapes',
+  },
+  sunbreak2: {
+    art: 'media/releases/sunbreak-2.webp',
+    alt: 'Sunbreak 2 cover: a sea stack in surf, black and white',
+    artist: 'Sunbreak', record: 'Sunbreak 2',
+  },
 };
 
-/* Records that are not Pleeay records. Kept in their own constant rather than
-   added to the one above, because that one is shared with the Pleeay channel —
-   anything dropped into it turns up on Pleeay's page as a Pleeay release. The
-   band name leads and the record follows, since these are four different acts
-   and the name is the part that tells them apart. */
-const OTHER_RELEASES = {
-  type: 'releases', heading: 'Other records', columns: 3, ratio: '1', items: [
-    { art: 'media/releases/the-lost-eyes-ep.webp',
-      alt: 'The Lost Eyes EP cover: warped black lettering on lilac',
-      title: 'The Lost Eyes', desc: 'EP' },
-    { art: 'media/releases/nightswim-golden-triangle-tapes.webp',
-      alt: 'The Golden Triangle Tapes cover: cut black lettering on kraft brown',
-      title: 'Nightswim', desc: 'The Golden Triangle Tapes' },
-    { art: 'media/releases/sunbreak-2.webp',
-      alt: 'Sunbreak 2 cover: a sea stack in surf, black and white',
-      title: 'Sunbreak', desc: 'Sunbreak 2' },
-  ],
+/* Music holds all four, in one grid rather than sorted into the band's and
+   everyone else's — they are four records and they get the same square each.
+   Four across, so the row reads as a shelf. */
+const ALL_RELEASES = {
+  type: 'releases', heading: 'Releases', columns: 4, ratio: '1',
+  items: Object.values(RECORDS).map(r => ({
+    art: r.art, alt: r.alt, title: r.artist, desc: r.record,
+  })),
+};
+
+/* On Pleeay's own channel the band is already the page, so the cover is
+   captioned with the record alone. */
+const PLEEAY_RELEASES = {
+  type: 'releases', heading: 'Releases', columns: 3, ratio: '1',
+  items: [RECORDS.wealthHellness1].map(r => ({
+    art: r.art, alt: r.alt, title: r.record,
+  })),
 };
 
 const PYRAMID_TRACK = {
@@ -326,8 +331,6 @@ const objects = [
         { type: 'links', heading: 'Elsewhere', items: [
           { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
           { label: 'Instagram', href: 'https://www.instagram.com/pleeaymusic/' },
-          { label: 'Spotify', href: 'https://open.spotify.com/artist/1fHEtLF9XmgaWFGTjG6b5n' },
-          { label: 'YouTube', href: 'https://www.youtube.com/channel/UCnmZlJOeYuwToNTesosgQeg' },
         ]},
       ],
     },
@@ -559,14 +562,14 @@ const objects = [
           'Records, a one off, and whatever else has been recorded. Bass and design in Pleeay, and the odd track made alone.',
         ]},
 
-        PLEEAY_RELEASES,
-        OTHER_RELEASES,
+        ALL_RELEASES,
         PYRAMID_TRACK,
         EVERY_BODY_ZINE,
 
-        { type: 'links', heading: 'Listen', items: [
-          { label: 'Spotify', href: SPOTIFY },
-          { label: 'YouTube', href: YOUTUBE },
+        /* "Listen" was the heading while the records were somewhere else. The
+           listening happens on this page now, so what is left is just the
+           other place to go. */
+        { type: 'links', heading: 'Elsewhere', items: [
           { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
         ]},
       ],
