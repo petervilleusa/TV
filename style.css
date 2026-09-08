@@ -345,13 +345,10 @@ main[data-reading] #project > * {
 
 #project > * + * { margin-top: calc(var(--type) * 3); }
 
-/* Everything on the page is monochrome, with the contrast lifted a touch to
-   hold up without colour. Colour is what you get for looking closer: on hover,
-   and always in the lightbox. Sixteen palettes competing on one page reads as
-   an archive; one reads as a design. */
+/* The work shows in its own colour. It used to open monochrome and only come
+   back on hover, which made every page read the same and made the pictures
+   look like an archive of something rather than the thing itself. */
 #project img {
-  filter: grayscale(1) contrast(1.08);
-  transition: filter 360ms var(--ease);
   /* Alt text is for screen readers and for search, not for the seconds a
      photograph spends arriving. Left visible it fills every waiting box with
      its own description, which on a phone reads as a page of failed images.
@@ -360,10 +357,6 @@ main[data-reading] #project > * {
      rectangle until it lands. */
   color: transparent;
 }
-
-#project figure:hover img,
-#project .carousel-main:hover,
-#project .thumb:hover img { filter: none; }
 
 #project h1 { margin-bottom: calc(var(--type) * 1.5); }
 
@@ -380,13 +373,10 @@ main[data-reading] #project > * {
 .pairs dd { margin: 0; }
 .block-text { max-width: 62ch; }
 
-/* The pictures run to both edges of the page. Only the writing is indented,
-   which is what separates the two: words sit in a measure, work does not. */
-.block-grid {
-  margin-inline: calc(var(--pad) * -1);
-}
+/* The pictures sit in the same margin as the writing above them. Run to the
+   edges they read as a wall of image with nothing holding them; one page
+   width, kept by everything, is what makes the page read as a page. */
 .block-grid h2 {
-  padding-inline: var(--pad);
   margin-bottom: calc(var(--type) * 1.2);
 }
 
