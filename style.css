@@ -411,6 +411,13 @@ main[data-reading] #project > * {
   background: #211F28;
 }
 
+/* A picture that has not arrived has no size of its own, and `height: auto`
+   makes that literal: a nought pixel tall box. Lazy loading then never fires,
+   because a box with no height never comes into view — so it stays empty, so
+   it stays nought tall. Every image below the first screen was stuck in that
+   loop. A square holds the space until the real proportions land. */
+.block-grid img:not([data-loaded]) { aspect-ratio: var(--ratio, 1); }
+
 /* An empty slot has no picture to take its height from, so it keeps the
    block's declared ratio. */
 .grid-items[data-ratio] .slot { aspect-ratio: var(--ratio, 1); }

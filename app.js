@@ -630,6 +630,13 @@ function linkNode(l) {
   return a;
 }
 
+/* Marks a picture as arrived, which is what releases the placeholder square
+   the stylesheet holds open for it. */
+function markWhenLoaded(img) {
+  if (img.complete && img.naturalWidth) { img.dataset.loaded = 'true'; return; }
+  img.addEventListener('load', () => { img.dataset.loaded = 'true'; }, { once: true });
+}
+
 function el(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -790,7 +797,9 @@ function renderBlock(b) {
         const flick = el('div', 'flicker flicker-still');
         item.flip.forEach(src => {
           const fi = el('img');
-          fi.src = src; fi.alt = item.alt || item.title || ''; fi.loading = 'lazy';
+          fi.alt = item.alt || item.title || ''; fi.loading = 'lazy';
+          markWhenLoaded(fi);
+          fi.src = src;
           flick.appendChild(fi);
         });
         if (item.tile) flick.style.background = item.tile;
@@ -835,9 +844,14 @@ function renderBlock(b) {
       }
 
       const img = el('img');
-      img.src = src;
       img.alt = item.alt || item.title || '';
       img.loading = 'lazy';
+      /* The CSS holds a square open until the picture lands, then hands the
+         box back to its own proportions. The listener goes on BEFORE the src,
+         or a cached image can finish loading in the gap between the two and
+         never be marked — leaving it stretched into the placeholder square. */
+      markWhenLoaded(img);
+      img.src = src;
       if (item.tone) img.style.background = item.tone;   // art not made yet
       if (item.tile) img.style.background = item.tile;   // the ground it needs
       if (b.lightbox) {
