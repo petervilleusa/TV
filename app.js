@@ -550,7 +550,7 @@ const objects = [
       ],
     },
     frame: 'media/amp-01.webp', backdrop: 'media/backdrop/music.webp',
-    media: null },
+    media: 'media/amp-screen.mp4' },
 
   /* Sits on the amplifier, and shows this site on its screen. Everything else
      on the wall plays something made somewhere else; this one plays the room
