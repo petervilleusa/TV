@@ -426,9 +426,12 @@ main[data-reading] #project > * {
 }
 
 .block-grid figcaption { margin-top: 0.6em; padding-inline: 2px; }
-.fig-title, .fig-note { display: block; }
+.fig-title, .fig-note, .fig-role { display: block; }
 /* materials read as the note on the label, not a second title */
 .fig-note { opacity: 0.6; }
+/* what was played on the record. Set off from the title and the note by a
+   gap, because it is a different kind of fact from either of them. */
+.fig-role { opacity: 0.45; margin-top: 0.5em; }
 
 /* Uniform sets keep a real grid: every cell the same, read across not down.
    Photographs flow; drawings and record covers do not. */

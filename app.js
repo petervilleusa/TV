@@ -217,21 +217,27 @@ const RECORDS = {
     art: 'media/releases/pleeay-wealth-hellness-vol-1.webp',
     alt: 'Wealth + Hellness Vol. 1 cover: the band in black against flames',
     artist: 'Pleeay', record: 'Wealth + Hellness Vol. 1',
+    /* The rest of the Pleeay work is on the Pleeay channel. Music says what
+       was played, not everything that was done. */
+    role: 'Bass',
   },
   lostEyesEp: {
     art: 'media/releases/the-lost-eyes-ep.webp',
     alt: 'The Lost Eyes EP cover: warped black lettering on lilac',
     artist: 'The Lost Eyes', record: 'EP',
+    role: 'Drums, backing vocals',
   },
   goldenTriangleTapes: {
     art: 'media/releases/nightswim-golden-triangle-tapes.webp',
     alt: 'The Golden Triangle Tapes cover: cut black lettering on kraft brown',
     artist: 'Nightswim', record: 'The Golden Triangle Tapes',
+    role: 'Every instrument, recorded alone',
   },
   sunbreak2: {
     art: 'media/releases/sunbreak-2.webp',
     alt: 'Sunbreak 2 cover: a sea stack in surf, black and white',
     artist: 'Sunbreak', record: 'Sunbreak 2',
+    role: 'Drums, bass, backing vocals',
   },
 };
 
@@ -241,7 +247,7 @@ const RECORDS = {
 const ALL_RELEASES = {
   type: 'releases', heading: 'Releases', columns: 4, ratio: '1',
   items: Object.values(RECORDS).map(r => ({
-    art: r.art, alt: r.alt, title: r.artist, desc: r.record,
+    art: r.art, alt: r.alt, title: r.artist, desc: r.record, role: r.role,
   })),
 };
 
@@ -280,6 +286,7 @@ const objects = [
       blocks: [
         { type: 'text', heading: 'The band', body: [
           'Pleeay is a San Francisco new wave band fronted by a nonbinary ballet-fairy vocalist. Drums, bass, synths, dance and poetry, used to resist conformity, choose consciousness over convenience, and live loudly with compassion.',
+          'Bass, and a hand in writing the songs and producing the records. The zine, the cassette art and the website are all design work from inside the band.',
         ], list: [
           { name: 'Castle', role: 'vox and dance' },
           { name: 'Huli',   role: 'drums and synth' },
@@ -489,7 +496,8 @@ const objects = [
       title: 'Pyramid scheme',
       blocks: [
         { type: 'text', heading: 'A one off', body: [
-          'A single track, and the spiral that went with it.',
+          'A single track, made for Pyramid Scheme: a group show at Bass & Reiner in San Francisco, built the way its name suggests. The gallery invites a few artists, each of them invites a few more, and it grows until the room is full.',
+          'The spiral is what went with it.',
         ]},
         PYRAMID_TRACK,
         { type: 'grid', columns: 1, ratio: '1200 / 476', fit: 'contain', lightbox: true, items: [
@@ -559,7 +567,7 @@ const objects = [
       title: 'Music',
       blocks: [
         { type: 'text', heading: 'Everything that plays', body: [
-          'Records, a one off, and whatever else has been recorded. Bass and design in Pleeay, and the odd track made alone.',
+          'Four records with four different bands, and a one off made for a gallery show. The job changes with each one, and each cover says which it was.',
         ]},
 
         ALL_RELEASES,
@@ -893,10 +901,14 @@ function renderBlock(b) {
         img.addEventListener('click', () => openLightbox(at));
       }
       fig.appendChild(img);
-      if (item.title || note) {
+      /* A record carries a third line: what was played on it. It sits apart
+         from the title and the note because it answers a different question,
+         and on a page of four bands it is the whole reason the page exists. */
+      if (item.title || note || item.role) {
         const cap = el('figcaption');
         if (item.title) cap.appendChild(el('span', 'fig-title', item.title));
         if (note) cap.appendChild(el('span', 'fig-note', note));
+        if (item.role) cap.appendChild(el('span', 'fig-role', item.role));
         fig.appendChild(cap);
       }
       if (item.links) {
