@@ -531,20 +531,56 @@ main[data-reading] #project > * {
 
 .album-pick:hover .album-t { opacity: 0.6; }
 
-/* The track that is loaded reads as chosen even when paused, because paused
-   in the middle of a record is a place you are, not a thing you stopped. */
-.album-track[data-on="true"] .album-n,
-.album-track[data-on="true"] .album-t,
-.album-track[data-on="true"] .album-d { opacity: 1; }
-.album-track[data-on="true"] .album-n::before {
-  content: "";
-  display: inline-block;
-  width: 0.5em;
-  height: 0.5em;
-  margin-right: 0.5em;
-  background: currentColor;
-  vertical-align: 0.05em;
+/*-------- PLAY AND PAUSE, ON A TRACK --------*/
+/* The number and the icon occupy the same cell, so nothing shifts sideways
+   when one replaces the other. Both are built from the site's own materials:
+   the pause is two strokes at the mark's weight, and the play is the only
+   triangle on the site, sized so its bounding box matches them. */
+/* Stacked with grid rather than absolute positioning: the number stays IN
+   flow, so it still gives the row its baseline and the whole line cannot
+   drift when the icon takes over. */
+.album-cue { display: grid; }
+.album-n, .album-icon {
+  grid-area: 1 / 1;
+  transition: opacity 160ms var(--ease);
 }
+.album-icon { position: relative; opacity: 0; }
+
+/* Play: a triangle drawn with borders, so it needs no file and takes its
+   colour from the row like everything else. */
+.album-icon::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  border-style: solid;
+  border-width: 0.36em 0 0.36em 0.58em;
+  border-color: transparent transparent transparent currentColor;
+}
+
+/* Pause: the same two strokes the rest of the site is built from. The row
+   already knows whether it is running, so the icon reads it from there rather
+   than being told twice. */
+.album-track[data-playing="true"] .album-icon::before {
+  border: 0;
+  width: 0.19em;
+  height: 0.72em;
+  background: currentColor;
+  box-shadow: 0.3em 0 0 currentColor;
+}
+
+/* Hovering a row offers to play it; the row already loaded keeps its icon
+   showing, because paused in the middle of a record is a place you are. */
+.album-pick:hover .album-n,
+.album-track[data-on="true"] .album-n { opacity: 0; }
+.album-pick:hover .album-icon,
+.album-track[data-on="true"] .album-icon { opacity: 1; }
+
+/* The track that is loaded reads as chosen even when paused. */
+.album-track[data-on="true"] .album-t,
+.album-track[data-on="true"] .album-d,
+.album-track[data-on="true"] .album-icon { opacity: 1; }
 
 @media (max-width: 749px) {
   .block-album { grid-template-columns: 1fr; gap: var(--grid-gap); }
@@ -688,7 +724,6 @@ main[data-reading] #project > * {
 }
 
 .lightbox-media { min-width: 0; }
-.lightbox-thumbs { margin-top: 12px; }
 .lightbox-media img { width: 100%; max-height: 78vh; object-fit: contain; display: block; }
 /* the pair is absolutely positioned inside, so it needs a width to size from */
 .lightbox-media .flicker-still {
@@ -1009,8 +1044,12 @@ main[data-reading] #project > * {
 
 
 
-  /* fixed so the drawer covers the screen whatever the pager is doing */
-  nav { position: fixed; width: 100%; }
+  /* Fixed so the drawer covers the screen whatever the pager is doing, and
+     ABOVE an open project. On a phone the drawer is the only navigation there
+     is, so at z-index 3 it opened behind the project and you were stuck on
+     whatever page you were already reading. Below the toggles at 20, which
+     have to stay reachable to close it again. */
+  nav { position: fixed; width: 100%; z-index: 15; }
 
   #backdrop { display: none; }   /* the drawer covers the screen on a phone */
 

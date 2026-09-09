@@ -274,15 +274,15 @@ const RECORDS = {
     artist: 'Pleeay', record: 'Live at the Eagle',
     role: 'Bass',
     tracks: [
-      { n: 1, title: 'Song 1', dur: 153, src: 'media/audio/pleeay-live-at-the-eagle/01.m4a' },
-      { n: 2, title: 'Song 2', dur: 199, src: 'media/audio/pleeay-live-at-the-eagle/02.m4a' },
-      { n: 3, title: 'Song 3', dur: 235, src: 'media/audio/pleeay-live-at-the-eagle/03.m4a' },
-      { n: 4, title: 'Song 4', dur: 253, src: 'media/audio/pleeay-live-at-the-eagle/04.m4a' },
-      { n: 5, title: 'Song 5', dur: 265, src: 'media/audio/pleeay-live-at-the-eagle/05.m4a' },
-      { n: 6, title: 'Song 6', dur: 192, src: 'media/audio/pleeay-live-at-the-eagle/06.m4a' },
-      { n: 7, title: 'Song 7', dur: 179, src: 'media/audio/pleeay-live-at-the-eagle/07.m4a' },
-      { n: 8, title: 'Song 8', dur: 156, src: 'media/audio/pleeay-live-at-the-eagle/08.m4a' },
-      { n: 9, title: 'Song 9', dur: 280, src: 'media/audio/pleeay-live-at-the-eagle/09.m4a' },
+      { n: 1, title: 'Crave', dur: 153, src: 'media/audio/pleeay-live-at-the-eagle/01.m4a' },
+      { n: 2, title: 'Culture', dur: 199, src: 'media/audio/pleeay-live-at-the-eagle/02.m4a' },
+      { n: 3, title: 'Crawl', dur: 235, src: 'media/audio/pleeay-live-at-the-eagle/03.m4a' },
+      { n: 4, title: 'Curious', dur: 253, src: 'media/audio/pleeay-live-at-the-eagle/04.m4a' },
+      { n: 5, title: 'Call', dur: 265, src: 'media/audio/pleeay-live-at-the-eagle/05.m4a' },
+      { n: 6, title: 'Boots', dur: 192, src: 'media/audio/pleeay-live-at-the-eagle/06.m4a' },
+      { n: 7, title: 'Consequence', dur: 179, src: 'media/audio/pleeay-live-at-the-eagle/07.m4a' },
+      { n: 8, title: 'Cure', dur: 156, src: 'media/audio/pleeay-live-at-the-eagle/08.m4a' },
+      { n: 9, title: 'Quiet', dur: 280, src: 'media/audio/pleeay-live-at-the-eagle/09.m4a' },
     ],
   },
   lostEyesEp: {
@@ -884,7 +884,14 @@ function buildAlbum(b) {
   const rows = tracks.map((t, i) => {
     const li = el('li', 'album-track');
     const btn = el('button', 'album-pick');
-    btn.appendChild(el('span', 'album-n', String(t.n ?? i + 1)));
+    /* The number is what the row is; the icon is what the row will do. They
+       share one cell and cross over on hover, so the list reads as a list
+       until you go near it. Play and pause are drawn, not typed: a glyph would
+       be the only character on the site not set in the page's own face. */
+    const cue = el('span', 'album-cue');
+    cue.appendChild(el('span', 'album-n', String(t.n ?? i + 1)));
+    cue.appendChild(el('i', 'album-icon'));
+    btn.appendChild(cue);
     btn.appendChild(el('span', 'album-t', t.title));
     btn.appendChild(el('span', 'album-d', t.dur ? clock(t.dur) : ''));
     btn.addEventListener('click', () => {
@@ -1326,7 +1333,13 @@ function renderProject(o) {
 }
 
 /* The lightbox belongs to the piece you opened, not the whole page: the arrows
-   and the strip beneath stay within that one set of images. */
+   stay within that one set of images.
+   There used to be a strip of thumbnails under the picture. It lived inside
+   the same element `show()` rebuilds, so the first arrow press wiped it and it
+   never came back. Peter's call was to drop it rather than repair it: the
+   arrows and the count already say where you are, and a row of thumbnails
+   under a photograph is a second, smaller version of the thing you opened the
+   lightbox to look at. */
 function openLightbox(at = 0) {
   if (!gallery.length) return;
   const set = gallery.filter(x => x.group === gallery[at].group);
@@ -1337,17 +1350,6 @@ function openLightbox(at = 0) {
   const media = el('div', 'lightbox-media');
   const cap = el('figcaption', 'lightbox-copy');
   const count = el('p', 'lightbox-count');
-  const strip = el('div', 'carousel-thumbs lightbox-thumbs');
-
-  set.forEach((item, n) => {
-    const t = el('button', 'thumb');
-    const ti = el('img');
-    ti.src = item.flip ? item.flip[0] : item.src;
-    ti.alt = item.alt || '';
-    t.appendChild(ti);
-    t.addEventListener('click', e => { e.stopPropagation(); show(n); });
-    strip.appendChild(t);
-  });
 
   const show = n => {
     i = (n + set.length) % set.length;
@@ -1376,7 +1378,6 @@ function openLightbox(at = 0) {
       count.textContent = `${i + 1} / ${set.length}`;
       cap.appendChild(count);
     }
-    [...strip.children].forEach((c, j) => c.dataset.on = String(j === i));
   };
   show(i);
 
@@ -1388,7 +1389,6 @@ function openLightbox(at = 0) {
   const shut = makeMark('x');
   shut.addEventListener('click', e => { e.stopPropagation(); box.remove(); });
 
-  if (set.length > 1) media.appendChild(strip);
   frame.append(media, cap);
   box.append(frame, shut);
   if (set.length > 1) box.append(prev, next);
