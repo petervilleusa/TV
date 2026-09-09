@@ -229,8 +229,8 @@ const RECORDS = {
     ],
   },
   pleeayLive: {
-    art: '',   // cover supplied 2026-09-08, not yet filed into the repo
-    alt: 'Pleeay Live at the Eagle cover',
+    art: 'media/releases/pleeay-live-at-the-eagle.webp',
+    alt: 'Live at the Eagle cover: the band mid-set, the name in pink and blue over it',
     artist: 'Pleeay', record: 'Live at the Eagle',
     role: 'Bass',
     tracks: [
