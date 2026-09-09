@@ -415,12 +415,12 @@ const objects = [
            until you do. */
         { type: 'grid', heading: 'Logos', columns: 3, ratio: '1', fit: 'contain',
           mono: true, lightbox: true, items: [
-          { src: 'media/logos/neon.webp',   title: 'Neon',   alt: 'Pleeay neon logo' },
-          { src: 'media/logos/slayer.webp', title: 'Slayer', alt: 'Pleeay slayer logo' },
-          /* Drawn along a line rather than inside a square: at one column wide
-             it was a thin strip in a lot of nothing. */
+          /* Leads for the same reason it does on the Logos channel: two columns
+             wide, so anywhere but first it wraps and leaves a hole behind it. */
           { src: 'media/logos/people.webp', title: 'People',
             alt: 'Pleeay people logo', span: 2 },
+          { src: 'media/logos/neon.webp',   title: 'Neon',   alt: 'Pleeay neon logo' },
+          { src: 'media/logos/slayer.webp', title: 'Slayer', alt: 'Pleeay slayer logo' },
           /* Each pair is one design and its inverse, so the second is what the
              first looks like turned over. White face first, black on hover. */
           { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
@@ -628,14 +628,17 @@ const objects = [
 
         /* no heading: the text block above it is already called Marks */
         { type: 'grid', columns: 3, ratio: '1', fit: 'contain',
-          lightbox: true, items: [
-          { src: 'media/logos/neon.webp',   title: 'Pleeay neon',   alt: 'Pleeay neon logo' },
-          { src: 'media/logos/slayer.webp', title: 'Pleeay slayer', alt: 'Pleeay slayer logo' },
-          /* Drawn along a line, so it takes two columns. The figures are
-             already white with the engraving in black: the grey panel that
-             used to sit behind them was fighting the artwork, not holding it. */
+          mono: true, lightbox: true, items: [
+          /* First, because it is two columns wide and nothing else is. Third in
+             a row of three it could not fit beside the pair above it, so it
+             dropped to the next row and left a hole where it had been. Leading
+             the grid, it takes columns one and two and the row closes.
+             The figures are already white with the engraving in black: the grey
+             panel that used to sit behind them was fighting the artwork. */
           { src: 'media/logos/people.webp', title: 'Pleeay people',
             alt: 'Pleeay people logo', span: 2 },
+          { src: 'media/logos/neon.webp',   title: 'Pleeay neon',   alt: 'Pleeay neon logo' },
+          { src: 'media/logos/slayer.webp', title: 'Pleeay slayer', alt: 'Pleeay slayer logo' },
           /* Each pair is one design and its inverse. White face first, black
              on hover. */
           { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
@@ -700,7 +703,7 @@ const objects = [
       title: 'Development',
       blocks: [
         { type: 'text', heading: 'Sites', body: [
-          'Sites built either through my work at Sparkart or as solo freelance projects. The screen on this one is showing the page you are reading.',
+          'Sites built either through my work at Sparkart or as solo freelance projects.',
         ]},
 
         { type: 'links', heading: 'Live', items: [
