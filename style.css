@@ -453,6 +453,81 @@ main[data-reading] #project > * {
    clickable yet, and dimmed so it reads as pending rather than broken. */
 .link-pending { opacity: 0.55; }
 
+/*-------- A RECORD --------*/
+/* The sleeve on the left at the size a record is held, the writing and the
+   tracks on the right. One column on a phone, where two would leave the
+   tracklist too narrow to read a title in. */
+.block-album {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: calc(var(--grid-gap) * 3);
+  align-items: start;
+}
+
+.album-cover {
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  background: #211F28;
+  object-fit: cover;
+}
+
+.album-record { opacity: 0.6; }
+.album-role   { opacity: 0.45; margin-top: 0.5em; }
+
+/* The track being played, named above the transport, so the line and the
+   time always say what they belong to. */
+.album-now { margin-top: calc(var(--type) * 1.6); }
+.album-transport { margin-top: 0.4em; }
+
+.album-list {
+  list-style: none;
+  margin: calc(var(--type) * 1.4) 0 0;
+  padding: 0;
+}
+
+.album-pick {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2.4em 1fr auto;
+  gap: 0.8em;
+  align-items: baseline;
+  padding: 0.42em 0;
+  background: none;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.album-track:last-child .album-pick { border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+
+.album-n, .album-d { opacity: 0.45; font-variant-numeric: tabular-nums; }
+.album-d { text-align: right; }
+
+.album-pick:hover .album-t { opacity: 0.6; }
+
+/* The track that is loaded reads as chosen even when paused, because paused
+   in the middle of a record is a place you are, not a thing you stopped. */
+.album-track[data-on="true"] .album-n,
+.album-track[data-on="true"] .album-t,
+.album-track[data-on="true"] .album-d { opacity: 1; }
+.album-track[data-on="true"] .album-n::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.5em;
+  background: currentColor;
+  vertical-align: 0.05em;
+}
+
+@media (max-width: 749px) {
+  .block-album { grid-template-columns: 1fr; gap: var(--grid-gap); }
+  .album-cover { max-width: 60%; }
+}
+
 /* a release is its art, a title, and where to hear it */
 .release ul { list-style: none; margin-top: 0.4em; }
 .release li { display: inline; }

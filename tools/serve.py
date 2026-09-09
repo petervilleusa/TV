@@ -10,6 +10,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class RangeHandler(SimpleHTTPRequestHandler):
+    # Python maps .m4a to audio/mp4a-latm, which is a RAW AAC stream, not the
+    # MP4 container these files actually are. Browsers can refuse the mismatch
+    # outright, so a whole album goes silent with no error worth reading.
+    extensions_map = {**SimpleHTTPRequestHandler.extensions_map,
+                      '.m4a': 'audio/mp4', '.mp4': 'video/mp4',
+                      '.webp': 'image/webp'}
+
     def __init__(self, *a, **kw):
         super().__init__(*a, directory=ROOT, **kw)
 

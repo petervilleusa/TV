@@ -220,45 +220,92 @@ const RECORDS = {
     /* The rest of the Pleeay work is on the Pleeay channel. Music says what
        was played, not everything that was done. */
     role: 'Bass',
+    tracks: [
+      { n: 1, title: 'No', dur: 187, src: 'media/audio/wealth-hellness-1/01.mp3' },
+      { n: 2, title: 'Babies in the Lost & Found', dur: 281, src: 'media/audio/wealth-hellness-1/02.mp3' },
+      { n: 3, title: 'Grief', dur: 200, src: 'media/audio/wealth-hellness-1/03.mp3' },
+      { n: 4, title: 'Dazzling Confusion', dur: 239, src: 'media/audio/wealth-hellness-1/04.mp3' },
+      { n: 5, title: 'Quiet', dur: 248, src: 'media/audio/wealth-hellness-1/05.mp3' },
+    ],
+  },
+  pleeayLive: {
+    art: '',   // cover supplied 2026-09-08, not yet filed into the repo
+    alt: 'Pleeay Live at the Eagle cover',
+    artist: 'Pleeay', record: 'Live at the Eagle',
+    role: 'Bass',
+    tracks: [
+      { n: 1, title: 'Song 1', dur: 153, src: 'media/audio/pleeay-live-at-the-eagle/01.m4a' },
+      { n: 2, title: 'Song 2', dur: 199, src: 'media/audio/pleeay-live-at-the-eagle/02.m4a' },
+      { n: 3, title: 'Song 3', dur: 235, src: 'media/audio/pleeay-live-at-the-eagle/03.m4a' },
+      { n: 4, title: 'Song 4', dur: 253, src: 'media/audio/pleeay-live-at-the-eagle/04.m4a' },
+      { n: 5, title: 'Song 5', dur: 265, src: 'media/audio/pleeay-live-at-the-eagle/05.m4a' },
+      { n: 6, title: 'Song 6', dur: 192, src: 'media/audio/pleeay-live-at-the-eagle/06.m4a' },
+      { n: 7, title: 'Song 7', dur: 179, src: 'media/audio/pleeay-live-at-the-eagle/07.m4a' },
+      { n: 8, title: 'Song 8', dur: 156, src: 'media/audio/pleeay-live-at-the-eagle/08.m4a' },
+      { n: 9, title: 'Song 9', dur: 280, src: 'media/audio/pleeay-live-at-the-eagle/09.m4a' },
+    ],
   },
   lostEyesEp: {
     art: 'media/releases/the-lost-eyes-ep.webp',
     alt: 'The Lost Eyes EP cover: warped black lettering on lilac',
     artist: 'The Lost Eyes', record: 'EP',
     role: 'Drums, backing vocals',
+    tracks: [
+      { n: 1, title: 'Taco Beach / I Like It Weird', dur: 199, src: 'media/audio/the-lost-eyes-ep/01.m4a' },
+      { n: 2, title: 'Just Another', dur: 132, src: 'media/audio/the-lost-eyes-ep/02.mp3' },
+      { n: 3, title: 'Never Seen', dur: 187, src: 'media/audio/the-lost-eyes-ep/03.mp3' },
+      { n: 4, title: 'You Take Me', dur: 184, src: 'media/audio/the-lost-eyes-ep/04.m4a' },
+      { n: 5, title: 'Invisable Man', dur: 264, src: 'media/audio/the-lost-eyes-ep/05.mp3' },
+      { n: 6, title: 'Tigers', dur: 177, src: 'media/audio/the-lost-eyes-ep/06.m4a' },
+      { n: 7, title: 'Hot Rod Joe', dur: 164, src: 'media/audio/the-lost-eyes-ep/07.mp3' },
+      { n: 8, title: 'She Belongs to Me', dur: 173, src: 'media/audio/the-lost-eyes-ep/08.mp3' },
+    ],
   },
   goldenTriangleTapes: {
     art: 'media/releases/nightswim-golden-triangle-tapes.webp',
     alt: 'The Golden Triangle Tapes cover: cut black lettering on kraft brown',
     artist: 'Nightswim', record: 'The Golden Triangle Tapes',
     role: 'Every instrument, recorded alone',
+    tracks: [
+      { n: 1, title: 'We Are Connected', dur: 344, src: 'media/audio/golden-triangle-tapes/01.m4a' },
+      { n: 2, title: 'Awake Snake', dur: 102, src: 'media/audio/golden-triangle-tapes/02.m4a' },
+      { n: 3, title: 'Prints in Paris', dur: 149, src: 'media/audio/golden-triangle-tapes/03.m4a' },
+      { n: 4, title: 'World Sonic', dur: 146, src: 'media/audio/golden-triangle-tapes/04.m4a' },
+      { n: 5, title: 'Anymore', dur: 149, src: 'media/audio/golden-triangle-tapes/05.m4a' },
+      { n: 6, title: 'Sat Song', dur: 193, src: 'media/audio/golden-triangle-tapes/06.m4a' },
+      { n: 7, title: 'Fishdicks', dur: 126, src: 'media/audio/golden-triangle-tapes/07.m4a' },
+      { n: 8, title: 'LoFi Jam 1', dur: 245, src: 'media/audio/golden-triangle-tapes/08.m4a' },
+      { n: 9, title: 'Post Its', dur: 153, src: 'media/audio/golden-triangle-tapes/09.mp3' },
+      { n: 10, title: 'Morning Time', dur: 94, src: 'media/audio/golden-triangle-tapes/10.m4a' },
+      { n: 11, title: 'Fly', dur: 292, src: 'media/audio/golden-triangle-tapes/11.m4a' },
+    ],
   },
   sunbreak2: {
     art: 'media/releases/sunbreak-2.webp',
     alt: 'Sunbreak 2 cover: a sea stack in surf, black and white',
     artist: 'Sunbreak', record: 'Sunbreak 2',
     role: 'Drums, bass, backing vocals',
+    tracks: [
+      { n: 1, title: 'Do It Good', dur: 172, src: 'media/audio/sunbreak-2/01.m4a' },
+      { n: 2, title: 'Old Daze (remix)', dur: 257, src: 'media/audio/sunbreak-2/02.m4a' },
+      { n: 3, title: 'Workin 2 Hard', dur: 252, src: 'media/audio/sunbreak-2/03.m4a' },
+      { n: 4, title: 'Hard', dur: 175, src: 'media/audio/sunbreak-2/04.m4a' },
+    ],
   },
 };
 
-/* Music holds all four, in one grid rather than sorted into the band's and
-   everyone else's — they are four records and they get the same square each.
-   Four across, so the row reads as a shelf. */
-const ALL_RELEASES = {
-  type: 'releases', heading: 'Releases', columns: 4, ratio: '1',
-  items: Object.values(RECORDS).map(r => ({
-    art: r.art, alt: r.alt, title: r.artist, desc: r.record, role: r.role,
-  })),
-};
+const album = r => ({
+  type: 'album', art: r.art, alt: r.alt,
+  artist: r.artist, record: r.record, role: r.role, tracks: r.tracks,
+});
 
-/* On Pleeay's own channel the band is already the page, so the cover is
-   captioned with the record alone. */
-const PLEEAY_RELEASES = {
-  type: 'releases', heading: 'Releases', columns: 3, ratio: '1',
-  items: [RECORDS.wealthHellness1].map(r => ({
-    art: r.art, alt: r.alt, title: r.record,
-  })),
-};
+/* Music holds every record, each as its own block: the cover, what it is, and
+   the record itself to play. This replaced a shelf of covers four across,
+   which showed them all at a glance but had nowhere to put a tracklist. */
+const ALL_ALBUMS = Object.values(RECORDS).map(album);
+
+/* Pleeay's own two, on Pleeay's own channel. */
+const PLEEAY_ALBUMS = [RECORDS.wealthHellness1, RECORDS.pleeayLive].map(album);
 
 const PYRAMID_TRACK = {
   type: 'audio', tracks: [
@@ -307,7 +354,7 @@ const objects = [
             alt: 'Castle singing' },
         ]},
 
-        PLEEAY_RELEASES,
+        ...PLEEAY_ALBUMS,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
           ratio: '1082 / 1400', lightbox: true, items: [
@@ -570,7 +617,7 @@ const objects = [
           'Four records with four different bands, and a one off made for a gallery show. The job changes with each one, and each cover says which it was.',
         ]},
 
-        ALL_RELEASES,
+        ...ALL_ALBUMS,
         PYRAMID_TRACK,
         EVERY_BODY_ZINE,
 
@@ -693,6 +740,157 @@ const clock = s => {
 /* Only one track at a time — starting a second stops the first rather than
    layering them. */
 const players = [];
+
+/* A record, rather than a track. One `audio` element for the whole album and
+   one index into the list, so each album keeps its OWN place: start Sunbreak,
+   go and start the Lost Eyes, come back, and Sunbreak is still where it was.
+   A player per track would mean forty elements on this page, forty requests
+   for metadata, and no idea which record you were listening to. */
+function buildAlbum(b) {
+  const tracks = b.tracks || [];
+  const wrap = el('section', 'block-album');
+
+  /* A record whose sleeve has not been filed yet says so. An empty src
+     resolves to the page itself, which is a wasted request and a broken icon. */
+  let cover;
+  if (b.art) {
+    cover = el('img', 'album-cover');
+    cover.alt = b.alt || '';
+    cover.loading = 'lazy';
+    markWhenLoaded(cover);
+    cover.src = b.art;
+  } else {
+    cover = el('div', 'album-cover slot', 'cover to come');
+  }
+
+  const side = el('div', 'album-side');
+  if (b.artist) side.appendChild(el('h2', null, b.artist));
+  if (b.record) side.appendChild(el('p', 'album-record', b.record));
+  if (b.role) side.appendChild(el('p', 'album-role', b.role));
+
+  const audio = el('audio');
+  audio.preload = 'none';    // a record is 20 minutes; nothing loads unasked
+  let at = -1;               // which track is loaded, -1 before anything is
+
+  const play = el('button', 'mark track-play');
+  play.dataset.kind = 'play';
+  play.append(el('span', 'bar bar-h'), el('span', 'bar bar-v'));
+
+  const line = el('div', 'track-line');
+  const fill = el('i', 'track-fill');
+  line.appendChild(fill);
+  line.setAttribute('role', 'slider');
+  line.tabIndex = 0;
+
+  const time = el('span', 'track-time', '0:00');
+  const transport = el('div', 'track album-transport');
+  const now = el('p', 'track-title album-now', tracks.length ? tracks[0].title : '');
+  transport.append(play, line, time, audio);
+
+  const list = el('ol', 'album-list');
+  const rows = tracks.map((t, i) => {
+    const li = el('li', 'album-track');
+    const btn = el('button', 'album-pick');
+    btn.appendChild(el('span', 'album-n', String(t.n ?? i + 1)));
+    btn.appendChild(el('span', 'album-t', t.title));
+    btn.appendChild(el('span', 'album-d', t.dur ? clock(t.dur) : ''));
+    btn.addEventListener('click', () => {
+      if (i === at) { audio.paused ? audio.play() : audio.pause(); return; }
+      load(i, true);
+    });
+    li.appendChild(btn);
+    list.appendChild(li);
+    return li;
+  });
+
+  const mark = () => {
+    rows.forEach((li, i) => {
+      li.dataset.on = String(i === at);
+      li.dataset.playing = String(i === at && !audio.paused);
+    });
+    const on = !audio.paused;
+    play.dataset.playing = String(on);
+    const t = tracks[Math.max(0, at)];
+    play.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + (t ? t.title : ''));
+    if (t) { now.textContent = t.title; line.setAttribute('aria-label', t.title + ' position'); }
+  };
+
+  const paint = () => {
+    const d = audio.duration;
+    fill.style.width = ((d ? audio.currentTime / d : 0) * 100) + '%';
+    time.textContent = clock(audio.currentTime) + (isFinite(d) ? ' / ' + clock(d) : '');
+    line.setAttribute('aria-valuetext', time.textContent);
+  };
+
+  function load(i, andPlay) {
+    if (!tracks[i]) return;
+    at = i;
+    audio.src = tracks[i].src;
+    fill.style.width = '0%';
+    mark();
+    if (andPlay) {
+      players.forEach(p => { if (p !== audio) p.pause(); });
+      audio.play();
+    }
+  }
+
+  play.addEventListener('click', () => {
+    if (at < 0) return load(0, true);           // nothing chosen yet: side one
+    if (audio.paused) {
+      players.forEach(p => { if (p !== audio) p.pause(); });
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  });
+
+  audio.addEventListener('play', mark);
+  audio.addEventListener('pause', mark);
+  audio.addEventListener('timeupdate', paint);
+  audio.addEventListener('loadedmetadata', paint);
+  audio.addEventListener('durationchange', paint);
+  /* A record plays on to the next side. The last track stops rather than
+     looping back, because a record ending is a thing that should be audible. */
+  audio.addEventListener('ended', () => {
+    if (at + 1 < tracks.length) load(at + 1, true);
+    else { audio.currentTime = 0; mark(); paint(); }
+  });
+
+  const seekTo = e => {
+    const box = line.getBoundingClientRect();
+    if (!box.width || !isFinite(audio.duration)) return;
+    const p = Math.min(1, Math.max(0, (e.clientX - box.left) / box.width));
+    audio.currentTime = p * audio.duration;
+    paint();
+  };
+  line.addEventListener('pointerdown', e => {
+    if (at < 0) return;
+    line.setPointerCapture(e.pointerId);
+    line.dataset.scrub = 'true';
+    seekTo(e);
+  });
+  line.addEventListener('pointermove', e => { if (line.dataset.scrub) seekTo(e); });
+  const drop = e => {
+    if (!line.dataset.scrub) return;
+    delete line.dataset.scrub;
+    line.releasePointerCapture(e.pointerId);
+  };
+  line.addEventListener('pointerup', drop);
+  line.addEventListener('pointercancel', drop);
+  line.addEventListener('keydown', e => {
+    const step = { ArrowLeft: -5, ArrowRight: 5, ArrowDown: -5, ArrowUp: 5 }[e.key];
+    if (step == null || !isFinite(audio.duration)) return;
+    e.preventDefault();
+    audio.currentTime = Math.min(audio.duration, Math.max(0, audio.currentTime + step));
+    paint();
+  });
+
+  players.push(audio);
+  mark();
+  side.append(now, transport, list);
+  wrap.append(cover, side);
+  return wrap;
+}
 
 function buildTrack(t) {
   const row = el('div', 'track');
@@ -986,6 +1184,10 @@ function renderBlock(b) {
     (b.body || []).forEach(t => wrap.appendChild(el('p', null, t)));
     (b.tracks || []).forEach(t => wrap.appendChild(buildTrack(t)));
     return wrap;
+  }
+
+  if (b.type === 'album') {
+    return buildAlbum(b);
   }
 
   if (b.type === 'links') {
