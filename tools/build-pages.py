@@ -63,6 +63,19 @@ def head(html, title, desc, canonical):
                   f'<meta name="description" content="{desc}">', html, count=1)
     html = re.sub(r'<link rel="canonical" href="[^"]*">',
                   f'<link rel="canonical" href="{canonical}">', html, count=1)
+
+    # The share card has to say what THIS page is, not what the home page is.
+    # Copied unchanged, every project would paste as "PETERVILLE USA" with the
+    # same sentence under it, which is worse than no card: it looks like the
+    # link is broken rather than specific. The image is deliberately left
+    # alone — one picture of the wall stands for the whole site.
+    html = re.sub(r'(<meta property="og:title" content=")[^"]*(">)',
+                  lambda m: m.group(1) + title + m.group(2), html, count=1)
+    html = re.sub(r'(<meta property="og:description" content=")[^"]*(">)',
+                  lambda m: m.group(1) + desc + m.group(2), html, count=1)
+    html = re.sub(r'(<meta property="og:url" content=")[^"]*(">)',
+                  lambda m: m.group(1) + canonical + m.group(2), html, count=1)
+
     return html.replace('<title>', '<base href="/">\n  <title>', 1)
 
 
