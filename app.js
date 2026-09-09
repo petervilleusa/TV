@@ -393,20 +393,14 @@ const objects = [
           { src: 'media/pleeay/band.webp', alt: 'Pleeay' },
         ]},
 
-        { type: 'grid', columns: 2, ratio: '4 / 5', lightbox: true, items: [
-          { src: 'media/pleeay/live-01.webp', title: 'Tenderloin Festival',
-            alt: 'Peter playing bass' },
-          { src: 'media/pleeay/live-02.webp', title: 'Tenderloin Festival',
-            alt: 'Castle singing' },
-        ]},
-
         ...PLEEAY_ALBUMS,
 
-        /* The tapes sit with the records rather than with the merch table,
-           because a cassette is one of the records made into an object, and
-           the merch table is a table. */
+        /* The tapes and the zine sit with the records rather than with the
+           merch table: each is one of the records made into an object, and the
+           merch table is a table. */
         WEALTH_HELLNESS_TAPE,
         EVERY_BODY_TAPE,
+        EVERY_BODY_ZINE,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
           ratio: '1082 / 1400', lightbox: true, items: [
@@ -417,22 +411,23 @@ const objects = [
           { src: 'media/setlists/04.webp', title: 'Email list',  alt: 'Merch table email sign up' },
         ]},
 
+        /* Marks only, so the colour in them is the point of looking. Grey
+           until you do. */
         { type: 'grid', heading: 'Logos', columns: 3, ratio: '1', fit: 'contain',
-          lightbox: true, items: [
+          mono: true, lightbox: true, items: [
           { src: 'media/logos/neon.webp',   title: 'Neon',   alt: 'Pleeay neon logo' },
           { src: 'media/logos/slayer.webp', title: 'Slayer', alt: 'Pleeay slayer logo' },
-          { src: 'media/logos/people.webp', title: 'People', alt: 'Pleeay people logo',
-            tile: '#E2E2E2' },
-          { flip: ['media/stickers/dark.webp', 'media/stickers/light.webp'],
+          /* Drawn along a line rather than inside a square: at one column wide
+             it was a thin strip in a lot of nothing. */
+          { src: 'media/logos/people.webp', title: 'People',
+            alt: 'Pleeay people logo', span: 2 },
+          /* Each pair is one design and its inverse, so the second is what the
+             first looks like turned over. White face first, black on hover. */
+          { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
             title: 'Boop', alt: 'Pleeay sticker' },
-          /* the two are exact inverses of one another, so the cut reads as the
-             button flipping rather than as two designs. No tile: each carries
-             its own disc, and a square behind them would kill that. */
           { flip: ['media/buttons/line.webp', 'media/buttons/disc.webp'],
             title: 'Buttons', alt: 'Pleeay button' },
         ]},
-
-        EVERY_BODY_ZINE,
 
         { type: 'links', heading: 'Elsewhere', items: [
           { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
@@ -598,7 +593,6 @@ const objects = [
       blocks: [
         { type: 'text', heading: 'A one off', body: [
           'A single track, made for Pyramid Scheme: a group show at Bass & Reiner in San Francisco, built the way its name suggests. The gallery invites a few artists, each of them invites a few more, and it grows until the room is full.',
-          'The spiral is what went with it.',
         ]},
         PYRAMID_TRACK,
         { type: 'grid', columns: 1, ratio: '1200 / 476', fit: 'contain', lightbox: true, items: [
@@ -637,11 +631,16 @@ const objects = [
           lightbox: true, items: [
           { src: 'media/logos/neon.webp',   title: 'Pleeay neon',   alt: 'Pleeay neon logo' },
           { src: 'media/logos/slayer.webp', title: 'Pleeay slayer', alt: 'Pleeay slayer logo' },
-          { src: 'media/logos/people.webp', title: 'Pleeay people', alt: 'Pleeay people logo',
-            tile: '#E2E2E2' },
-          { flip: ['media/stickers/dark.webp', 'media/stickers/light.webp'],
+          /* Drawn along a line, so it takes two columns. The figures are
+             already white with the engraving in black: the grey panel that
+             used to sit behind them was fighting the artwork, not holding it. */
+          { src: 'media/logos/people.webp', title: 'Pleeay people',
+            alt: 'Pleeay people logo', span: 2 },
+          /* Each pair is one design and its inverse. White face first, black
+             on hover. */
+          { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
             title: 'Pleeay boop', alt: 'Pleeay sticker' },
-          { flip: ['media/bird-dark.webp', 'media/bird-light.webp'],
+          { flip: ['media/bird-light.webp', 'media/bird-dark.webp'],
             title: 'JT Bird logo', alt: 'JT Bird logo' },
         ]},
       ],
@@ -673,7 +672,6 @@ const objects = [
 
         ...ALL_ALBUMS,
         PYRAMID_TRACK,
-        EVERY_BODY_ZINE,
 
         /* "Listen" was the heading while the records were somewhere else. The
            listening happens on this page now, so what is left is just the
@@ -702,7 +700,16 @@ const objects = [
       title: 'Development',
       blocks: [
         { type: 'text', heading: 'Sites', body: [
-          'Websites built and shipped. The screen on this one is showing the page you are reading.',
+          'Sites built either through my work at Sparkart or as solo freelance projects. The screen on this one is showing the page you are reading.',
+        ]},
+
+        { type: 'links', heading: 'Live', items: [
+          { label: 'thegreenroompr.com', href: 'https://www.thegreenroompr.com/' },
+          { label: 'sparkart.com', href: 'https://www.sparkart.com/' },
+          { label: 'thelordsofprint.com', href: 'https://thelordsofprint.com/' },
+          { label: 'store.backstreetboys.com', href: 'https://store.backstreetboys.com/' },
+          { label: 'store.ozzy.com', href: 'https://store.ozzy.com/' },
+          { label: 'behemothofficial.store', href: 'https://behemothofficial.store/' },
         ]},
       ],
     },
@@ -1064,6 +1071,10 @@ function renderBlock(b) {
     if (b.columns === 1) wrap.dataset.single = 'true';
     if (b.ratio) { wrap.style.setProperty('--ratio', b.ratio); wrap.dataset.ratio = 'true'; }
     if (b.fit === 'contain') wrap.dataset.fit = 'contain';
+    /* Grey until you look at it. Only for sets where the colour is the thing
+       being shown, so that arriving at one is a change rather than the state
+       everything is already in. */
+    if (b.mono) block.dataset.mono = 'true';
     /* A column flow balances by height, so a set of EQUAL height items lands
        in fewer columns than asked for — four record covers in three columns
        became two columns of two with the third left empty, and the reading
@@ -1073,6 +1084,10 @@ function renderBlock(b) {
     const g = ++group;
     (b.items || []).forEach(item => {
       const fig = el('figure', b.type === 'releases' ? 'release' : null);
+      /* A mark drawn along a line has nothing to fill a square with, so it is
+         allowed to take more than one column. Only meaningful in a real grid,
+         which is what `data-even` makes; a column flow would ignore it. */
+      if (item.span) fig.style.gridColumn = `span ${item.span}`;
       /* materials sit under the title. The archive repeats the title in the
          description where a work has no materials of its own, so a line that
          only says the title again is dropped rather than printed twice. */

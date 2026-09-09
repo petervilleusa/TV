@@ -449,6 +449,18 @@ main[data-reading] #project > * {
    around it rather than running to its edges. */
 .grid-items[data-fit="contain"] img { padding: 8%; }
 
+/* A drawing on a transparent ground belongs ON the page, not on a panel. The
+   loading colour is still wanted, so it is dropped only once the picture has
+   landed — otherwise the box has nothing to hold it open with. */
+.grid-items[data-fit="contain"] img[data-loaded] { background: transparent; }
+
+/* Grey until you look at it. Scoped to a block that asks, so it reads as a
+   set behaving differently rather than as the way everything looks: the site
+   stopped being monochrome by default on purpose. */
+.block-grid[data-mono] img { filter: grayscale(1); transition: filter 320ms var(--ease); }
+.block-grid[data-mono] figure:hover img { filter: none; }
+.block-grid[data-mono] figure:focus-within img { filter: none; }
+
 /* A label standing where a link will go. Not underlined, because it is not
    clickable yet, and dimmed so it reads as pending rather than broken. */
 .link-pending { opacity: 0.55; }
@@ -1035,6 +1047,22 @@ main[data-reading] #project > * {
 
 .flicker-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
+/* In a list of still pictures a pair is a HOVER, not a flicker. Cutting
+   between two designs on its own reads as a fault when nothing else on the
+   page is moving, and a hard flicker is a photosensitivity risk. The white
+   face is what you see; the black one is the same design turned over, and you
+   get it by asking. On the SCREENS the flicker stays, because there it is a
+   television changing channel. */
+.flicker-still img:last-child {
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+}
+/* Kept as separate rules on purpose: one bad selector in a comma list throws
+   the WHOLE rule away, so pairing :hover with a :focus pseudo-class means a
+   browser that dislikes the second silently loses the first as well. */
+.flicker-still:hover img:last-child { opacity: 1; }
+.flicker-still:focus-within img:last-child { opacity: 1; }
+
 /* slides hold, then cross into one another. A slideshow is a flicker for
    layout only — the cut animation below must never reach it, so the pair is
    selected as :not(.slides) rather than left to source order. */
@@ -1068,7 +1096,10 @@ main[data-reading] #project > * {
 @keyframes kb-in  { from { transform: scale(1);     } to { transform: scale(1.13); } }
 @keyframes kb-out { from { transform: scale(1.13);  } to { transform: scale(1);    } }
 
-.flicker:not(.slides) img:last-child {
+/* `:not(.flicker-still)` is named rather than left to specificity: the hover
+   rules for a grid pair are a lower weight than this selector, and a tie
+   decided by source order has silently broken this pair once already. */
+.flicker:not(.slides):not(.flicker-still) img:last-child {
   animation: flick 2.4s steps(1, end) infinite;
 }
 
@@ -1086,7 +1117,9 @@ main[data-reading] #project > * {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flicker img:last-child { animation: none; opacity: 1; }
+  /* the grid pairs are excluded: a hover swap is not motion, and forcing
+     opacity here would pin every one of them to its black face */
+  .flicker:not(.flicker-still) img:last-child { animation: none; opacity: 1; }
   /* the single-image rule outweighs the one above it, so it has to be named */
   .slides[data-pan] img[data-on],
   .slides[data-pan] img:only-child[data-on] { animation: none; }
