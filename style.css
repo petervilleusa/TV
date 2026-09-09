@@ -380,6 +380,14 @@ main[data-reading] #project > * {
   margin-bottom: calc(var(--type) * 1.2);
 }
 
+/* A sentence standing between a heading and the thing it introduces. Held to
+   the same measure as the writing blocks so its lines break where theirs do.
+   Only the last one carries the gap down to the pictures, so a block without
+   any intro keeps exactly the spacing it had. */
+.block-intro { max-width: 62ch; }
+.block-intro + .block-intro { margin-top: 1em; }
+.block-intro:last-of-type { margin-bottom: calc(var(--type) * 1.2); }
+
 /* Columns, not a grid: every photograph keeps its own proportions and the next
    one starts where it ends, so nothing is cropped to make a tidy row. The
    gutter is deliberately much tighter than the page's padding — at this

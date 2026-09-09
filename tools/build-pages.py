@@ -22,16 +22,19 @@ SITE = 'https://petervilleusa.onrender.com'
 
 # A sentence per project, for search results and link previews.
 BLURB = {
-    'pleeay':         'Records, set lists, stickers and a zine from the band Pleeay.',
-    'logos':          'Logos, stickers and marks drawn for bands and their merch.',
-    'fine-art':       'Painting and sculpture. Concrete, canvas, foam, enamel and wood.',
-    'print':          'Zines, folded and stapled in small numbered runs.',
-    'pyramid-scheme': 'A single track, and the spiral that went with it.',
-    'music':          'Records, a one off, and everything else that plays.',
-    'development':    'Websites built and shipped.',
+    'pleeay':         'Records, cassettes, set lists and logos from the band Pleeay.',
+    'logos':          'Logos, stickers and marks made for bands and their merch.',
+    'fine-art':       'Paintings and wall sculptures made from concrete, canvas, '
+                      'foam, enamel and wood.',
+    'physical':       'Zines, merch designs, stickers and other physical pieces.',
+    'pyramid-scheme': 'A track made for a group show at Bass & Reiner in San Francisco.',
+    'music':          "Records I've made with different bands, plus a one-off track "
+                      'made for a gallery show.',
+    'development':    "Websites I've built through my work at Sparkart and as a "
+                      'freelance developer.',
 }
-HOME_BLURB = ('Peter Warren. Painting, sculpture, print, logos and records, '
-              'shown on a wall of televisions.')
+HOME_BLURB = ('Peter Warren. Painting, sculpture, print, logos, records, '
+              "websites, and other things I've made.")
 
 
 def channels(src):

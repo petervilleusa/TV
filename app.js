@@ -198,8 +198,8 @@ const EVERY_BODY_ZINE = {
     { src: 'media/zine/06.webp', alt: 'Every Body zine, inside pages' },
   ],
   body: [
-    'A limited edition zine with the lyrics to every song on the Pleeay debut album Every Body, and photographs of the band along the way.',
-    'Each one is made by hand, so no two are the same.',
+    "A zine with the lyrics to every song on Pleeay's debut album, Every Body, along with photographs of the band.",
+    "Each one was made by hand, so they're all a little different.",
   ],
   /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
 };
@@ -223,7 +223,7 @@ const WEALTH_HELLNESS_TAPE = {
     { src: 'media/cassettes/wh-05-angle.webp', alt: 'The cassette, angled' },
   ],
   body: [
-    'A five track tape in a clear shell. The fire runs the full width of the folded card, so the track titles read down a column of it and the band gets the black half to itself.',
+    'A five track cassette in a clear shell. I designed the J-card and shell.',
   ],
 };
 
@@ -240,7 +240,7 @@ const EVERY_BODY_TAPE = {
     { src: 'media/cassettes/eb-04-three-up.webp', alt: 'Spine, case and shell together' },
   ],
   body: [
-    'Ten tracks over two sides, printed on a blue that carries from the card onto the shell. The inside panel splits the running order across the fold and keeps a line of the record on the flap.',
+    'A ten track cassette printed on blue. The color carries from the J-card onto the shell.',
   ],
 };
 
@@ -378,8 +378,8 @@ const objects = [
       title: 'Pleeay',
       blocks: [
         { type: 'text', heading: 'The band', body: [
-          'Pleeay is a San Francisco new wave band fronted by a nonbinary ballet-fairy vocalist. Drums, bass, synths, dance and poetry, used to resist conformity, choose consciousness over convenience, and live loudly with compassion.',
-          'Bass, and a hand in writing the songs and producing the records. The zine, the cassette art and the website are all design work from inside the band.',
+          'Pleeay is a San Francisco new wave band. Castle sings and dances, Huli plays drums and synth, and I play bass.',
+          'I also help write the songs, produce the records, and handle the design for the band. The zines, cassette art, merch, and website all came out of that.',
         ], list: [
           { name: 'Castle', role: 'vox and dance' },
           { name: 'Huli',   role: 'drums and synth' },
@@ -403,6 +403,7 @@ const objects = [
         EVERY_BODY_ZINE,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
+          body: ['Set lists, merch, price lists, and other things from playing shows with Pleeay.'],
           ratio: '1082 / 1400', lightbox: true, items: [
           { src: 'media/setlists/00.webp', title: 'Bandshell',   alt: 'Set list, Bandshell' },
           { src: 'media/setlists/01.webp', title: 'KO',          alt: 'Set list, KO' },
@@ -414,6 +415,7 @@ const objects = [
         /* Marks only, so the colour in them is the point of looking. Grey
            until you do. */
         { type: 'grid', heading: 'Logos', columns: 3, ratio: '1', fit: 'contain',
+          body: ["Logos and little marks I've made for Pleeay, including designs that ended up on merch, stickers, buttons, and neon."],
           mono: true, lightbox: true, items: [
           /* Leads for the same reason it does on the Logos channel: two columns
              wide, so anywhere but first it wraps and leaves a hole behind it. */
@@ -458,10 +460,12 @@ const objects = [
       title: 'Fine art',
       blocks: [
         { type: 'text', heading: 'Painting and sculpture', body: [
-          'Paintings and wall sculpture. Concrete, canvas, foam, enamel and wood, mostly built rather than painted, and often shaped so the edge of the work is part of the drawing.',
+          'Paintings and wall sculptures made from concrete, canvas, foam, enamel, and wood.',
+          'A lot of these are built rather than painted, and the edges are part of the work.',
         ]},
 
-        { type: 'grid', heading: 'Current work', columns: 3, lightbox: true, items: [
+        { type: 'grid', heading: 'Current work', columns: 3, lightbox: true,
+          body: ['Installation views and recent paintings and sculptures.'], items: [
           { src: 'media/art/current/00.webp', title: "Installation View", alt: "Installation View" },
           { src: 'media/art/current/01.webp', title: "Installation with Pony Vice and Canvas wrapped Wood", alt: "Installation with Pony Vice and Canvas wrapped Wood" },
           { src: 'media/art/current/02.webp', title: "Tetrad (concrete)", desc: "Enamel and Concrete, 24\u201dx24\u201d", alt: "Tetrad (concrete)" },
@@ -475,7 +479,8 @@ const objects = [
           { src: 'media/art/current/10.webp', title: "Foam (Tied)", desc: "Acrylic on Foam, 4\u201dx4\u201d", alt: "Foam (Tied)" },
         ]},
 
-        { type: 'grid', heading: 'Tablets, 2018', columns: 3, lightbox: true, items: [
+        { type: 'grid', heading: 'Tablets, 2018', columns: 3, lightbox: true,
+          body: ['A group of paintings and sculptures made in 2018.'], items: [
           { src: 'media/art/tablets/00.webp', title: "Tablet (Swimming Pink)", desc: "Acrylic and Ink on Canvas and Vinyl, 12\u201d x 16\u201d", alt: "Tablet (Swimming Pink)" },
           { src: 'media/art/tablets/01.webp', title: "Tablet (Any Alter-like Structure Made for Keeping Sacred Fire)", desc: "Acrylic on Canvas and Vinyl, 18\u201d x 24\u201d", alt: "Tablet (Any Alter-like Structure Made for Keeping Sacred Fire)" },
           { src: 'media/art/tablets/02.webp', title: "Tablet (ITTI)", desc: "Oil and Acrylic on Canvas and Wood, 16\"x12\"", alt: "Tablet (ITTI)" },
@@ -489,7 +494,8 @@ const objects = [
           { src: 'media/art/tablets/10.webp', title: "Tablet (You and Me Both)", desc: "Acrylic and gesso on Canvas, 24\u201d x 30\u201d", alt: "Tablet (You and Me Both)" },
         ]},
 
-        { type: 'grid', heading: 'Interiors, 2017', columns: 4, lightbox: true, items: [
+        { type: 'grid', heading: 'Interiors, 2017', columns: 4, lightbox: true,
+          body: ['A group of paintings and sculptures made in 2017.'], items: [
           { src: 'media/art/interiors/00.webp', alt: "Interiors, 2017" },
           { src: 'media/art/interiors/01.webp', alt: "Interiors, 2017" },
           { src: 'media/art/interiors/02.webp', alt: "Interiors, 2017" },
@@ -520,7 +526,8 @@ const objects = [
           { src: 'media/art/interiors/27.webp', alt: "Interiors, 2017" },
         ]},
 
-        { type: 'grid', heading: 'Jumper, 2015', columns: 3, lightbox: true, items: [
+        { type: 'grid', heading: 'Jumper, 2015', columns: 3, lightbox: true,
+          body: ['A work from 2015.'], items: [
           { src: 'media/art/jumper/00.webp', alt: "Jumper, 2015" },
           { src: 'media/art/jumper/01.webp', alt: "Jumper, 2015" },
           { src: 'media/art/jumper/02.webp', alt: "Jumper, 2015" },
@@ -548,7 +555,7 @@ const objects = [
       blocks: [
         { type: 'text', heading: 'Things you can hold',
           body: [
-            'Zines and cassettes, folded and stapled and shrink-wrapped in small numbered runs. This is the one place the work stops being an edition of one.',
+            "A collection of zines, merch designs, stickers, and other physical pieces. It's always nice to see the work out in the world.",
           ]},
 
         { type: 'feature',
@@ -560,7 +567,7 @@ const objects = [
             { src: 'media/print/becoming/02.webp', alt: 'Becoming zine, open spread' },
           ],
           body: [
-            'A single fold zine combining vector shapes, text, and process photographs of paintings mid production.',
+            'A single fold zine combining vector shapes, text, and photographs of paintings in progress.',
             'Edition of 20.',
           ],
           /* No buying anywhere on the site for now — it is a place to look at
@@ -592,7 +599,9 @@ const objects = [
       title: 'Pyramid scheme',
       blocks: [
         { type: 'text', heading: 'A one off', body: [
-          'A single track, made for Pyramid Scheme: a group show at Bass & Reiner in San Francisco, built the way its name suggests. The gallery invites a few artists, each of them invites a few more, and it grows until the room is full.',
+          'A track made for Pyramid Scheme, a group show at Bass & Reiner in San Francisco.',
+          'The show was built around the idea of artists inviting other artists to participate until the room was full.',
+          'I made one track for it.',
         ]},
         PYRAMID_TRACK,
         { type: 'grid', columns: 1, ratio: '1200 / 476', fit: 'contain', lightbox: true, items: [
@@ -623,7 +632,8 @@ const objects = [
       title: 'Logos',
       blocks: [
         { type: 'text', heading: 'Marks', body: [
-          'Logos, stickers and marks made for bands and their merch. Most begin as something drawn by hand and end up somewhere it can be printed, stitched, worn or lit.',
+          'Logos, stickers, and marks made for bands and their merch.',
+          'Most start as something drawn by hand and eventually end up on something.',
         ]},
 
         /* no heading: the text block above it is already called Marks */
@@ -670,7 +680,8 @@ const objects = [
       title: 'Music',
       blocks: [
         { type: 'text', heading: 'Everything that plays', body: [
-          'Four records with four different bands, and a one off made for a gallery show. The job changes with each one, and each cover says which it was.',
+          "Records I've made with different bands, plus a one-off track made for a gallery show.",
+          'The role changes from record to record.',
         ]},
 
         ...ALL_ALBUMS,
@@ -703,10 +714,12 @@ const objects = [
       title: 'Development',
       blocks: [
         { type: 'text', heading: 'Sites', body: [
-          'Sites built either through my work at Sparkart or as solo freelance projects.',
+          "Websites I've built through my work at Sparkart and as a freelance developer.",
+          'Some are design projects, some are development projects, and most are a little bit of both.',
         ]},
 
-        { type: 'links', heading: 'Live', items: [
+        { type: 'links', heading: 'Live',
+          body: ['Selected sites that are currently live.'], items: [
           { label: 'thegreenroompr.com', href: 'https://www.thegreenroompr.com/' },
           { label: 'sparkart.com', href: 'https://www.sparkart.com/' },
           { label: 'thelordsofprint.com', href: 'https://thelordsofprint.com/' },
@@ -1063,6 +1076,10 @@ function renderBlock(b) {
   if (b.type === 'grid' || b.type === 'releases') {
     const block = el('section', 'block-grid');
     if (b.heading) block.appendChild(el('h2', null, b.heading));
+    /* A set of pictures can want a sentence before it. Every other block type
+       already printed one; this one and `links` did not, so copy written for
+       them disappeared without any error to notice. */
+    (b.body || []).forEach(t => block.appendChild(el('p', 'block-intro', t)));
     /* The pictures live in their own box inside the block. They flow down
        columns of their own height, which a heading must not join — so the
        heading is a sibling of that box, not the first thing in it. */
@@ -1265,6 +1282,7 @@ function renderBlock(b) {
   if (b.type === 'links') {
     const wrap = el('section', 'block-links');
     if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+    (b.body || []).forEach(t => wrap.appendChild(el('p', 'block-intro', t)));
     const ul = el('ul');
     (b.items || []).forEach(l => {
       const li = el('li'), a = el('a', null, l.label);
