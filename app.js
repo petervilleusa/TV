@@ -788,6 +788,29 @@ function markWhenLoaded(img) {
   img.addEventListener('load', () => { img.dataset.loaded = 'true'; }, { once: true });
 }
 
+/* How many pictures a project may fetch straight away. Everything used to be
+   `loading="lazy"`, INCLUDING the first thing on the page, and lazy is a
+   deliberate delay: the browser lays the page out, works out what is near the
+   view, and only then goes and asks. On the first screenful that is a wait for
+   nothing, and on a project like Fine art it happens while sixty other
+   pictures are queued behind it. The ones you are about to look at are asked
+   for immediately; the rest keep waiting until you scroll to them. */
+const EAGER = 6;
+let eager = 0;
+
+function hintLoading(img) {
+  /* Decoding off the main thread either way, so a large photograph arriving
+     cannot stall the writing that is fading in beside it. */
+  img.decoding = 'async';
+  if (eager < EAGER) {
+    eager += 1;
+    img.loading = 'eager';
+    img.fetchPriority = eager <= 2 ? 'high' : 'auto';
+  } else {
+    img.loading = 'lazy';
+  }
+}
+
 function el(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -826,7 +849,7 @@ function buildAlbum(b) {
   if (b.art) {
     cover = el('img', 'album-cover');
     cover.alt = b.alt || '';
-    cover.loading = 'lazy';
+    hintLoading(cover);
     markWhenLoaded(cover);
     cover.src = b.art;
   } else {
@@ -1107,7 +1130,7 @@ function renderBlock(b) {
         const flick = el('div', 'flicker flicker-still');
         item.flip.forEach(src => {
           const fi = el('img');
-          fi.alt = item.alt || item.title || ''; fi.loading = 'lazy';
+          fi.alt = item.alt || item.title || ''; hintLoading(fi);
           markWhenLoaded(fi);
           fi.src = src;
           flick.appendChild(fi);
@@ -1155,7 +1178,7 @@ function renderBlock(b) {
 
       const img = el('img');
       img.alt = item.alt || item.title || '';
-      img.loading = 'lazy';
+      hintLoading(img);
       /* The CSS holds a square open until the picture lands, then hands the
          box back to its own proportions. The listener goes on BEFORE the src,
          or a cached image can finish loading in the gap between the two and
@@ -1289,6 +1312,7 @@ function renderProject(o) {
   project.replaceChildren();
   gallery = [];
   group = 0;
+  eager = 0;   // each project gets its own head start
   if (!o || !o.content) { project.hidden = true; return; }
   project.hidden = false;
   project.scrollTop = 0;
@@ -1574,7 +1598,7 @@ function setNav(open) {
   toggle.setAttribute('aria-expanded', String(open));
 }
 
-function expand(id) {
+function expand(id, arriving = false) {
   stage.dataset.expanded = id;
   shell.dataset.open = 'true';
 
@@ -1583,11 +1607,17 @@ function expand(id) {
   backdrop.style.backgroundImage = o && o.backdrop ? `url("${o.backdrop}")` : '';
   renderProject(o);
 
-  /* Let the screen play first, then hand over to the writing. */
+  /* Let the screen play first, then hand over to the writing. That pause is
+     the point when you have just clicked a television and are watching it grow.
+     Arriving straight at /fine-art/ there is nothing to watch: the set is
+     already open, so the same wait is a blank page for two and a half seconds,
+     which reads as the site being slow rather than as a beat being held. */
   clearTimeout(previewTimer);
   delete shell.dataset.reading;
   if (o && o.content) {
-    previewTimer = setTimeout(() => { shell.dataset.reading = 'true'; }, PREVIEW_MS);
+    const wait = arriving ? 0 : PREVIEW_MS;
+    if (wait) previewTimer = setTimeout(() => { shell.dataset.reading = 'true'; }, wait);
+    else shell.dataset.reading = 'true';
   }
   if (!isPhone()) setNav(true);
   lockToStage(id);
@@ -1675,14 +1705,14 @@ function setHead(o) {
 
 /* `push` is false when the URL already says what we are about to do — on
    first load, and when the back button is what asked for the change. */
-function go(id, push = true) {
+function go(id, push = true, arriving = false) {
   const o = objects.find(x => x.id === id);
   if (!o) return;
   if (push && location.pathname !== pathOf(o)) {
     history.pushState({ id }, '', pathOf(o));
   }
   setHead(o);
-  expand(id);
+  expand(id, arriving);
 }
 
 function goHome(push = true) {
@@ -1724,7 +1754,7 @@ document.querySelectorAll('#nav-list a').forEach(a => {
 (() => {
   const slug = slugFromPath();
   const o = slug && objects.find(x => x.slug === slug);
-  if (o) go(o.id, false); else setHead(null);
+  if (o) go(o.id, false, true); else setHead(null);
 })();
 
 document.addEventListener('keydown', e => {
