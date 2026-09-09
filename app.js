@@ -1494,10 +1494,17 @@ function buildMedia(tv) {
   }
   const isVideo = /\.(mp4|webm|mov)$/i.test(tv.media);
   const el = document.createElement(isVideo ? 'video' : 'img');
-  el.src = tv.media;
   if (isVideo) {
+    /* The file is named in data-src, not src, so nothing is fetched until the
+       wall is actually being looked at. Seven sets loop a video, 5.2MB of the
+       9MB a project page used to weigh, and arriving straight at /fine-art/
+       you are looking at paintings with the whole wall behind the writing.
+       `wallPlayback` hands over the real src at the moment it is wanted. */
+    el.dataset.src = tv.media;
+    el.preload = 'none';
     el.autoplay = el.muted = el.loop = el.playsInline = true;
   } else {
+    el.src = tv.media;
     el.alt = '';
   }
   return el;
@@ -1624,6 +1631,7 @@ function expand(id, arriving = false) {
   wall.querySelectorAll('.tv').forEach(el => {
     el.dataset.state = el.dataset.screen === id ? 'expanded' : '';
   });
+  wallPlayback(id);
   document.querySelectorAll('#nav-list a').forEach(a => {
     a.dataset.active = String(a.dataset.screen === id);
   });
@@ -1660,7 +1668,27 @@ function lockToStage(id) {
   }
 }
 
+/* Seven sets on this wall play a looping video, and they never stopped. With a
+   project open the wall is almost entirely covered by the writing, so six of
+   those seven are decoding frames nobody can see, forever, while the project's
+   pictures are trying to arrive. Fine art asks for fifty-nine of them.
+
+   So the wall goes quiet while you are reading, except for the set you opened,
+   and starts again when you come back to it. `play()` returns a promise that
+   rejects if the browser has decided not to autoplay; that is not an error
+   worth acting on. */
+function wallPlayback(exceptId) {
+  wall.querySelectorAll('.tv').forEach(tv => {
+    const v = tv.querySelector('video');
+    if (!v) return;
+    if (exceptId && tv.dataset.screen !== exceptId) { v.pause(); return; }
+    if (!v.getAttribute('src') && v.dataset.src) v.src = v.dataset.src;
+    v.play().catch(() => {});
+  });
+}
+
 function collapse() {
+  wallPlayback(null);
   clearTimeout(previewTimer);
   delete shell.dataset.reading;
   delete document.body.dataset.locked;
@@ -1754,7 +1782,9 @@ document.querySelectorAll('#nav-list a').forEach(a => {
 (() => {
   const slug = slugFromPath();
   const o = slug && objects.find(x => x.slug === slug);
-  if (o) go(o.id, false, true); else setHead(null);
+  /* Landing on the wall: everything plays. Landing inside a project: only the
+     set you came for, and the rest stay unfetched until you close it. */
+  if (o) go(o.id, false, true); else { setHead(null); wallPlayback(null); }
 })();
 
 document.addEventListener('keydown', e => {
