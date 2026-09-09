@@ -204,6 +204,46 @@ const EVERY_BODY_ZINE = {
   /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
 };
 
+/* The two cassettes, declared once and shown twice for the same reason the
+   zine is: a tape is a Pleeay record AND a physical object somebody had to
+   design, so it belongs on both channels. The artwork comes first and the
+   photographs after it, because the drawing is the work and the object is
+   what happened to it. */
+const WEALTH_HELLNESS_TAPE = {
+  type: 'feature',
+  heading: 'Wealth + Hellness cassette',
+  kicker: 'J-card and shell, Lavasocks Records',
+  items: [
+    { src: 'media/cassettes/wh-01-artwork-front.webp',
+      alt: 'Wealth + Hellness J-card, outside: the band against flames, track titles down the left' },
+    { src: 'media/cassettes/wh-02-artwork-inside.webp',
+      alt: 'Wealth + Hellness J-card, inside: track list and credits over flames' },
+    { src: 'media/cassettes/wh-03-front.webp', alt: 'The cassette, front' },
+    { src: 'media/cassettes/wh-04-spine.webp', alt: 'The cassette, showing the orange track list panel' },
+    { src: 'media/cassettes/wh-05-angle.webp', alt: 'The cassette, angled' },
+  ],
+  body: [
+    'A five track tape in a clear shell. The fire runs the full width of the folded card, so the track titles read down a column of it and the band gets the black half to itself.',
+  ],
+};
+
+const EVERY_BODY_TAPE = {
+  type: 'feature',
+  heading: '"Every Body" cassette',
+  kicker: 'J-card and shell, Lavasocks Records',
+  items: [
+    { src: 'media/cassettes/eb-01-artwork-front.webp',
+      alt: 'Every Body J-card, outside: the album photograph, title and track list' },
+    { src: 'media/cassettes/eb-02-artwork-inside.webp',
+      alt: 'Every Body J-card, inside: sides A and B, credits, and a line of text down the fold' },
+    { src: 'media/cassettes/eb-03-front-back.webp', alt: 'The cassette and its blue shell' },
+    { src: 'media/cassettes/eb-04-three-up.webp', alt: 'Spine, case and shell together' },
+  ],
+  body: [
+    'Ten tracks over two sides, printed on a blue that carries from the card onto the shell. The inside panel splits the running order across the fold and keeps a line of the record on the flap.',
+  ],
+};
+
 /* Same again for the records. They are the reason the amplifier is a channel
    at all, so Music gathers every one of them and the band channels show their
    own. Declared once here: the art and the spelling cannot then drift between
@@ -299,13 +339,19 @@ const album = r => ({
   artist: r.artist, record: r.record, role: r.role, tracks: r.tracks,
 });
 
+/* On the band's own channel the band name is already the page. Leading every
+   record with it puts two headings saying Pleeay one above the other, which is
+   not a hierarchy — so the record takes the heading, and the part that was
+   only ever there to tell four bands apart goes. */
+const ownAlbum = r => ({ ...album(r), artist: r.record, record: '', role: '' });
+
 /* Music holds every record, each as its own block: the cover, what it is, and
    the record itself to play. This replaced a shelf of covers four across,
    which showed them all at a glance but had nowhere to put a tracklist. */
 const ALL_ALBUMS = Object.values(RECORDS).map(album);
 
 /* Pleeay's own two, on Pleeay's own channel. */
-const PLEEAY_ALBUMS = [RECORDS.wealthHellness1, RECORDS.pleeayLive].map(album);
+const PLEEAY_ALBUMS = [RECORDS.wealthHellness1, RECORDS.pleeayLive].map(ownAlbum);
 
 const PYRAMID_TRACK = {
   type: 'audio', tracks: [
@@ -355,6 +401,12 @@ const objects = [
         ]},
 
         ...PLEEAY_ALBUMS,
+
+        /* The tapes sit with the records rather than with the merch table,
+           because a cassette is one of the records made into an object, and
+           the merch table is a table. */
+        WEALTH_HELLNESS_TAPE,
+        EVERY_BODY_TAPE,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
           ratio: '1082 / 1400', lightbox: true, items: [
@@ -490,18 +542,18 @@ const objects = [
     backdrop: 'media/backdrop/fine-art.webp',
     media: { slides: ['media/art/screen.webp'], hold: 11000, pan: true } },
 
-  { id: 'tv5',  slug: 'print', channel: 5, project: 'Print',  z: 3,
+  { id: 'tv5',  slug: 'physical', channel: 5, project: 'Physical',  z: 3,
     box:    { x: 46.6, y: 52.97, w: 10.4, rotate: 0.9 },
     ar: 5688 / 5044,
     screen: { x: 8.6,  y: 10.6, w: 82.9, h: 70.6 },
     frame: 'media/tv-05.webp',
     backdrop: 'media/backdrop/print.webp',
     content: {
-      title: 'Print',
+      title: 'Physical',
       blocks: [
-        { type: 'text', heading: 'Paper',
+        { type: 'text', heading: 'Things you can hold',
           body: [
-            'Zines, folded and stapled in small numbered runs. Printing is the one place the work stops being an edition of one.',
+            'Zines and cassettes, folded and stapled and shrink-wrapped in small numbered runs. This is the one place the work stops being an edition of one.',
           ]},
 
         { type: 'feature',
@@ -524,6 +576,8 @@ const objects = [
         },
 
         EVERY_BODY_ZINE,
+        WEALTH_HELLNESS_TAPE,
+        EVERY_BODY_TAPE,
       ],
     },
     media: { slides: ['media/print/screen.webp'], hold: 11000, pan: true } },
