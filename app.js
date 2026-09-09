@@ -417,12 +417,9 @@ const objects = [
         { type: 'grid', heading: 'Logos', columns: 3, ratio: '1', fit: 'contain',
           body: ["Logos and little marks I've made for Pleeay, including designs that ended up on merch, stickers, buttons, and neon."],
           mono: true, lightbox: true, items: [
-          /* Leads for the same reason it does on the Logos channel: two columns
-             wide, so anywhere but first it wraps and leaves a hole behind it. */
-          { src: 'media/logos/people.webp', title: 'People',
-            alt: 'Pleeay people logo', span: 2 },
           { src: 'media/logos/neon.webp',   title: 'Neon',   alt: 'Pleeay neon logo' },
           { src: 'media/logos/slayer.webp', title: 'Slayer', alt: 'Pleeay slayer logo' },
+          { src: 'media/logos/people.webp', title: 'People', alt: 'Pleeay people logo' },
           /* Each pair is one design and its inverse, so the second is what the
              first looks like turned over. White face first, black on hover. */
           { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
@@ -639,16 +636,12 @@ const objects = [
         /* no heading: the text block above it is already called Marks */
         { type: 'grid', columns: 3, ratio: '1', fit: 'contain',
           mono: true, lightbox: true, items: [
-          /* First, because it is two columns wide and nothing else is. Third in
-             a row of three it could not fit beside the pair above it, so it
-             dropped to the next row and left a hole where it had been. Leading
-             the grid, it takes columns one and two and the row closes.
-             The figures are already white with the engraving in black: the grey
-             panel that used to sit behind them was fighting the artwork. */
-          { src: 'media/logos/people.webp', title: 'Pleeay people',
-            alt: 'Pleeay people logo', span: 2 },
           { src: 'media/logos/neon.webp',   title: 'Pleeay neon',   alt: 'Pleeay neon logo' },
           { src: 'media/logos/slayer.webp', title: 'Pleeay slayer', alt: 'Pleeay slayer logo' },
+          /* The figures are already white with the engraving in black, so the
+             grey panel that used to sit behind them was fighting the artwork. */
+          { src: 'media/logos/people.webp', title: 'Pleeay people',
+            alt: 'Pleeay people logo' },
           /* Each pair is one design and its inverse. White face first, black
              on hover. */
           { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
@@ -1104,10 +1097,6 @@ function renderBlock(b) {
     const g = ++group;
     (b.items || []).forEach(item => {
       const fig = el('figure', b.type === 'releases' ? 'release' : null);
-      /* A mark drawn along a line has nothing to fill a square with, so it is
-         allowed to take more than one column. Only meaningful in a real grid,
-         which is what `data-even` makes; a column flow would ignore it. */
-      if (item.span) fig.style.gridColumn = `span ${item.span}`;
       /* materials sit under the title. The archive repeats the title in the
          description where a work has no materials of its own, so a line that
          only says the title again is dropped rather than printed twice. */
