@@ -454,13 +454,16 @@ main[data-reading] #project > * {
 .link-pending { opacity: 0.55; }
 
 /*-------- A RECORD --------*/
-/* The sleeve on the left at the size a record is held, the writing and the
-   tracks on the right. One column on a phone, where two would leave the
-   tracklist too narrow to read a title in. */
+/* Sleeve on the left, tracks on the right, split down the middle and gapped
+   exactly as `.block-feature` is — a record and a zine are the same kind of
+   thing on this page, one picture with its account beside it, so they are laid
+   out to one measure rather than two that nearly match.
+   The minmax keeps a long track title from widening its column: `1fr` is a
+   floor of auto, so the tracklist would push the sleeve narrower. */
 .block-album {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: calc(var(--grid-gap) * 3);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: calc(var(--pad) * 1.4);
   align-items: start;
 }
 
