@@ -1330,3 +1330,9 @@ main[data-reading] #project > * {
    ever apply on a machine that has been checked. */
 html[data-pointer] ,
 html[data-pointer] * { cursor: none !important; }
+
+/* Except the drawer, which keeps the ordinary cursor: a list of links is where
+   a hand is expected, and the mark read as "add a channel" over it. */
+html[data-pointer] nav,
+html[data-pointer] nav * { cursor: auto !important; }
+html[data-pointer] nav a { cursor: pointer !important; }

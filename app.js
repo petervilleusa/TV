@@ -1136,6 +1136,7 @@ function buildCarousel(items, heading, body, links) {
     body: body || [],
     links: links || [],
   }));
+  stageImg.dataset.cursor = 'look';
   stageImg.addEventListener('click', () => openLightbox(base + current));
 
   const thumbs = el('div', 'carousel-thumbs');
@@ -1921,12 +1922,20 @@ document.addEventListener('keydown', e => {
 
   addEventListener('pointermove', e => {
     x = e.clientX; y = e.clientY;
+    const at = e.target.closest ? e.target : null;
+
+    /* The drawer is the one place the mark stands down. A plus over a list of
+       channels reads as "add one" rather than "open this one", and a list of
+       links is exactly where people expect the ordinary hand. */
+    if (at && at.closest('nav')) {
+      if (dot.dataset.on) delete dot.dataset.on;
+      return;
+    }
+
     if (!dot.dataset.on) dot.dataset.on = 'true';
     /* `closest` walks up from whatever is under the pointer, so a marker can
        sit on the control itself and still answer for the text inside it. */
-    over = e.target.closest
-      ? e.target.closest('[data-cursor], a, button, .tv')
-      : null;
+    over = at ? at.closest('[data-cursor], a, button, .tv') : null;
     queue();
   }, { passive: true });
 
