@@ -31,21 +31,29 @@ BLURB = {
     'music':          "Records I've made with different bands, plus a one-off track "
                       'made for a gallery show.',
     'development':    'Selected sites that are currently live.',
+    'channel-3':      'Nothing on this channel yet.',
+    'channel-6':      'Nothing on this channel yet.',
+    'channel-7':      'Nothing on this channel yet.',
 }
 HOME_BLURB = ('Peter Warren. Painting, sculpture, print, logos, records, '
               "websites, and other things I've made.")
 
 
 def channels(src):
-    """(slug, project) for every object in app.js that has both.
+    """(slug, title) for every object in app.js carrying a slug.
 
     Anchored on `slug`, not on the opening brace: an object may carry a
     comment between the two, and the amplifier does.
+
+    A channel with no project named is still a channel and still gets a page.
+    It takes its number as its title, the same string the drawer lists it by,
+    so an empty one reads as "Channel 3" rather than as a page with no name.
     """
     out = []
-    for m in re.finditer(r"slug:\s*'([^']+)',\s*channel:\s*\d+,"
-                         r"\s*project:\s*'([^']*)'", src):
-        out.append(m.groups())
+    for m in re.finditer(r"slug:\s*'([^']+)',\s*channel:\s*(\d+),"
+                         r"\s*project:\s*(?:'([^']*)'|null)", src):
+        slug, number, project = m.groups()
+        out.append((slug, project or f'Channel {number}', bool(project)))
     return out
 
 
@@ -92,7 +100,7 @@ def main():
         raise SystemExit('no channels with slugs found in app.js')
 
     written = []
-    for slug, project in found:
+    for slug, project, named in found:
         desc = BLURB.get(slug, f'{project} — PETERVILLE USA.')
         url = f'{SITE}/{slug}/'
         page = head(index, f'{project} — PETERVILLE USA', desc, url)
@@ -100,9 +108,11 @@ def main():
         os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, 'index.html'), 'w') as f:
             f.write(page)
-        written.append((slug, project))
+        written.append((slug, project, named))
 
-    urls = [f'{SITE}/'] + [f'{SITE}/{s}/' for s, _ in written]
+    # An empty channel gets a page, so its link works and it can be shared,
+    # but it stays out of the sitemap: there is nothing on it to find.
+    urls = [f'{SITE}/'] + [f'{SITE}/{s}/' for s, _, named in written if named]
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w') as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         f.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
@@ -118,7 +128,7 @@ def main():
     # A renamed slug leaves its old directory behind, still serving a page
     # nothing links to. This says so rather than deleting anything — removing
     # a directory is a decision for whoever is looking at the output.
-    keep = {s for s, _ in written}
+    keep = {s for s, _, _ in written}
     for name in sorted(os.listdir(ROOT)):
         d = os.path.join(ROOT, name)
         if (os.path.isdir(d) and name not in keep
@@ -127,8 +137,8 @@ def main():
                 and os.path.exists(os.path.join(d, 'index.html'))):
             print(f'  STALE: /{name}/ is no longer a channel. Delete it by hand.')
 
-    for slug, project in written:
-        print(f'  /{slug}/  {project}')
+    for slug, project, named in written:
+        print(f"  /{slug}/  {project}{'' if named else '   (no sitemap entry)'}")
     print(f'{len(written)} pages, sitemap.xml, robots.txt')
 
 

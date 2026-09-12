@@ -450,7 +450,11 @@ const objects = [
     screen: { x: 15.1, y: 24.3, w: 69.8, h: 53.9 },
     frame: 'media/tv-02.webp', media: STATIC },
 
-  { id: 'tv3',  channel: 3, project: null,  z: 7,
+  /* No project yet, and that is the point: a channel with nothing on it is
+     still a channel. It has an address and a page like the rest, so a middle
+     click or an open-in-new-tab behaves, and clicking it gives you a set
+     playing static and nothing to read. */
+  { id: 'tv3',  slug: 'channel-3', channel: 3, project: null,  z: 7,
     box:    { x: 47.7, y: 63.39, w: 14.5, rotate: 0.5 },
     ar: 2154 / 1979,
     screen: { x: 11.5, y: 10.9, w: 77.9, h: 62.7 },
@@ -588,7 +592,7 @@ const objects = [
     },
     media: { slides: ['media/print/screen.webp'], hold: 11000, pan: true } },
 
-  { id: 'tv6',  channel: 6, project: null,  z: 2,
+  { id: 'tv6',  slug: 'channel-6', channel: 6, project: null,  z: 2,
     box:    { x: 63.4, y: 52.48, w: 10.0, rotate: -1.2 },
     ar: 1924 / 1646,
     screen: { x: 10.2, y: 20.4, w: 62.2, h: 58.3 },
@@ -621,7 +625,7 @@ const objects = [
     backdrop: 'media/backdrop/pyramid-scheme.webp',
     media: 'media/spiral.mp4' },
 
-  { id: 'tv8',  channel: 7, project: null,  z: 6,
+  { id: 'tv8',  slug: 'channel-7', channel: 7, project: null,  z: 6,
     box:    { x: 62.8, y: 68.25, w: 10.7, rotate: 0.6 },
     ar: 2368 / 2019,
     screen: { x: 6.8,  y: 7.5,  w: 87.0, h: 75.5 },
