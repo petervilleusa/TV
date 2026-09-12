@@ -450,7 +450,12 @@ main[data-reading] #project > * {
   gap: var(--grid-gap);
 }
 .grid-items[data-even] > figure { margin-bottom: 0; }
-.grid-items[data-even] img { aspect-ratio: var(--ratio, 1); object-fit: contain; }
+/* A thumbnail is cropped to its square. Nobody should be precious about how a
+   contact sheet crops: the point of it is that there is more to look at, and
+   the lightbox is where the whole picture lives. */
+.grid-items[data-even] img { aspect-ratio: var(--ratio, 1); object-fit: cover; }
+/* Except a drawing, which is the one thing that must not be cut into. */
+.grid-items[data-even][data-fit="contain"] img { object-fit: contain; }
 
 /* `fit: contain` used to mean "do not crop this". Nothing is cropped any more,
    so it now marks what it was only ever used for: a DRAWING, which wants air

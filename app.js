@@ -212,7 +212,7 @@ const EVERY_BODY_ZINE = {
 
 /* The object, after the reading of it. */
 const EVERY_BODY_ZINE_OBJECT = {
-  type: 'grid', columns: 3, lightbox: true, items: [
+  type: 'grid', columns: 6, ratio: '1', even: true, lightbox: true, items: [
     { src: 'media/zine/04.webp', alt: 'Every Body zine, open spread' },
     { src: 'media/zine/01.webp', alt: 'Every Body zine, cover' },
     { src: 'media/zine/02.webp', alt: 'Every Body zine, inside pages' },
@@ -621,7 +621,7 @@ const objects = [
                href: 'mailto:peterwarren13@gmail.com?subject=Becoming%20zine%20purchase%20inquiry' }], */
         },
 
-        { type: 'grid', columns: 3, lightbox: true, items: [
+        { type: 'grid', columns: 6, ratio: '1', even: true, lightbox: true, items: [
           { src: 'media/print/becoming/00.webp', alt: 'Becoming zine, stack of covers' },
           { src: 'media/print/becoming/01.webp', alt: 'Becoming zine, back cover text' },
           { src: 'media/print/becoming/02.webp', alt: 'Becoming zine, open spread' },
@@ -1338,7 +1338,10 @@ function renderBlock(b) {
        became two columns of two with the third left empty, and the reading
        order went down instead of across. Anything uniform keeps a real grid:
        drawings, which want an even field, and covers, which are all squares. */
-    if (b.fit === 'contain' || b.type === 'releases') wrap.dataset.even = 'true';
+    /* `even` asks for a real grid rather than a column flow: every cell the
+       same size, read across rather than down. Drawings and record covers
+       get it for free, being uniform already. */
+    if (b.even || b.fit === 'contain' || b.type === 'releases') wrap.dataset.even = 'true';
     const g = ++group;
     (b.items || []).forEach(item => {
       const fig = el('figure', b.type === 'releases' ? 'release' : null);
