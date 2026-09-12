@@ -34,6 +34,9 @@ BLURB = {
     'channel-3':      'Nothing on this channel yet.',
     'channel-6':      'Nothing on this channel yet.',
     'channel-7':      'Nothing on this channel yet.',
+    'channel-11':     'Nothing on this channel yet.',
+    'channel-12':     'Nothing on this channel yet.',
+    'channel-13':     'Nothing on this channel yet.',
 }
 HOME_BLURB = ('Peter Warren. Painting, sculpture, print, logos, records, '
               "websites, and other things I've made.")

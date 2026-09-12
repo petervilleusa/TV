@@ -178,7 +178,7 @@ const PREVIEW_MS = 2400;
 let previewTimer = null;
 const BARS = 'media/crt-bars.webp';     // test pattern, on a couple of sets
 
-/* Nine televisions and an amplifier, piled the way Paik piled them: the big
+/* Twelve televisions and an amplifier, piled the way Paik piled them: the big
    sets on the ground, smaller portables riding on top. `z` is the stacking
    order, so upper sets overlap the ones they rest on. Sizes follow the actual
    models, so the Coby and RCA portables read small next to the Apex console. */
@@ -444,7 +444,7 @@ const objects = [
     frame: 'media/tv-01.webp', backdrop: 'media/backdrop/pleeay.webp',
     media: 'media/tv-01-screen.mp4' },
 
-  { id: 'tv2',  channel: null, project: null,  z: 8,
+  { id: 'tv2',  slug: 'channel-11', channel: 11, project: null,  z: 8,
     box:    { x: 42.0, y: 73.32, w: 8.5, rotate: 1.4 },
     ar: 3725 / 3429,
     screen: { x: 15.1, y: 24.3, w: 69.8, h: 53.9 },
@@ -631,7 +631,7 @@ const objects = [
     screen: { x: 6.8,  y: 7.5,  w: 87.0, h: 75.5 },
     frame: 'media/tv-08.webp', media: STATIC },
 
-  { id: 'yorxC',  channel: null, project: null,  z: 4,
+  { id: 'yorxC',  slug: 'channel-12', channel: 12, project: null,  z: 4,
     box:    { x: 67.9, y: 61.49, w: 5.4, rotate: -1.6 },
     ar: 2141 / 2321,
     screen: { x: 14.3, y: 15.0, w: 71.3, h: 49.5 },
@@ -670,7 +670,7 @@ const objects = [
     frame: 'media/tv-10.webp', backdrop: 'media/backdrop/logos.webp',
     media: ['media/bird-dark.webp', 'media/bird-light.webp'] },
 
-  { id: 'tv11', channel: null, project: null,  z: 1,
+  { id: 'tv11', slug: 'channel-13', channel: 13, project: null,  z: 1,
     box:    { x: 40.3, y: 31.36, w: 10.7, rotate: -0.6 },
     ar: 2914 / 2966,
     screen: { x: 6.9,  y: 45.8, w: 61.7, h: 43.7 },
