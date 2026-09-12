@@ -219,16 +219,6 @@ const WH_TAPE_SHOTS = [
     { src: 'media/cassettes/wh-05-angle.webp', alt: 'The cassette, angled' },
 ];
 
-const WEALTH_HELLNESS_TAPE = {
-  type: 'feature',
-  heading: 'Wealth + Hellness cassette',
-  kicker: 'J-card and shell, Lavasocks Records',
-  items: WH_TAPE_SHOTS,
-  body: [
-    'A five track cassette in a clear shell. I designed the J-card and shell.',
-  ],
-};
-
 const EB_TAPE_SHOTS = [
     { src: 'media/cassettes/eb-01-artwork-front.webp',
       alt: 'Every Body J-card, outside: the album photograph, title and track list' },
@@ -237,16 +227,6 @@ const EB_TAPE_SHOTS = [
     { src: 'media/cassettes/eb-03-front-back.webp', alt: 'The cassette and its blue shell' },
     { src: 'media/cassettes/eb-04-three-up.webp', alt: 'Spine, case and shell together' },
 ];
-
-const EVERY_BODY_TAPE = {
-  type: 'feature',
-  heading: '"Every Body" cassette',
-  kicker: 'J-card and shell, Lavasocks Records',
-  items: EB_TAPE_SHOTS,
-  body: [
-    'A ten track cassette printed on blue. The color carries from the J-card onto the shell.',
-  ],
-};
 
 /* The same two tapes for the Physical media page, side by side and unexplained.
    On Pleeay they are releases and get a paragraph each; here they are a pair of
@@ -380,6 +360,39 @@ const PYRAMID_TRACK = {
   ],
 };
 
+/* Every mark, declared once. Two grids show these: the Logos channel, which
+   holds more than one band's work and so names the band in front of the
+   design, and Pleeay's own page, which names only the design because the band
+   is already the page. They were written out twice before this, which is how
+   the ballet buttons came to be on one grid and missing from the other. */
+const MARKS = {
+  people:  { src: 'media/logos/people.webp', alt: 'Pleeay people logo',
+             title: 'People',  credit: 'Pleeay people' },
+  neon:    { src: 'media/logos/neon.webp',   alt: 'Pleeay neon logo',
+             title: 'Neon',    credit: 'Pleeay neon' },
+  slayer:  { src: 'media/logos/slayer.webp', alt: 'Pleeay slayer logo',
+             title: 'Slayer',  credit: 'Pleeay slayer' },
+  /* Each pair is one design and its inverse, so the second is what the first
+     looks like turned over. White face first, black on hover. */
+  boop:    { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
+             alt: 'Pleeay sticker', title: 'Boop',    credit: 'Pleeay boop' },
+  buttons: { flip: ['media/buttons/line.webp', 'media/buttons/disc.webp'],
+             alt: 'Pleeay button',  title: 'Buttons', credit: 'Pleeay buttons' },
+  bird:    { flip: ['media/bird-light.webp', 'media/bird-dark.webp'],
+             alt: 'JT Bird logo',   title: 'Bird',    credit: 'JT Bird logo' },
+};
+
+const mark = (m, credited) => ({
+  ...(m.src ? { src: m.src } : { flip: m.flip }),
+  alt: m.alt,
+  title: credited ? m.credit : m.title,
+});
+
+const PLEEAY_MARKS = ['people', 'neon', 'slayer', 'boop', 'buttons']
+  .map(k => mark(MARKS[k]));
+const ALL_MARKS = ['people', 'neon', 'slayer', 'boop', 'buttons', 'bird']
+  .map(k => mark(MARKS[k], true));
+
 const objects = [
   /* Arrangement follows Peter's composition mockup (Reference/desktop-composition.png):
      a wide, low pile rather than a tight pyramid — the big console and the Apex
@@ -419,8 +432,7 @@ const objects = [
         /* The tapes and the zine sit with the records rather than with the
            merch table: each is one of the records made into an object, and the
            merch table is a table. */
-        WEALTH_HELLNESS_TAPE,
-        EVERY_BODY_TAPE,
+        CASSETTE_PAIR,
         EVERY_BODY_ZINE,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
@@ -437,17 +449,7 @@ const objects = [
            until you do. */
         { type: 'grid', heading: 'Logos', columns: 3, ratio: '1', fit: 'contain',
           body: ["Logos and little marks I've made for Pleeay, including designs that ended up on merch, stickers, buttons, and neon."],
-          mono: true, lightbox: true, items: [
-          { src: 'media/logos/neon.webp',   title: 'Neon',   alt: 'Pleeay neon logo' },
-          { src: 'media/logos/slayer.webp', title: 'Slayer', alt: 'Pleeay slayer logo' },
-          { src: 'media/logos/people.webp', title: 'People', alt: 'Pleeay people logo' },
-          /* Each pair is one design and its inverse, so the second is what the
-             first looks like turned over. White face first, black on hover. */
-          { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
-            title: 'Boop', alt: 'Pleeay sticker' },
-          { flip: ['media/buttons/line.webp', 'media/buttons/disc.webp'],
-            title: 'Buttons', alt: 'Pleeay button' },
-        ]},
+          mono: true, lightbox: true, items: PLEEAY_MARKS },
 
         { type: 'links', heading: 'Elsewhere', items: [
           { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
@@ -664,20 +666,7 @@ const objects = [
 
         /* no heading: the text block above it is already called Marks */
         { type: 'grid', columns: 3, ratio: '1', fit: 'contain',
-          mono: true, lightbox: true, items: [
-          { src: 'media/logos/neon.webp',   title: 'Pleeay neon',   alt: 'Pleeay neon logo' },
-          { src: 'media/logos/slayer.webp', title: 'Pleeay slayer', alt: 'Pleeay slayer logo' },
-          /* The figures are already white with the engraving in black, so the
-             grey panel that used to sit behind them was fighting the artwork. */
-          { src: 'media/logos/people.webp', title: 'Pleeay people',
-            alt: 'Pleeay people logo' },
-          /* Each pair is one design and its inverse. White face first, black
-             on hover. */
-          { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
-            title: 'Pleeay boop', alt: 'Pleeay sticker' },
-          { flip: ['media/bird-light.webp', 'media/bird-dark.webp'],
-            title: 'JT Bird logo', alt: 'JT Bird logo' },
-        ]},
+          mono: true, lightbox: true, items: ALL_MARKS },
       ],
     },
     frame: 'media/tv-10.webp', backdrop: 'media/backdrop/logos.webp',
