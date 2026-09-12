@@ -1028,6 +1028,9 @@ main[data-reading] #project > * {
   :root {
     --mark-size: 49px;
     --mark-weight: 4px;
+    /* Thirteen channels, not ten. At the desktop rhythm the list ran off the
+       bottom of a phone and took the credits with it. */
+    --nav-rhythm: calc(var(--type) * 2);
   }
 
   html, body { height: 100%; overflow: hidden; }
@@ -1084,7 +1087,16 @@ main[data-reading] #project > * {
      is, so at z-index 3 it opened behind the project and you were stuck on
      whatever page you were already reading. Below the toggles at 20, which
      have to stay reachable to close it again. */
-  nav { position: fixed; width: 100%; z-index: 15; }
+  /* Scrolls as a safety net: whatever the rhythm, a list long enough to pass
+     the bottom must stay reachable rather than being quietly cut off.
+     `overscroll-behavior` keeps that scroll from chaining to the wall behind. */
+  nav {
+    position: fixed;
+    width: 100%;
+    z-index: 15;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 
   #backdrop { display: none; }   /* the drawer covers the screen on a phone */
 
