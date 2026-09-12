@@ -457,6 +457,39 @@ main[data-reading] #project > * {
    around it rather than running to its edges. */
 .grid-items[data-fit="contain"] img { padding: 8%; }
 
+/*-------- A PICTURE THAT MOVES WHILE A TRACK RUNS --------*/
+/* `data-dance` is opt-in per block and only fires while the open project has
+   something playing. Deliberately NOT a strobe: the cut is roughly two a
+   second, well under the rate that carries a photosensitivity risk, and the
+   picture never fully disappears. It shifts, tips and dims, which reads as
+   the thing moving to the track rather than as a fault in the screen. */
+.block-grid[data-dance] img {
+  transform-origin: 50% 60%;
+  will-change: translate, rotate, scale;
+}
+
+#project[data-playing] .block-grid[data-dance] img {
+  animation: pyramid-dance 1.9s steps(1, end) infinite;
+}
+
+@keyframes pyramid-dance {
+    0% { translate:  0    0;   rotate:  0deg;   scale: 1;     opacity: 1;   }
+   12% { translate: -2%  -3%;  rotate: -1.6deg; scale: 1.04;  opacity: .72; }
+   25% { translate:  3%   1%;  rotate:  1.2deg; scale: .97;   opacity: 1;   }
+   37% { translate: -1%   3%;  rotate:  2.1deg; scale: 1.06;  opacity: .8;  }
+   50% { translate:  2%  -2%;  rotate: -0.8deg; scale: 1;     opacity: 1;   }
+   62% { translate: -3%   0;   rotate:  1.7deg; scale: 1.03;  opacity: .68; }
+   75% { translate:  1%   2%;  rotate: -2deg;   scale: .98;   opacity: 1;   }
+   87% { translate:  0   -3%;  rotate:  0.9deg; scale: 1.05;  opacity: .85; }
+  100% { translate:  0    0;   rotate:  0deg;   scale: 1;     opacity: 1;   }
+}
+
+/* Motion is the whole point of it, so under reduced motion it simply does not
+   happen rather than being slowed down. */
+@media (prefers-reduced-motion: reduce) {
+  #project[data-playing] .block-grid[data-dance] img { animation: none; }
+}
+
 /* A drawing on a transparent ground belongs ON the page, not on a panel. The
    loading colour is still wanted, so it is dropped only once the picture has
    landed — otherwise the box has nothing to hold it open with. */

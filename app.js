@@ -602,13 +602,18 @@ const objects = [
     frame: 'media/tv-10.webp', content: {
       title: 'Pyramid scheme',
       blocks: [
-        { type: 'text', heading: 'A one off', body: [
+        /* No heading: the page is called Pyramid scheme and the first line
+           names the show again a word later. */
+        { type: 'text', body: [
           'A track made for Pyramid Scheme, a group show at Bass & Reiner in San Francisco.',
           'The show was built around the idea of artists inviting other artists to participate until the room was full.',
-          'I made one track for it.',
+          'I made this track for it.',
         ]},
         PYRAMID_TRACK,
-        { type: 'grid', columns: 1, ratio: '1200 / 476', fit: 'contain', lightbox: true, items: [
+        /* `dance` sets it moving while the track runs. The pyramids are the
+           only picture on the page, so the page itself is what reacts. */
+        { type: 'grid', columns: 1, ratio: '1200 / 476', fit: 'contain',
+          dance: true, lightbox: true, items: [
           { src: 'media/pyramids.webp', alt: 'Pyramids' },
         ]},
       ],
@@ -832,6 +837,13 @@ const clock = s => {
    layering them. */
 const players = [];
 
+/* One flag on the open project saying whether anything is making noise, so a
+   block can answer to it without knowing which player started. */
+function reflectPlaying() {
+  if (players.some(p => !p.paused)) project.dataset.playing = 'true';
+  else delete project.dataset.playing;
+}
+
 /* A record, rather than a track. One `audio` element for the whole album and
    one index into the list, so each album keeps its OWN place: start Sunbreak,
    go and start the Lost Eyes, come back, and Sunbreak is still where it was.
@@ -908,6 +920,7 @@ function buildAlbum(b) {
     });
     const on = !audio.paused;
     play.dataset.playing = String(on);
+    reflectPlaying();
     const t = tracks[Math.max(0, at)];
     play.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + (t ? t.title : ''));
     if (t) line.setAttribute('aria-label', t.title + ' position');
@@ -1023,6 +1036,7 @@ function buildTrack(t) {
   const label = () => {
     const on = !audio.paused;
     play.dataset.playing = String(on);
+    reflectPlaying();
     play.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + t.title);
   };
   label();
@@ -1116,6 +1130,8 @@ function renderBlock(b) {
        being shown, so that arriving at one is a change rather than the state
        everything is already in. */
     if (b.mono) block.dataset.mono = 'true';
+    /* opts this set into moving while a track is playing */
+    if (b.dance) block.dataset.dance = 'true';
     /* A column flow balances by height, so a set of EQUAL height items lands
        in fewer columns than asked for — four record covers in three columns
        became two columns of two with the third left empty, and the reading
@@ -1313,7 +1329,19 @@ function renderBlock(b) {
   return null;
 }
 
+/* Every player belonging to the project being replaced. An <audio> carries on
+   playing after it leaves the document, and `players` was never emptied, so
+   the array kept growing and kept references to elements nobody could reach a
+   control for. Closing a project left its record playing with no way to stop
+   it, and `reflectPlaying` would have believed a detached element. */
+function stopPlayers() {
+  players.forEach(p => p.pause());
+  players.length = 0;
+  delete project.dataset.playing;
+}
+
 function renderProject(o) {
+  stopPlayers();
   project.replaceChildren();
   gallery = [];
   group = 0;
@@ -1692,6 +1720,7 @@ function collapse() {
   delete document.body.dataset.locked;
   delete stage.dataset.frozen;
   project.hidden = true;
+  stopPlayers();
   project.replaceChildren();
   stage.dataset.expanded = '';
   delete shell.dataset.open;
