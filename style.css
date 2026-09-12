@@ -693,6 +693,26 @@ main[data-reading] #project > * {
 .block-links li + li { margin-top: 0.5em; }
 
 /*---- feature: carousel one half, writing the other ----*/
+/*-------- TWO CAROUSELS IN A ROW --------*/
+/* A cassette is small, so two of them fit where one photograph of a zine needs
+   the whole width. Each is named underneath rather than beside, which keeps
+   the two pictures level with one another. */
+.block-pair h2 { margin-bottom: calc(var(--type) * 1.2); }
+
+.pair-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: calc(var(--pad) * 1.4);
+  align-items: start;
+}
+
+.pair-one figcaption { margin-top: 0.6em; padding-inline: 2px; }
+
+@media (max-width: 749px) {
+  /* Stacked on a phone, where half a column is too small to read a J-card in. */
+  .pair-row { grid-template-columns: 1fr; gap: calc(var(--type) * 2); }
+}
+
 .block-feature {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -896,7 +916,18 @@ main[data-reading] #project > * {
     top var(--speed) var(--ease),
     width var(--speed) var(--ease),
     height var(--speed) var(--ease),
-    transform var(--speed) var(--ease);
+    transform var(--speed) var(--ease),
+    scale 200ms var(--ease);
+}
+
+/* Something has to say a television is a thing you can press. `scale` is its
+   own property here rather than part of the transform, so it can move at
+   hover speed while the transform keeps the slow curve the takeover needs.
+   Only while nothing is expanded, and only where there is a real pointer:
+   a touch screen reports no hover and would otherwise leave a set stuck
+   larger after a tap. */
+@media (hover: hover) and (pointer: fine) {
+  #stage[data-expanded=""] .tv:hover { scale: 1.035; }
 }
 
 /* Layer 3 — the media, sitting in the screen aperture */

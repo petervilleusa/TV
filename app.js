@@ -209,11 +209,7 @@ const EVERY_BODY_ZINE = {
    design, so it belongs on both channels. The artwork comes first and the
    photographs after it, because the drawing is the work and the object is
    what happened to it. */
-const WEALTH_HELLNESS_TAPE = {
-  type: 'feature',
-  heading: 'Wealth + Hellness cassette',
-  kicker: 'J-card and shell, Lavasocks Records',
-  items: [
+const WH_TAPE_SHOTS = [
     { src: 'media/cassettes/wh-01-artwork-front.webp',
       alt: 'Wealth + Hellness J-card, outside: the band against flames, track titles down the left' },
     { src: 'media/cassettes/wh-02-artwork-inside.webp',
@@ -221,26 +217,44 @@ const WEALTH_HELLNESS_TAPE = {
     { src: 'media/cassettes/wh-03-front.webp', alt: 'The cassette, front' },
     { src: 'media/cassettes/wh-04-spine.webp', alt: 'The cassette, showing the orange track list panel' },
     { src: 'media/cassettes/wh-05-angle.webp', alt: 'The cassette, angled' },
-  ],
+];
+
+const WEALTH_HELLNESS_TAPE = {
+  type: 'feature',
+  heading: 'Wealth + Hellness cassette',
+  kicker: 'J-card and shell, Lavasocks Records',
+  items: WH_TAPE_SHOTS,
   body: [
     'A five track cassette in a clear shell. I designed the J-card and shell.',
   ],
 };
 
-const EVERY_BODY_TAPE = {
-  type: 'feature',
-  heading: '"Every Body" cassette',
-  kicker: 'J-card and shell, Lavasocks Records',
-  items: [
+const EB_TAPE_SHOTS = [
     { src: 'media/cassettes/eb-01-artwork-front.webp',
       alt: 'Every Body J-card, outside: the album photograph, title and track list' },
     { src: 'media/cassettes/eb-02-artwork-inside.webp',
       alt: 'Every Body J-card, inside: sides A and B, credits, and a line of text down the fold' },
     { src: 'media/cassettes/eb-03-front-back.webp', alt: 'The cassette and its blue shell' },
     { src: 'media/cassettes/eb-04-three-up.webp', alt: 'Spine, case and shell together' },
-  ],
+];
+
+const EVERY_BODY_TAPE = {
+  type: 'feature',
+  heading: '"Every Body" cassette',
+  kicker: 'J-card and shell, Lavasocks Records',
+  items: EB_TAPE_SHOTS,
   body: [
     'A ten track cassette printed on blue. The color carries from the J-card onto the shell.',
+  ],
+};
+
+/* The same two tapes for the Physical media page, side by side and unexplained.
+   On Pleeay they are releases and get a paragraph each; here they are a pair of
+   objects and the pictures do the talking. */
+const CASSETTE_PAIR = {
+  type: 'pair', heading: 'Cassette design', items: [
+    { title: 'Wealth + Hellness', items: WH_TAPE_SHOTS },
+    { title: '"Every Body"', items: EB_TAPE_SHOTS },
   ],
 };
 
@@ -552,16 +566,16 @@ const objects = [
     backdrop: 'media/backdrop/fine-art.webp',
     media: { slides: ['media/art/screen.webp'], hold: 11000, pan: true } },
 
-  { id: 'tv5',  slug: 'physical', channel: 5, project: 'Physical',  z: 3,
+  { id: 'tv5',  slug: 'physical', channel: 5, project: 'Physical media',  z: 3,
     box:    { x: 46.6, y: 52.97, w: 10.4, rotate: 0.9 },
     ar: 5688 / 5044,
     screen: { x: 8.6,  y: 10.6, w: 82.9, h: 70.6 },
     frame: 'media/tv-05.webp',
     backdrop: 'media/backdrop/print.webp',
     content: {
-      title: 'Physical',
+      title: 'Physical media',
       blocks: [
-        { type: 'text', heading: 'Things you can hold',
+        { type: 'text', heading: 'Things you can hold, play, or wear',
           body: [
             "A collection of zines, merch designs, stickers, and other physical pieces. It's always nice to see the work out in the world.",
           ]},
@@ -586,8 +600,7 @@ const objects = [
         },
 
         EVERY_BODY_ZINE,
-        WEALTH_HELLNESS_TAPE,
-        EVERY_BODY_TAPE,
+        CASSETTE_PAIR,
       ],
     },
     media: { slides: ['media/print/screen.webp'], hold: 11000, pan: true } },
@@ -1096,6 +1109,48 @@ function buildTrack(t) {
   return row;
 }
 
+/* One carousel: a picture that fills the column and a strip of thumbs under
+   it. Lifted out of the feature block so a pair of them can stand side by
+   side, since a cassette is small and two of them fit where one photograph of
+   a zine needs the whole width. */
+function buildCarousel(items, heading, body, links) {
+  const media = el('div', 'carousel');
+  const stageImg = el('img', 'carousel-main');
+  stageImg.src = items[0].src;
+  stageImg.alt = items[0].alt || heading || '';
+
+  let current = 0;
+  const base = gallery.length;
+  const g = ++group;
+  items.forEach(item => gallery.push({
+    group: g,
+    src: item.src,
+    alt: item.alt || '',
+    heading: heading || '',
+    body: body || [],
+    links: links || [],
+  }));
+  stageImg.addEventListener('click', () => openLightbox(base + current));
+
+  const thumbs = el('div', 'carousel-thumbs');
+  items.forEach((item, i) => {
+    const t = el('button', 'thumb');
+    const ti = el('img');
+    ti.src = item.src; ti.alt = item.alt || ''; ti.loading = 'lazy';
+    t.appendChild(ti);
+    t.addEventListener('click', () => {
+      current = i;
+      stageImg.src = item.src;
+      [...thumbs.children].forEach((c, j) => c.dataset.on = String(j === i));
+    });
+    t.dataset.on = String(i === 0);
+    thumbs.appendChild(t);
+  });
+
+  media.append(stageImg, thumbs);
+  return media;
+}
+
 function renderBlock(b) {
   if (b.type === 'text') {
     const wrap = el('section', 'block-text');
@@ -1250,43 +1305,27 @@ function renderBlock(b) {
 
   /* A carousel on one half, the writing on the other. The same set of images
      opens in the lightbox, which carries the description with it. */
+  /* Two carousels in a row, each named underneath. Two cassettes are the same
+     object twice over, so setting them beside each other lets you read them
+     against one another, and neither needs a paragraph to explain what a
+     cassette is. */
+  if (b.type === 'pair') {
+    const wrap = el('section', 'block-pair');
+    if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+    const row = el('div', 'pair-row');
+    (b.items || []).forEach(one => {
+      const cell = el('figure', 'pair-one');
+      cell.appendChild(buildCarousel(one.items, one.title));
+      if (one.title) cell.appendChild(el('figcaption', null, one.title));
+      row.appendChild(cell);
+    });
+    wrap.appendChild(row);
+    return wrap;
+  }
+
   if (b.type === 'feature') {
     const wrap = el('section', 'block-feature');
-    const media = el('div', 'carousel');
-    const stageImg = el('img', 'carousel-main');
-    stageImg.src = b.items[0].src;
-    stageImg.alt = b.items[0].alt || b.heading || '';
-    stageImg.addEventListener('click', () => openLightbox(base + current));
-
-    let current = 0;
-    const base = gallery.length;
-    const g = ++group;
-    b.items.forEach(item => gallery.push({
-      group: g,
-      src: item.src,
-      alt: item.alt || '',
-      heading: b.heading || '',
-      body: b.body || [],
-      links: b.links || [],
-    }));
-
-    const thumbs = el('div', 'carousel-thumbs');
-    b.items.forEach((item, i) => {
-      const t = el('button', 'thumb');
-      const ti = el('img');
-      ti.src = item.src; ti.alt = item.alt || ''; ti.loading = 'lazy';
-      t.appendChild(ti);
-      t.addEventListener('click', () => {
-        current = i;
-        stageImg.src = item.src;
-        [...thumbs.children].forEach((c, j) => c.dataset.on = String(j === i));
-      });
-      t.dataset.on = String(i === 0);
-      thumbs.appendChild(t);
-    });
-
-    media.append(stageImg, thumbs);
-
+    const media = buildCarousel(b.items, b.heading, b.body, b.links);
     const copy = el('div', 'block-text');
     if (b.heading) copy.appendChild(el('h2', null, b.heading));
     if (b.kicker) copy.appendChild(el('p', 'kicker', b.kicker));

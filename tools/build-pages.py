@@ -26,7 +26,8 @@ BLURB = {
     'logos':          'Logos, stickers and marks made for bands and their merch.',
     'fine-art':       'Paintings and wall sculptures made from concrete, canvas, '
                       'foam, enamel and wood.',
-    'physical':       'Zines, merch designs, stickers and other physical pieces.',
+    'physical':       'Zines, cassettes, merch designs, stickers and other '
+                      'things you can hold, play or wear.',
     'pyramid-scheme': 'A track made for a group show at an art gallery in San Francisco.',
     'music':          "Records I've made with different bands, plus a one-off track "
                       'made for a gallery show.',
