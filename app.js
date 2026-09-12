@@ -707,7 +707,7 @@ const objects = [
       title: 'Development',
       blocks: [
         { type: 'text', heading: 'Sites', body: [
-          "Websites I've designed and developed through my work at Sparkart and as a freelance front end developer.",
+          "Websites I've designed and developed as a front end developer, in agency work and freelance.",
         ]},
 
         { type: 'links', heading: 'Live', items: [

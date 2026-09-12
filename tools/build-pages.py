@@ -30,8 +30,7 @@ BLURB = {
     'pyramid-scheme': 'A track made for a group show at Bass & Reiner in San Francisco.',
     'music':          "Records I've made with different bands, plus a one-off track "
                       'made for a gallery show.',
-    'development':    "Websites I've designed and developed through my work at "
-                      'Sparkart and as a freelance front end developer.',
+    'development':    'Selected sites that are currently live.',
 }
 HOME_BLURB = ('Peter Warren. Painting, sculpture, print, logos, records, '
               "websites, and other things I've made.")
