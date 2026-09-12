@@ -459,7 +459,7 @@ const objects = [
         EVERY_BODY_ZINE_OBJECT,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
-          ratio: '1082 / 1400', lightbox: true, items: [
+          ratio: '1082 / 1400', captions: false, lightbox: true, items: [
           { src: 'media/setlists/00.webp', title: 'Bandshell',   alt: 'Set list, Bandshell' },
           { src: 'media/setlists/01.webp', title: 'KO',          alt: 'Set list, KO' },
           { src: 'media/setlists/02.webp', title: 'KO, second',  alt: 'Set list, KO' },
@@ -1463,8 +1463,12 @@ function renderBlock(b) {
       fig.appendChild(img);
       /* A record carries a third line: what was played on it. It sits apart
          from the title and the note because it answers a different question,
-         and on a page of four bands it is the whole reason the page exists. */
-      if (item.title || note || item.role) {
+         and on a page of four bands it is the whole reason the page exists.
+
+         `captions: false` keeps the titles in the data and off the page: the
+         lightbox still names each picture, but a contact sheet of set lists
+         does not need five labels under it to be read. */
+      if (b.captions !== false && (item.title || note || item.role)) {
         const cap = el('figcaption');
         if (item.title) cap.appendChild(el('span', 'fig-title', item.title));
         if (note) cap.appendChild(el('span', 'fig-note', note));
