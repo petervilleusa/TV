@@ -395,7 +395,8 @@ const MARKS = {
   boop:    { flip: ['media/stickers/light.webp', 'media/stickers/dark.webp'],
              alt: 'Pleeay sticker', title: 'Boop',    credit: 'Pleeay boop' },
   buttons: { flip: ['media/buttons/line.webp', 'media/buttons/disc.webp'],
-             alt: 'Pleeay button',  title: 'Buttons', credit: 'Pleeay buttons' },
+             alt: 'Pleeay ballet button',
+             title: 'Ballet button', credit: 'Pleeay ballet button' },
   bird:    { flip: ['media/bird-light.webp', 'media/bird-dark.webp'],
              alt: 'JT Bird logo',   title: 'Bird',    credit: 'JT Bird logo' },
 };
@@ -408,7 +409,7 @@ const mark = (m, credited) => ({
 
 /* `people` is not in this one. It is drawn along a line rather than inside a
    square, and it gets the foot of the page to itself instead. */
-const PLEEAY_MARKS = ['neon', 'slayer', 'boop', 'buttons']
+const PLEEAY_MARKS = ['boop', 'neon', 'buttons', 'slayer']
   .map(k => mark(MARKS[k]));
 const ALL_MARKS = ['people', 'neon', 'slayer', 'boop', 'buttons', 'bird']
   .map(k => mark(MARKS[k], true));
