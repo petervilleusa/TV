@@ -27,7 +27,7 @@ BLURB = {
     'fine-art':       'Paintings and wall sculptures made from concrete, canvas, '
                       'foam, enamel and wood.',
     'physical':       'Zines, merch designs, stickers and other physical pieces.',
-    'pyramid-scheme': 'A track made for a group show at Bass & Reiner in San Francisco.',
+    'pyramid-scheme': 'A track made for a group show at an art gallery in San Francisco.',
     'music':          "Records I've made with different bands, plus a one-off track "
                       'made for a gallery show.',
     'development':    'Selected sites that are currently live.',

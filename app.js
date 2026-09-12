@@ -605,9 +605,9 @@ const objects = [
         /* No heading: the page is called Pyramid scheme and the first line
            names the show again a word later. */
         { type: 'text', body: [
-          'A track made for Pyramid Scheme, a group show at Bass & Reiner in San Francisco.',
-          'The show was built around the idea of artists inviting other artists to participate until the room was full.',
-          'I made this track for it.',
+          'A track made for Pyramid Scheme, a group show at Bass & Reiner, an art gallery in San Francisco.',
+          'The art show was built around the idea of artists inviting other artists to participate until the room was full.',
+          'I made this track for it, tongue in cheekily, including the lyrics "use the art to wash the money."',
         ]},
         PYRAMID_TRACK,
         /* `dance` sets it moving while the track runs. The pyramids are the
