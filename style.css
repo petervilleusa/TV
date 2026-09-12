@@ -583,8 +583,10 @@ main[data-reading] #project > * {
 .album-track[data-on="true"] .album-icon { opacity: 1; }
 
 @media (max-width: 749px) {
+  /* One column, and the sleeve takes the whole of it. Held to 60% it sat in a
+     column of its own with the page's edge a long way off to the right, which
+     read as a thumbnail of a record rather than the record. */
   .block-album { grid-template-columns: 1fr; gap: var(--grid-gap); }
-  .album-cover { max-width: 60%; }
 }
 
 /* a release is its art, a title, and where to hear it */
