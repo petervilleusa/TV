@@ -256,7 +256,7 @@ const RECORDS = {
   wealthHellness1: {
     art: 'media/releases/pleeay-wealth-hellness-vol-1.webp',
     alt: 'Wealth + Hellness Vol. 1 cover: the band in black against flames',
-    artist: 'Pleeay', record: 'Wealth + Hellness Vol. 1',
+    artist: 'Pleeay', record: 'Wealth + Hellness Vol. 1', year: 2025,
     /* The rest of the Pleeay work is on the Pleeay channel. Music says what
        was played, not everything that was done. */
     role: 'Bass',
@@ -271,7 +271,7 @@ const RECORDS = {
   pleeayLive: {
     art: 'media/releases/pleeay-live-at-the-eagle.webp',
     alt: 'Live at the Eagle cover: the band mid-set, the name in pink and blue over it',
-    artist: 'Pleeay', record: 'Live at the Eagle',
+    artist: 'Pleeay', record: 'Live at the Eagle', year: 2023,
     role: 'Bass',
     tracks: [
       { n: 1, title: 'Crave', dur: 153, src: 'media/audio/pleeay-live-at-the-eagle/01.m4a' },
@@ -288,7 +288,7 @@ const RECORDS = {
   lostEyesEp: {
     art: 'media/releases/the-lost-eyes-ep.webp',
     alt: 'The Lost Eyes EP cover: warped black lettering on lilac',
-    artist: 'The Lost Eyes', record: 'EP',
+    artist: 'The Lost Eyes', record: 'EP', year: 2018,
     role: 'Drums, backing vocals',
     tracks: [
       { n: 1, title: 'Taco Beach / I Like It Weird', dur: 199, src: 'media/audio/the-lost-eyes-ep/01.m4a' },
@@ -304,7 +304,7 @@ const RECORDS = {
   goldenTriangleTapes: {
     art: 'media/releases/nightswim-golden-triangle-tapes.webp',
     alt: 'The Golden Triangle Tapes cover: cut black lettering on kraft brown',
-    artist: 'Nightswim', record: 'The Golden Triangle Tapes',
+    artist: 'Nightswim', record: 'The Golden Triangle Tapes', year: 2021,
     role: 'Every instrument, recorded alone',
     tracks: [
       { n: 1, title: 'We Are Connected', dur: 344, src: 'media/audio/golden-triangle-tapes/01.m4a' },
@@ -323,19 +323,19 @@ const RECORDS = {
   sunbreak2: {
     art: 'media/releases/sunbreak-2.webp',
     alt: 'Sunbreak 2 cover: a sea stack in surf, black and white',
-    artist: 'Sunbreak', record: 'Sunbreak 2',
+    artist: 'Sunbreak', record: 'Sunbreak 2', year: 2024,
     role: 'Drums, bass, backing vocals',
     tracks: [
-      { n: 1, title: 'Do It Good', dur: 172, src: 'media/audio/sunbreak-2/01.m4a' },
-      { n: 2, title: 'Old Daze (remix)', dur: 257, src: 'media/audio/sunbreak-2/02.m4a' },
-      { n: 3, title: 'Workin 2 Hard', dur: 252, src: 'media/audio/sunbreak-2/03.m4a' },
-      { n: 4, title: 'Hard', dur: 175, src: 'media/audio/sunbreak-2/04.m4a' },
+      { n: 1, title: 'DOITGOOD', dur: 172, src: 'media/audio/sunbreak-2/01.m4a' },
+      { n: 2, title: 'OLDDAZE', dur: 257, src: 'media/audio/sunbreak-2/02.m4a' },
+      { n: 3, title: 'WORKIN2HARD', dur: 252, src: 'media/audio/sunbreak-2/03.m4a' },
+      { n: 4, title: 'HARD', dur: 175, src: 'media/audio/sunbreak-2/04.m4a' },
     ],
   },
 };
 
 const album = r => ({
-  type: 'album', art: r.art, alt: r.alt,
+  type: 'album', art: r.art, alt: r.alt, year: r.year,
   artist: r.artist, record: r.record, role: r.role, tracks: r.tracks,
 });
 
@@ -346,9 +346,16 @@ const album = r => ({
 const ownAlbum = r => ({ ...album(r), artist: r.record, record: '', role: '' });
 
 /* Music holds every record, each as its own block: the cover, what it is, and
-   the record itself to play. This replaced a shelf of covers four across,
-   which showed them all at a glance but had nowhere to put a tracklist. */
-const ALL_ALBUMS = Object.values(RECORDS).map(album);
+   the record itself to play. Newest first, and the order is WRITTEN OUT rather
+   than sorted or left to declaration order: five records is a list you can
+   read, and the next one added should have to say where it goes. */
+const ALL_ALBUMS = [
+  RECORDS.wealthHellness1,      // 2025
+  RECORDS.sunbreak2,            // 2024
+  RECORDS.pleeayLive,           // 2023
+  RECORDS.goldenTriangleTapes,  // 2021
+  RECORDS.lostEyesEp,           // 2018
+].map(album);
 
 /* Pleeay's own two, on Pleeay's own channel. */
 const PLEEAY_ALBUMS = [RECORDS.wealthHellness1, RECORDS.pleeayLive].map(ownAlbum);
@@ -672,20 +679,13 @@ const objects = [
     content: {
       title: 'Music',
       blocks: [
-        { type: 'text', heading: 'Everything that plays', body: [
-          "Records I've made with different bands, plus a one-off track made for a gallery show.",
-          'The role changes from record to record.',
+        /* No heading: the page is called Music, and a second title under it
+           was saying the same thing twice. */
+        { type: 'text', body: [
+          "A collection of solo records and collaborations I've made with different bands.",
         ]},
 
         ...ALL_ALBUMS,
-        PYRAMID_TRACK,
-
-        /* "Listen" was the heading while the records were somewhere else. The
-           listening happens on this page now, so what is left is just the
-           other place to go. */
-        { type: 'links', heading: 'Elsewhere', items: [
-          { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
-        ]},
       ],
     },
     frame: 'media/amp-01.webp', backdrop: 'media/backdrop/music.webp',
@@ -858,7 +858,8 @@ function buildAlbum(b) {
 
   const side = el('div', 'album-side');
   if (b.artist) side.appendChild(el('h2', null, b.artist));
-  if (b.record) side.appendChild(el('p', 'album-record', b.record));
+  if (b.record) side.appendChild(el('p', 'album-record',
+      b.record + (b.year ? ', ' + b.year : '')));
   if (b.role) side.appendChild(el('p', 'album-role', b.role));
 
   const audio = el('audio');
@@ -877,7 +878,6 @@ function buildAlbum(b) {
 
   const time = el('span', 'track-time', '0:00');
   const transport = el('div', 'track album-transport');
-  const now = el('p', 'track-title album-now', tracks.length ? tracks[0].title : '');
   transport.append(play, line, time, audio);
 
   const list = el('ol', 'album-list');
@@ -912,7 +912,7 @@ function buildAlbum(b) {
     play.dataset.playing = String(on);
     const t = tracks[Math.max(0, at)];
     play.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + (t ? t.title : ''));
-    if (t) { now.textContent = t.title; line.setAttribute('aria-label', t.title + ' position'); }
+    if (t) line.setAttribute('aria-label', t.title + ' position');
   };
 
   const paint = () => {
@@ -987,7 +987,7 @@ function buildAlbum(b) {
 
   players.push(audio);
   mark();
-  side.append(now, transport, list);
+  side.append(transport, list);
   wrap.append(cover, side);
   return wrap;
 }

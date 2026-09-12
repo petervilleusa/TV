@@ -498,10 +498,10 @@ main[data-reading] #project > * {
 .album-record { opacity: 0.6; }
 .album-role   { opacity: 0.45; margin-top: 0.5em; }
 
-/* The track being played, named above the transport, so the line and the
-   time always say what they belong to. */
-.album-now { margin-top: calc(var(--type) * 1.6); }
-.album-transport { margin-top: 0.4em; }
+/* The transport sits under the record's own lines. It used to be introduced by
+   the track's name, which repeated the first row of the list directly beneath
+   it and put a second title under the album's heading. */
+.album-transport { margin-top: calc(var(--type) * 1.6); }
 
 .album-list {
   list-style: none;
