@@ -1220,7 +1220,7 @@ function renderBlock(b) {
           const at = gallery.length;
           gallery.push({ group: g, flip: item.flip, src: item.flip[0], alt: item.alt || '',
                          heading: item.title || b.heading || '' });
-          flick.style.cursor = 'zoom-in';
+          flick.style.cursor = 'pointer';
           flick.addEventListener('click', () => openLightbox(at));
         }
         fig.appendChild(flick);
@@ -1276,7 +1276,7 @@ function renderBlock(b) {
           heading: item.title || b.heading || '',
           body: note ? [note] : null,
         });
-        img.style.cursor = 'zoom-in';
+        img.style.cursor = 'pointer';
         img.addEventListener('click', () => openLightbox(at));
       }
       fig.appendChild(img);

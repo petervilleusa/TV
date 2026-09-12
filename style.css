@@ -724,7 +724,7 @@ main[data-reading] #project > * {
   width: 100%;
   display: block;
   background: #211F28;
-  cursor: zoom-in;
+  cursor: pointer;
 }
 
 .carousel-thumbs {
