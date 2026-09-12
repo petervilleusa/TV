@@ -85,10 +85,20 @@
     <span class="bar bar-h"></span>
     <span class="bar bar-v"></span>
   </button>
-  <button id="close" aria-label="Close">
+  <button id="close" aria-label="Close" data-cursor="close">
     <span class="bar bar-h"></span>
     <span class="bar bar-v"></span>
   </button>
+
+  <!-- The pointer, made of the same two strokes as every other control here.
+       It is inert until app.js decides this is a machine with a real mouse;
+       without JavaScript, or on a touch screen, the system cursor is simply
+       left alone. -->
+  <i id="pointer" aria-hidden="true">
+    <span class="bar bar-h"></span>
+    <span class="bar bar-v"></span>
+    <span id="pointer-word"></span>
+  </i>
 </main>
 
 <script src="app.js"></script>

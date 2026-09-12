@@ -932,11 +932,16 @@ function buildAlbum(b) {
 
   const mark = () => {
     rows.forEach((li, i) => {
+      const here = i === at && !audio.paused;
       li.dataset.on = String(i === at);
-      li.dataset.playing = String(i === at && !audio.paused);
+      li.dataset.playing = String(here);
+      /* The row says what pressing it would DO, not what it is doing, so the
+         one that is running reads "pause" and every other one reads "play". */
+      li.querySelector('.album-pick').dataset.cursor = here ? 'pause' : 'play';
     });
     const on = !audio.paused;
     play.dataset.playing = String(on);
+    play.dataset.cursor = on ? 'pause' : 'play';
     reflectPlaying();
     const t = tracks[Math.max(0, at)];
     play.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + (t ? t.title : ''));
@@ -1053,6 +1058,7 @@ function buildTrack(t) {
   const label = () => {
     const on = !audio.paused;
     play.dataset.playing = String(on);
+    play.dataset.cursor = on ? 'pause' : 'play';
     reflectPlaying();
     play.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + t.title);
   };
@@ -1221,6 +1227,7 @@ function renderBlock(b) {
           gallery.push({ group: g, flip: item.flip, src: item.flip[0], alt: item.alt || '',
                          heading: item.title || b.heading || '' });
           flick.style.cursor = 'pointer';
+          flick.dataset.cursor = 'look';
           flick.addEventListener('click', () => openLightbox(at));
         }
         fig.appendChild(flick);
@@ -1277,6 +1284,7 @@ function renderBlock(b) {
           body: note ? [note] : null,
         });
         img.style.cursor = 'pointer';
+        img.dataset.cursor = 'look';
         img.addEventListener('click', () => openLightbox(at));
       }
       fig.appendChild(img);
@@ -1868,3 +1876,63 @@ document.addEventListener('keydown', e => {
   if (box) { box.remove(); return; }
   stage.dataset.expanded ? goHome() : setNav(false);
 });
+
+/* ---------------------------------------------------------------------------
+   THE POINTER
+   The cursor is the site's mark. It grows over anything that opens, turns the
+   quarter circle over the close, and says the verb outright over a control
+   whose job is not obvious from a shape.
+
+   Everything here is opt-in and reversible. The system cursor is only hidden
+   after `(hover: hover) and (pointer: fine)` says there is a mouse, so a touch
+   screen and a machine with JavaScript off both keep the ordinary one.
+   --------------------------------------------------------------------------- */
+(() => {
+  const dot = document.getElementById('pointer');
+  const word = document.getElementById('pointer-word');
+  if (!dot || !window.matchMedia) return;
+
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+  if (!fine.matches) return;
+
+  document.documentElement.dataset.pointer = 'on';
+
+  /* One read of the DOM per frame at most. `pointermove` fires far faster than
+     the screen refreshes, and moving the mark more often than that is work
+     nobody can see. */
+  let x = 0, y = 0, queued = false, over = null;
+
+  const draw = () => {
+    queued = false;
+    dot.style.translate = `${x}px ${y}px`;
+    const kind = over && over.dataset.cursor;
+    if (kind === 'play' || kind === 'pause' || kind === 'look') {
+      dot.dataset.word = 'true';
+      word.textContent = kind;
+    } else {
+      delete dot.dataset.word;
+    }
+    if (kind === 'close') dot.dataset.kind = 'close';
+    else if (over) dot.dataset.kind = 'open';
+    else delete dot.dataset.kind;
+  };
+
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
+
+  addEventListener('pointermove', e => {
+    x = e.clientX; y = e.clientY;
+    if (!dot.dataset.on) dot.dataset.on = 'true';
+    /* `closest` walks up from whatever is under the pointer, so a marker can
+       sit on the control itself and still answer for the text inside it. */
+    over = e.target.closest
+      ? e.target.closest('[data-cursor], a, button, .tv')
+      : null;
+    queue();
+  }, { passive: true });
+
+  /* Leaving the window, or dragging out of it, takes the mark with you. */
+  addEventListener('pointerdown', () => { dot.dataset.down = 'true'; queue(); }, { passive: true });
+  addEventListener('pointerup', () => { delete dot.dataset.down; queue(); }, { passive: true });
+  document.addEventListener('pointerleave', () => { delete dot.dataset.on; });
+  addEventListener('blur', () => { delete dot.dataset.on; });
+})();

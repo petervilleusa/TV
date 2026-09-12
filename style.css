@@ -1260,3 +1260,73 @@ main[data-reading] #project > * {
   color: rgba(255,255,255,.5);
   font-size: 11px;
 }
+
+/*-------- THE POINTER --------*/
+/* The cursor is the site's own mark: the same two strokes at the same weight
+   as the drawer's toggle, the close and every play button. Difference blending
+   means it never needs a second colour, inverting against the white drawer, a
+   photograph and a dark project page alike, exactly as the signature does.
+
+   The system cursor is only hidden once app.js has confirmed a real mouse, so
+   no JavaScript or a touch screen leaves the ordinary one alone. */
+#pointer {
+  --mark-size: 22px;
+  --mark-weight: 2px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--mark-size);
+  height: var(--mark-size);
+  margin: calc(var(--mark-size) / -2) 0 0 calc(var(--mark-size) / -2);
+  z-index: 60;
+  pointer-events: none;
+  color: #FFF;
+  mix-blend-mode: difference;
+  opacity: 0;
+  rotate: 0deg;
+  scale: 1;
+  transition:
+    opacity 160ms var(--ease),
+    rotate var(--mark-speed) var(--mark-ease),
+    scale 180ms var(--ease);
+}
+
+/* Nothing is drawn until the first movement, so it cannot flash in a corner
+   on load. */
+#pointer[data-on] { opacity: 1; }
+
+/* Over something that opens, the mark grows: the same gesture as the
+   television lifting under it, at the same moment. */
+#pointer[data-kind="open"] { scale: 1.5; }
+
+/* Over the close, it turns the quarter circle the close button itself turns. */
+#pointer[data-kind="close"] { rotate: 45deg; scale: 1.5; }
+
+#pointer-word {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  font-size: var(--type-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 140ms var(--ease);
+}
+
+/* A word replaces the strokes rather than joining them, so the pointer is
+   either a mark or a verb and never both at once. */
+#pointer[data-word] .bar { opacity: 0; }
+#pointer[data-word] #pointer-word { opacity: 1; }
+#pointer[data-word] { scale: 1; rotate: 0deg; }
+
+/* Scoped to the pointer: the toggle and the close keep the transition they
+   were given, which this would otherwise have replaced site-wide. */
+#pointer .bar { transition: opacity 140ms var(--ease), rotate var(--mark-speed) var(--mark-ease); }
+
+/* `!important` because several pictures carry an inline cursor of their own,
+   and this has to beat them. Scoped to the flag app.js sets, so it can only
+   ever apply on a machine that has been checked. */
+html[data-pointer] ,
+html[data-pointer] * { cursor: none !important; }
