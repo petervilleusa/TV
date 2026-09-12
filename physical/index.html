@@ -3,9 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Every media path in app.js is written relative to the root, and clicking a
+     channel pushes a new address (/pleeay/) WITHOUT loading a new document.
+     Relative URLs are resolved against the document's current address, so
+     without this the pictures went looking for /pleeay/media/... and every one
+     of them 404'd. Reloading appeared to fix it only because that loads the
+     generated page, which has always carried this tag. -->
+<base href="/">
   <meta name="description" content="Zines, merch designs, stickers and other physical pieces.">
   <link rel="canonical" href="https://petervilleusa.onrender.com/physical/">
-  <base href="/">
   <title>Physical — PETERVILLE USA</title>
 
   <link rel="icon" href="/media/meta/icon-32.png" sizes="32x32" type="image/png">

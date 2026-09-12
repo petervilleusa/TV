@@ -76,7 +76,13 @@ def head(html, title, desc, canonical):
     html = re.sub(r'(<meta property="og:url" content=")[^"]*(">)',
                   lambda m: m.group(1) + canonical + m.group(2), html, count=1)
 
-    return html.replace('<title>', '<base href="/">\n  <title>', 1)
+    # index.html carries its own <base> now, so a sub-page inherits it with the
+    # copy. Injecting a second one would be harmless (the first wins) but it
+    # would hide the fact that the home page needs it just as much: it rewrites
+    # the address with pushState and never reloads.
+    if '<base ' not in html:
+        html = html.replace('<title>', '<base href="/">\n  <title>', 1)
+    return html
 
 
 def main():
