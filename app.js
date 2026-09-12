@@ -707,12 +707,10 @@ const objects = [
       title: 'Development',
       blocks: [
         { type: 'text', heading: 'Sites', body: [
-          "Websites I've built through my work at Sparkart and as a freelance developer.",
-          'Some are design projects, some are development projects, and most are a little bit of both.',
+          "Websites I've designed and developed through my work at Sparkart and as a freelance front end developer.",
         ]},
 
-        { type: 'links', heading: 'Live',
-          body: ['Selected sites that are currently live.'], items: [
+        { type: 'links', heading: 'Live', items: [
           { label: 'thegreenroompr.com', href: 'https://www.thegreenroompr.com/' },
           { label: 'sparkart.com', href: 'https://www.sparkart.com/' },
           { label: 'thelordsofprint.com', href: 'https://thelordsofprint.com/' },
