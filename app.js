@@ -406,7 +406,9 @@ const mark = (m, credited) => ({
   title: credited ? m.credit : m.title,
 });
 
-const PLEEAY_MARKS = ['people', 'neon', 'slayer', 'boop', 'buttons']
+/* `people` is not in this one. It is drawn along a line rather than inside a
+   square, and it gets the foot of the page to itself instead. */
+const PLEEAY_MARKS = ['neon', 'slayer', 'boop', 'buttons']
   .map(k => mark(MARKS[k]));
 const ALL_MARKS = ['people', 'neon', 'slayer', 'boop', 'buttons', 'bird']
   .map(k => mark(MARKS[k], true));
@@ -466,14 +468,19 @@ const objects = [
 
         /* Marks only, so the colour in them is the point of looking. Grey
            until you do. */
-        { type: 'grid', heading: 'Marks', columns: 3, ratio: '1', fit: 'contain',
+        { type: 'grid', heading: 'Marks', columns: 4, ratio: '1', fit: 'contain',
           body: ['Designs and concepts for merch, stickers, and buttons.'],
           mono: true, lightbox: true, items: PLEEAY_MARKS },
 
         { type: 'links', heading: 'Elsewhere', items: [
           { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
-          { label: 'Instagram', href: 'https://www.instagram.com/pleeaymusic/' },
+          { label: 'instagram', href: 'https://www.instagram.com/pleeaymusic/' },
         ]},
+
+        /* Full width, and last. A mark drawn along a line has nothing to fill a
+           square with, and at the foot of the page it reads as a sign off. */
+        { type: 'grid', columns: 1, lightbox: true,
+          items: [{ src: MARKS.people.src, alt: MARKS.people.alt }] },
       ],
     },
     frame: 'media/tv-01.webp', backdrop: 'media/backdrop/pleeay.webp',
@@ -755,6 +762,7 @@ const objects = [
           { label: 'store.backstreetboys.com', href: 'https://store.backstreetboys.com/' },
           { label: 'store.ozzy.com', href: 'https://store.ozzy.com/' },
           { label: 'behemothofficial.store', href: 'https://behemothofficial.store/' },
+          { label: 'pleeay.com', href: 'https://www.pleeay.com/' },
         ]},
       ],
     },
