@@ -732,6 +732,15 @@ main[data-reading] #project > * {
   cursor: pointer;
 }
 
+/* The tape shots are a mix of flat artwork and photographs of an object, so
+   their proportions are all over the place and the row jumped every time the
+   picture changed. The frame is a square and holds it: what is inside can be
+   any shape it likes, and the lightbox has the whole of it. */
+.block-pair .carousel-main {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
 /* Four across, always at that size. Fewer than four and they simply end where
    they end rather than stretching to fill the row; more and the strip scrolls,
    which a trackpad can do on its own and a mouse gets arrows for. */
