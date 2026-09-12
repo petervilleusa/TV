@@ -495,10 +495,12 @@ main[data-reading] #project > * {
   #project[data-playing] .block-grid[data-dance] img { animation: none; }
 }
 
-/* A drawing on a transparent ground belongs ON the page, not on a panel. The
-   loading colour is still wanted, so it is dropped only once the picture has
-   landed — otherwise the box has nothing to hold it open with. */
-.grid-items[data-fit="contain"] img[data-loaded] { background: transparent; }
+/* Anything on a transparent ground belongs ON the page, not on a panel. Once a
+   picture has landed it covers its own box, so the colour behind it is either
+   invisible or a grey rectangle showing through the transparency. The loading
+   colour is still wanted before that, or the box has nothing to hold it open
+   with. Narrower than this before, and the wide people mark sat on a panel. */
+.block-grid img[data-loaded] { background: transparent; }
 
 /* Grey until you look at it. Scoped to a block that asks, so it reads as a
    set behaving differently rather than as the way everything looks: the site

@@ -434,7 +434,7 @@ const objects = [
         { type: 'text', heading: 'The band', body: [
           'Pleeay is a San Francisco new wave band. Castle sings and dances, Huli plays drums and synth, and I play bass.',
           "We play all original music and produce our own records, with help from our friends at Women's Audio Mission. We have played the Pride main stage in San Francisco, and opened for Pussy Riot and ESG.",
-          'I help write the songs and handle the design for the band. The website, the zines, the cassette art, the merch, all of it.',
+          'I help write the songs and handle the design for the band. The website, the zines, the cassette art, the merch, at all.',
         ], list: [
           { name: 'Castle', role: 'vox and dance' },
           { name: 'Huli',   role: 'drums and synth' },
