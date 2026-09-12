@@ -185,11 +185,34 @@ const BARS = 'media/crt-bars.webp';     // test pattern, on a couple of sets
 /* The Every Body zine is a Pleeay record AND a piece of print, so it appears on
    both channels. Declared once and referenced twice, because two copies of the
    same block drift the moment either is edited. */
+/* The zine itself, turned a spread at a time. This replaced a carousel of
+   photographs of the object, which showed that a zine existed without ever
+   letting you read a page of it. Those photographs follow it, because the
+   copy talks about the thing being made by hand and that is what they show. */
 const EVERY_BODY_ZINE = {
-  type: 'feature',
+  type: 'book',
   heading: '"Every Body" zine',
   kicker: 'Book / magazine, with the digital album',
-  items: [
+  body: [
+    "A zine with the lyrics to every song on Pleeay's debut album, Every Body, along with photographs of the band.",
+    "Each one was made by hand, so they're all a little different.",
+  ],
+  spreads: [
+    { src: 'media/zine-spreads/every-body/01.webp', title: 'Consequence' },
+    { src: 'media/zine-spreads/every-body/02.webp', title: 'Culture' },
+    { src: 'media/zine-spreads/every-body/03.webp', title: 'Crawl' },
+    { src: 'media/zine-spreads/every-body/04.webp', title: 'Curious' },
+    { src: 'media/zine-spreads/every-body/05.webp', title: 'Clear' },
+    { src: 'media/zine-spreads/every-body/06.webp', title: 'Compassion' },
+    { src: 'media/zine-spreads/every-body/07.webp', title: 'Cure' },
+    { src: 'media/zine-spreads/every-body/08.webp', title: 'Quiet' },
+  ],
+  /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
+};
+
+/* The object, after the reading of it. */
+const EVERY_BODY_ZINE_OBJECT = {
+  type: 'grid', columns: 3, lightbox: true, items: [
     { src: 'media/zine/04.webp', alt: 'Every Body zine, open spread' },
     { src: 'media/zine/01.webp', alt: 'Every Body zine, cover' },
     { src: 'media/zine/02.webp', alt: 'Every Body zine, inside pages' },
@@ -197,11 +220,6 @@ const EVERY_BODY_ZINE = {
     { src: 'media/zine/05.webp', alt: 'Every Body zine, spread and stack' },
     { src: 'media/zine/06.webp', alt: 'Every Body zine, inside pages' },
   ],
-  body: [
-    "A zine with the lyrics to every song on Pleeay's debut album, Every Body, along with photographs of the band.",
-    "Each one was made by hand, so they're all a little different.",
-  ],
-  /* links: [{ label: 'Get one', href: 'https://pleeay.bandcamp.com/merch/every-body-zine' }], */
 };
 
 /* The two cassettes, declared once and shown twice for the same reason the
@@ -434,6 +452,7 @@ const objects = [
            merch table is a table. */
         CASSETTE_PAIR,
         EVERY_BODY_ZINE,
+        EVERY_BODY_ZINE_OBJECT,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
           body: ['Set lists, merch, price lists, and other things from playing shows with Pleeay.'],
@@ -582,17 +601,18 @@ const objects = [
             "A collection of zines, merch designs, stickers, and other physical pieces. It's always nice to see the work out in the world.",
           ]},
 
-        { type: 'feature',
+        { type: 'book',
           heading: '"Becoming" zine',
           kicker: 'Single fold, edition of 20',
-          items: [
-            { src: 'media/print/becoming/00.webp', alt: 'Becoming zine, stack of covers' },
-            { src: 'media/print/becoming/01.webp', alt: 'Becoming zine, back cover text' },
-            { src: 'media/print/becoming/02.webp', alt: 'Becoming zine, open spread' },
-          ],
           body: [
             'A single fold zine combining vector shapes, text, and photographs of paintings in progress.',
             'Edition of 20.',
+          ],
+          spreads: [
+            { src: 'media/zine-spreads/becoming/01.webp' },
+            { src: 'media/zine-spreads/becoming/02.webp' },
+            { src: 'media/zine-spreads/becoming/03.webp' },
+            { src: 'media/zine-spreads/becoming/04.webp' },
           ],
           /* No buying anywhere on the site for now — it is a place to look at
              the work, not a shop. The mailto is kept here, commented, because
@@ -601,7 +621,14 @@ const objects = [
                href: 'mailto:peterwarren13@gmail.com?subject=Becoming%20zine%20purchase%20inquiry' }], */
         },
 
+        { type: 'grid', columns: 3, lightbox: true, items: [
+          { src: 'media/print/becoming/00.webp', alt: 'Becoming zine, stack of covers' },
+          { src: 'media/print/becoming/01.webp', alt: 'Becoming zine, back cover text' },
+          { src: 'media/print/becoming/02.webp', alt: 'Becoming zine, open spread' },
+        ]},
+
         EVERY_BODY_ZINE,
+        EVERY_BODY_ZINE_OBJECT,
         CASSETTE_PAIR,
       ],
     },
@@ -1147,6 +1174,122 @@ function buildCarousel(items, heading, body, links) {
   return media;
 }
 
+/* A zine, read as a book rather than shown as a slideshow.
+
+   Each file is a whole SPREAD, two pages with the fold down its middle, so a
+   page is half an image: the background is scaled to twice the width of its
+   box and slid to one end or the other.
+
+   That is what makes the turn work. A leaf of a real book carries a different
+   page on each side, the right half of the spread you are leaving on its front
+   and the left half of the one you are arriving at on its back. Cross-fading
+   two whole spreads would be the carousel again with a fold painted on. */
+function buildBook(b) {
+  const spreads = b.spreads || [];
+  const wrap = el('section', 'block-book');
+  if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+  if (b.kicker) wrap.appendChild(el('p', 'kicker', b.kicker));
+  (b.body || []).forEach(t => wrap.appendChild(el('p', 'block-intro', t)));
+  if (!spreads.length) return wrap;
+
+  const book = el('div', 'book');
+  const left = el('div', 'book-page book-left');
+  const right = el('div', 'book-page book-right');
+  book.append(left, right, el('div', 'book-gutter'));
+
+  const bar = el('div', 'book-bar');
+  const prev = makeMark('prev');
+  const next = makeMark('next');
+  [prev, next].forEach(m => m.classList.add('book-step'));
+  prev.setAttribute('aria-label', 'Previous spread');
+  next.setAttribute('aria-label', 'Next spread');
+  const count = el('span', 'book-count');
+  bar.append(prev, count, next);
+  wrap.append(book, bar);
+
+  let at = 0;
+  let turning = false;
+  const url = i => `url("${spreads[i].src}")`;
+
+  /* Only the spread you are on and the ones either side are ever fetched.
+     Eight of these arriving at once is tens of megabytes of decoded bitmap,
+     which is exactly what makes a long page stutter. */
+  const warm = i => [i - 1, i, i + 1].forEach(n => {
+    if (n < 0 || n >= spreads.length) return;
+    const img = new Image();
+    img.src = spreads[n].src;
+  });
+
+  const settle = () => {
+    left.style.backgroundImage = url(at);
+    right.style.backgroundImage = url(at);
+    const name = spreads[at].title ? `  ${spreads[at].title}` : '';
+    count.textContent = `${at + 1} / ${spreads.length}${name}`;
+    prev.disabled = at === 0;
+    next.disabled = at === spreads.length - 1;
+    book.setAttribute('aria-label',
+      `${b.heading || 'Zine'}, spread ${at + 1} of ${spreads.length}`);
+    warm(at);
+  };
+
+  function turn(dir) {
+    const to = at + (dir === 'next' ? 1 : -1);
+    if (turning || to < 0 || to >= spreads.length) return;
+    turning = true;
+
+    const leaf = el('div', 'book-leaf');
+    leaf.dataset.dir = dir;
+    const front = el('div', 'book-face book-front');
+    const back = el('div', 'book-face book-back');
+
+    if (dir === 'next') {
+      front.style.cssText = `background-image:${url(at)};background-position:100% 0`;
+      back.style.cssText = `background-image:${url(to)};background-position:0 0`;
+      right.style.backgroundImage = url(to);
+    } else {
+      front.style.cssText = `background-image:${url(at)};background-position:0 0`;
+      back.style.cssText = `background-image:${url(to)};background-position:100% 0`;
+      left.style.backgroundImage = url(to);
+    }
+
+    leaf.append(front, back);
+    book.appendChild(leaf);
+    /* One frame with the leaf still flat, so the transition has a start. */
+    requestAnimationFrame(() => requestAnimationFrame(() => { leaf.dataset.go = 'true'; }));
+
+    let landed = false;
+    const done = () => {
+      if (landed) return;
+      landed = true;
+      leaf.remove();
+      at = to;
+      turning = false;
+      settle();
+    };
+    leaf.addEventListener('transitionend', e => {
+      if (e.propertyName === 'transform') done();
+    }, { once: true });
+    /* A tab in the background never fires transitionend, and the book would
+       be stuck mid-turn when you came back to it. */
+    setTimeout(done, 1100);
+  }
+
+  next.addEventListener('click', () => turn('next'));
+  prev.addEventListener('click', () => turn('prev'));
+  book.addEventListener('click', e => {
+    const box = book.getBoundingClientRect();
+    turn(e.clientX - box.left > box.width / 2 ? 'next' : 'prev');
+  });
+  book.tabIndex = 0;
+  book.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); turn('next'); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); turn('prev'); }
+  });
+
+  settle();
+  return wrap;
+}
+
 function renderBlock(b) {
   if (b.type === 'text') {
     const wrap = el('section', 'block-text');
@@ -1307,6 +1450,8 @@ function renderBlock(b) {
      object twice over, so setting them beside each other lets you read them
      against one another, and neither needs a paragraph to explain what a
      cassette is. */
+  if (b.type === 'book') return buildBook(b);
+
   if (b.type === 'pair') {
     const wrap = el('section', 'block-pair');
     if (b.heading) wrap.appendChild(el('h2', null, b.heading));

@@ -1336,3 +1336,88 @@ html[data-pointer] * { cursor: none !important; }
 html[data-pointer] nav,
 html[data-pointer] nav * { cursor: auto !important; }
 html[data-pointer] nav a { cursor: pointer !important; }
+
+/*-------- A ZINE, READ AS A BOOK --------*/
+/* Each file is a whole spread, so a page is half an image: the background is
+   twice the width of its box and slid to one end. Flat throughout, like the
+   rest of the site. The fold is a hairline at the weight the tracklist rules
+   use, not a gradient pretending there is a lamp overhead. */
+.block-book h2 { margin-bottom: calc(var(--type) * 1.2); }
+
+.book {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* one page is half of a 2376x1836 spread, so the pair is that twice over */
+  aspect-ratio: calc(1188 / 1836 * 2);
+  position: relative;
+  perspective: 2400px;
+  background: #0E0D12;
+  cursor: pointer;
+}
+
+.book-page {
+  position: relative;
+  background-color: #0E0D12;
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+}
+.book-left  { background-position: 0 0; }
+.book-right { background-position: 100% 0; }
+
+.book-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+  pointer-events: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* The leaf exists only while a page is turning. */
+.book-leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  transform-style: preserve-3d;
+  transition: transform 620ms cubic-bezier(.62,.02,.34,1);
+  z-index: 3;
+}
+.book-leaf[data-dir="next"] { left: 50%; transform-origin: left center; }
+.book-leaf[data-dir="prev"] { left: 0;   transform-origin: right center; }
+.book-leaf[data-dir="next"][data-go] { transform: rotateY(-180deg); }
+.book-leaf[data-dir="prev"][data-go] { transform: rotateY(180deg); }
+
+.book-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  background-color: #0E0D12;
+}
+.book-back { transform: rotateY(180deg); }
+
+.book-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4em;
+  margin-top: calc(var(--type) * 1.2);
+}
+.book-step {
+  --mark-size: 34px;
+  --mark-weight: 3px;
+  mix-blend-mode: normal;      /* it sits on the project's own dark ground */
+  color: var(--project-ink);
+}
+.book-step[disabled] { opacity: .25; cursor: default; }
+.book-count { font-variant-numeric: tabular-nums; opacity: .6; }
+
+/* The turn is the whole of it, so under reduced motion the page simply
+   changes rather than being slowed down. */
+@media (prefers-reduced-motion: reduce) {
+  .book-leaf { transition: none; }
+}
