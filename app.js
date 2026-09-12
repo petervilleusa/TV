@@ -259,7 +259,7 @@ const RECORDS = {
     artist: 'Pleeay', record: 'Wealth + Hellness Vol. 1', year: 2025,
     /* The rest of the Pleeay work is on the Pleeay channel. Music says what
        was played, not everything that was done. */
-    role: 'Bass',
+    role: 'I play bass',
     tracks: [
       { n: 1, title: 'No', dur: 187, src: 'media/audio/wealth-hellness-1/01.mp3' },
       { n: 2, title: 'Babies in the Lost & Found', dur: 281, src: 'media/audio/wealth-hellness-1/02.mp3' },
@@ -272,7 +272,7 @@ const RECORDS = {
     art: 'media/releases/pleeay-live-at-the-eagle.webp',
     alt: 'Live at the Eagle cover: the band mid-set, the name in pink and blue over it',
     artist: 'Pleeay', record: 'Live at the Eagle', year: 2023,
-    role: 'Bass',
+    role: 'I play bass',
     tracks: [
       { n: 1, title: 'Crave', dur: 153, src: 'media/audio/pleeay-live-at-the-eagle/01.m4a' },
       { n: 2, title: 'Culture', dur: 199, src: 'media/audio/pleeay-live-at-the-eagle/02.m4a' },
@@ -289,7 +289,7 @@ const RECORDS = {
     art: 'media/releases/the-lost-eyes-ep.webp',
     alt: 'The Lost Eyes EP cover: warped black lettering on lilac',
     artist: 'The Lost Eyes', record: 'EP', year: 2018,
-    role: 'Drums, backing vocals',
+    role: 'I play drums and sing backing vocals',
     tracks: [
       { n: 1, title: 'Taco Beach / I Like It Weird', dur: 199, src: 'media/audio/the-lost-eyes-ep/01.m4a' },
       { n: 2, title: 'Just Another', dur: 132, src: 'media/audio/the-lost-eyes-ep/02.mp3' },
@@ -305,7 +305,7 @@ const RECORDS = {
     art: 'media/releases/nightswim-golden-triangle-tapes.webp',
     alt: 'The Golden Triangle Tapes cover: cut black lettering on kraft brown',
     artist: 'Nightswim', record: 'The Golden Triangle Tapes', year: 2021,
-    role: 'Every instrument, recorded alone',
+    role: 'I wrote, performed and recorded every instrument',
     tracks: [
       { n: 1, title: 'We Are Connected', dur: 344, src: 'media/audio/golden-triangle-tapes/01.m4a' },
       { n: 2, title: 'Awake Snake', dur: 102, src: 'media/audio/golden-triangle-tapes/02.m4a' },
@@ -324,7 +324,7 @@ const RECORDS = {
     art: 'media/releases/sunbreak-2.webp',
     alt: 'Sunbreak 2 cover: a sea stack in surf, black and white',
     artist: 'Sunbreak', record: 'Sunbreak 2', year: 2024,
-    role: 'Drums, bass, backing vocals',
+    role: 'I play drums and bass, and sing backing vocals',
     tracks: [
       { n: 1, title: 'DOITGOOD', dur: 172, src: 'media/audio/sunbreak-2/01.m4a' },
       { n: 2, title: 'OLDDAZE', dur: 257, src: 'media/audio/sunbreak-2/02.m4a' },
