@@ -1302,6 +1302,39 @@ main[data-reading] #project > * {
 /* Over the close, it turns the quarter circle the close button itself turns. */
 #pointer[data-kind="close"] { rotate: 45deg; scale: 1.5; }
 
+/* Over a book, the mark becomes the direction the page would turn: the same
+   mitred stroke as the lightbox arrows, drawn from the same two borders. */
+#pointer-chev {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 140ms var(--ease);
+}
+#pointer-chev::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46%;
+  height: 46%;
+  border-left: var(--mark-weight) solid currentColor;
+  border-top: var(--mark-weight) solid currentColor;
+  translate: -50% -50%;
+  rotate: -45deg;
+}
+#pointer[data-kind="next"] #pointer-chev::before { rotate: 135deg; }
+
+#pointer[data-kind="prev"] #pointer-chev,
+#pointer[data-kind="next"] #pointer-chev { opacity: 1; }
+#pointer[data-kind="prev"] .bar,
+#pointer[data-kind="next"] .bar { opacity: 0; }
+#pointer[data-kind="prev"],
+#pointer[data-kind="next"] { scale: 1.8; }
+
+/* Dimmed at the first spread and the last, so the arrow says the page will not
+   turn before you press and find out. */
+#pointer[data-dim] { opacity: .3; }
+
 #pointer-word {
   position: absolute;
   left: 50%;

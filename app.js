@@ -1227,6 +1227,9 @@ function buildBook(b) {
     count.textContent = `${at + 1} / ${spreads.length}${name}`;
     prev.disabled = at === 0;
     next.disabled = at === spreads.length - 1;
+    /* Read by the pointer, so the arrow can dim where the page will not turn. */
+    book.dataset.first = String(at === 0);
+    book.dataset.last = String(at === spreads.length - 1);
     book.setAttribute('aria-label',
       `${b.heading || 'Zine'}, spread ${at + 1} of ${spreads.length}`);
     warm(at);
@@ -2054,6 +2057,17 @@ document.addEventListener('keydown', e => {
 
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
 
+  /* Moves the mark without letting `draw` overwrite a state already decided. */
+  let posQueued = false;
+  const queuePos = () => {
+    if (posQueued) return;
+    posQueued = true;
+    requestAnimationFrame(() => {
+      posQueued = false;
+      dot.style.translate = `${x}px ${y}px`;
+    });
+  };
+
   addEventListener('pointermove', e => {
     x = e.clientX; y = e.clientY;
     const at = e.target.closest ? e.target : null;
@@ -2067,6 +2081,25 @@ document.addEventListener('keydown', e => {
     }
 
     if (!dot.dataset.on) dot.dataset.on = 'true';
+
+    /* A book is the one thing whose answer depends on WHERE in it you are,
+       rather than on what you are over. The half you are in is the page that
+       would turn, so the mark becomes that direction, and dims at the end it
+       cannot go. */
+    const book = at && at.closest('.book');
+    if (book) {
+      const box = book.getBoundingClientRect();
+      const dir = e.clientX - box.left > box.width / 2 ? 'next' : 'prev';
+      const stuck = dir === 'next' ? book.dataset.last : book.dataset.first;
+      if (stuck === 'true') dot.dataset.dim = 'true'; else delete dot.dataset.dim;
+      over = null;
+      dot.dataset.kind = dir;
+      delete dot.dataset.word;
+      queuePos();
+      return;
+    }
+    delete dot.dataset.dim;
+
     /* `closest` walks up from whatever is under the pointer, so a marker can
        sit on the control itself and still answer for the text inside it. */
     over = at ? at.closest('[data-cursor], a, button, .tv') : null;
