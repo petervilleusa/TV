@@ -192,7 +192,7 @@ const BARS = 'media/crt-bars.webp';     // test pattern, on a couple of sets
 const EVERY_BODY_ZINE = {
   type: 'book',
   heading: '"Every Body" zine',
-  kicker: 'Book / magazine, with the digital album',
+  kicker: '2022',
   body: [
     "A zine with the lyrics to every song on Pleeay's debut album, Every Body, along with photographs of the band.",
     "Each one was made by hand, so they're all a little different.",
@@ -456,7 +456,6 @@ const objects = [
         EVERY_BODY_ZINE_OBJECT,
 
         { type: 'grid', heading: 'Set lists and merch table', columns: 5,
-          body: ['Set lists, merch, price lists, and other things from playing shows with Pleeay.'],
           ratio: '1082 / 1400', lightbox: true, items: [
           { src: 'media/setlists/00.webp', title: 'Bandshell',   alt: 'Set list, Bandshell' },
           { src: 'media/setlists/01.webp', title: 'KO',          alt: 'Set list, KO' },
@@ -467,8 +466,8 @@ const objects = [
 
         /* Marks only, so the colour in them is the point of looking. Grey
            until you do. */
-        { type: 'grid', heading: 'Logos', columns: 3, ratio: '1', fit: 'contain',
-          body: ["Logos and little marks I've made for Pleeay, including designs that ended up on merch, stickers, buttons, and neon."],
+        { type: 'grid', heading: 'Marks', columns: 3, ratio: '1', fit: 'contain',
+          body: ['Designs and concepts for merch, stickers, and buttons.'],
           mono: true, lightbox: true, items: PLEEAY_MARKS },
 
         { type: 'links', heading: 'Elsewhere', items: [
