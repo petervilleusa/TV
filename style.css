@@ -1504,3 +1504,33 @@ html[data-pointer] nav a { cursor: pointer !important; }
 @media (prefers-reduced-motion: reduce) {
   .book-leaf { transition: none; }
 }
+
+/*-------- A SLIDESHOW --------*/
+/* Photographs holding and crossing into one another on the shared ticker. No
+   arrows and no thumbnails: it changes on its own, and anyone who wants to
+   stop and look opens the lightbox. */
+.slideshow {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--ratio, 3 / 2);
+  overflow: hidden;
+  background: #211F28;
+  cursor: pointer;
+}
+
+.slideshow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 900ms var(--ease);
+}
+.slideshow img[data-on] { opacity: 1; }
+
+/* The crossfade is the whole of it, so under reduced motion the picture simply
+   changes rather than dissolving. */
+@media (prefers-reduced-motion: reduce) {
+  .slideshow img { transition: none; }
+}

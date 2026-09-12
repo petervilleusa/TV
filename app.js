@@ -445,8 +445,10 @@ const objects = [
         /* The group portrait is landscape and the two live shots are 4:5, so
            they cannot share a grid — one ratio would crop the other badly.
            The wide one opens the page and the pair follows it. */
-        { type: 'grid', columns: 1, ratio: '3 / 2', lightbox: true, items: [
-          { src: 'media/pleeay/band.webp', alt: 'Pleeay' },
+        { type: 'slideshow', ratio: '3 / 2', hold: 4000, items: [
+          { src: 'media/pleeay/band.webp',    alt: 'Pleeay' },
+          { src: 'media/pleeay/band-02.webp', alt: 'Pleeay on a beach' },
+          { src: 'media/pleeay/band-03.webp', alt: 'Pleeay at the Tenderloin Festival' },
         ]},
 
         ...PLEEAY_ALBUMS,
@@ -1327,6 +1329,48 @@ function buildBook(b) {
   return wrap;
 }
 
+/* A set of photographs holding and crossing into one another, with nothing to
+   press. The lightbox is still there for anyone who wants to stop and go
+   through them, and it opens on whichever one is showing. */
+function buildSlideshow(b) {
+  const wrap = el('section', 'block-slideshow');
+  if (b.heading) wrap.appendChild(el('h2', null, b.heading));
+  (b.body || []).forEach(t => wrap.appendChild(el('p', 'block-intro', t)));
+
+  const show = el('div', 'slideshow');
+  if (b.ratio) show.style.setProperty('--ratio', b.ratio);
+
+  const g = ++group;
+  const base = gallery.length;
+  (b.items || []).forEach((item, i) => {
+    const img = el('img');
+    img.alt = item.alt || '';
+    hintLoading(img);
+    markWhenLoaded(img);
+    img.src = item.src;
+    if (i === 0) img.dataset.on = 'true';
+    show.appendChild(img);
+    gallery.push({
+      group: g, src: item.src, alt: item.alt || '',
+      heading: item.title || b.heading || '',
+    });
+  });
+
+  if (b.lightbox !== false) {
+    show.dataset.cursor = 'look';
+    show.addEventListener('click', () => {
+      const at = [...show.children].findIndex(c => c.dataset.on === 'true');
+      openLightbox(base + Math.max(0, at));
+    });
+  }
+
+  /* On the shared ticker rather than a timer of its own, which is how the
+     televisions already do it. */
+  slideshows.push({ wrap: show, i: 0, at: Date.now(), hold: b.hold || 4000 });
+  wrap.appendChild(show);
+  return wrap;
+}
+
 function renderBlock(b) {
   if (b.type === 'text') {
     const wrap = el('section', 'block-text');
@@ -1495,6 +1539,7 @@ function renderBlock(b) {
      against one another, and neither needs a paragraph to explain what a
      cassette is. */
   if (b.type === 'book') return buildBook(b);
+  if (b.type === 'slideshow') return buildSlideshow(b);
 
   if (b.type === 'pair') {
     const wrap = el('section', 'block-pair');
@@ -1688,14 +1733,19 @@ const STILL = new URLSearchParams(location.search).has('still');
 const slideshows = [];
 setInterval(() => {
   const now = Date.now();
-  slideshows.forEach(s => {
-    if (now - s.at < s.hold) return;
+  /* Backwards, so a slideshow can be dropped mid-loop. A project's slides go
+     away when the project is replaced, and without this the list would grow
+     on every open and keep ticking elements nobody can see. */
+  for (let n = slideshows.length - 1; n >= 0; n--) {
+    const s = slideshows[n];
+    if (!s.wrap.isConnected) { slideshows.splice(n, 1); continue; }
+    if (now - s.at < s.hold) continue;
     s.at = now;
     const imgs = s.wrap.children;
     imgs[s.i].removeAttribute('data-on');
     s.i = (s.i + 1) % imgs.length;
     imgs[s.i].dataset.on = 'true';
-  });
+  }
 }, 400);
 
 function buildMedia(tv) {
