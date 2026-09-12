@@ -1170,7 +1170,32 @@ function buildCarousel(items, heading, body, links) {
     thumbs.appendChild(t);
   });
 
-  media.append(stageImg, thumbs);
+  /* The strip wraps the thumbs so the arrows have something to sit against.
+     They appear only when there is more than fits, and a ResizeObserver is
+     what answers that: the row is four of whatever the column happens to be
+     wide, so the answer changes when the window does. */
+  const strip = el('div', 'carousel-strip');
+  const back = makeMark('prev');
+  const fwd = makeMark('next');
+  [back, fwd].forEach(m => m.classList.add('strip-step'));
+  back.setAttribute('aria-label', 'Earlier pictures');
+  fwd.setAttribute('aria-label', 'Later pictures');
+  strip.append(thumbs, back, fwd);
+
+  const sync = () => {
+    const room = thumbs.scrollWidth - thumbs.clientWidth;
+    strip.dataset.more = String(room > 1);
+    back.disabled = thumbs.scrollLeft <= 1;
+    fwd.disabled = thumbs.scrollLeft >= room - 1;
+  };
+  const step = () => (thumbs.clientWidth + 8) / 4;
+  back.addEventListener('click', () => thumbs.scrollBy({ left: -step(), behavior: 'smooth' }));
+  fwd.addEventListener('click', () => thumbs.scrollBy({ left: step(), behavior: 'smooth' }));
+  thumbs.addEventListener('scroll', sync, { passive: true });
+  if (window.ResizeObserver) new ResizeObserver(sync).observe(thumbs);
+  requestAnimationFrame(sync);
+
+  media.append(stageImg, strip);
   return media;
 }
 

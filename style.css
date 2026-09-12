@@ -732,11 +732,45 @@ main[data-reading] #project > * {
   cursor: pointer;
 }
 
+/* Four across, always at that size. Fewer than four and they simply end where
+   they end rather than stretching to fill the row; more and the strip scrolls,
+   which a trackpad can do on its own and a mouse gets arrows for. */
+.carousel-strip { position: relative; margin-top: 8px; }
+
 .carousel-thumbs {
+  --thumbs: 4;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--thumbs) - 1) * 8px) / var(--thumbs));
   gap: 8px;
-  margin-top: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.carousel-thumbs::-webkit-scrollbar { display: none; }
+.thumb { scroll-snap-align: start; }
+
+/* The arrows only exist when there is somewhere to go. Difference blending so
+   they read over a light thumbnail and a dark one alike. */
+.strip-step {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  --mark-size: 30px;
+  --mark-weight: 3px;
+  color: #FFF;
+  mix-blend-mode: difference;
+  z-index: 2;
+}
+.strip-step[data-dir="prev"] { left: 2px; }
+.strip-step[data-dir="next"] { right: 2px; }
+.carousel-strip:not([data-more="true"]) .strip-step { display: none; }
+.strip-step[disabled] { opacity: .2; cursor: default; }
+
+@media (max-width: 749px) {
+  /* Half the room, so three rather than four. */
+  .carousel-thumbs { --thumbs: 3; }
 }
 
 .thumb {
